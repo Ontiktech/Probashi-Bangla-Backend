@@ -1,16 +1,11 @@
 import express, { Request, Response } from 'express';
 import { MigrationService } from '../services/migration.services';
-import { multipleFileLocalUploader } from '../middleware/fileUploadLocal.middleware';
+// import { multipleFileLocalUploader } from '../middleware/fileUploadLocal.middleware';
 import {
-  fileDeleteFullpathsS3Test,
-  fileDeleteS3Test,
   fileDeleteTest,
-  fileUploadS3Test,
-  fileUploadTest,
+  // fileUploadTest,
 } from '../controllers/test.controller';
 import { NodeCacheService } from '../services/node-cache.services';
-import { s3FileUploader } from '../middleware/fileUploadS3.middleware';
-import multer from 'multer';
 
 const migrationService = new MigrationService();
 const nodeCacheService = new NodeCacheService();
@@ -35,41 +30,20 @@ testRouter.get('/db', async (req: Request, res: Response) => {
   }
 });
 
-testRouter.post(
-  '/fileUploadTest',
-  multipleFileLocalUploader(
-    [
-      { name: 'images1', maxCount: 1 },
-      { name: 'images2', maxCount: 2 },
-    ],
-    'files',
-    31457280,
-  ),
-  fileUploadTest,
-);
+// testRouter.post(
+//   '/fileUploadTest',
+//   multipleFileLocalUploader(
+//     [
+//       { name: 'images1', maxCount: 1 },
+//       { name: 'images2', maxCount: 2 },
+//     ],
+//     'files',
+//     31457280,
+//   ),
+//   fileUploadTest,
+// );
 
 testRouter.delete('/fileDeleteTest/:id', fileDeleteTest);
-
-testRouter.post(
-  '/fileUploadS3Test',
-  s3FileUploader(
-    [
-      { name: 'images1', maxCount: 1 },
-      { name: 'images2', maxCount: 2 },
-    ],
-    'files',
-    31457280,
-  ),
-  fileUploadS3Test,
-);
-
-testRouter.delete('/fileDeleteS3Test', multer().none(), fileDeleteS3Test);
-
-testRouter.delete(
-  '/fileDeleteFullPathS3Test',
-  multer().none(),
-  fileDeleteFullpathsS3Test,
-);
 
 testRouter.get('/db/migrate', async (req: Request, res: Response) => {
   try {
@@ -97,7 +71,7 @@ testRouter.get('/db/refreshMigration', async (req: Request, res: Response) => {
   }
 });
 
-testRouter.get('/db/seed-user', async (req: Request, res: Response) => {
+testRouter.get('/db/seed-admin-user', async (req: Request, res: Response) => {
   try {
     await migrationService.seed();
     res.send({

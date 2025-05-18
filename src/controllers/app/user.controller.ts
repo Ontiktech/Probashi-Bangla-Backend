@@ -1,16 +1,16 @@
 import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { UnauthorizedException } from '../../errors/UnauthorizedException.error';
-import { AppUserService } from '../../services/user.services';
+import { AppUserService } from '../../services/admin/app-user.services';
 import { Request, Response } from 'express';
 import { formatAppUserProfile } from '../../formatter/app-user.formatter';
 import { CustomException } from '../../errors/CustomException.error';
-import {
-  rollbackMultipleFileS3,
-} from '../../middleware/fileUploadS3.middleware';
+// import {
+//   rollbackMultipleFileS3,
+// } from '../../middleware/fileUploadS3.middleware';
 import { mapAppUserGenerateToken } from '../../mapper/user.mapper';
 import { JwtMiddleware } from '../../middleware/jwt.middleware';
 import { datetimeYMDHis } from '../../utils/datetime.utils';
-import { AppUserNotificationOptions } from '../../constants/enums';
+// import { AppUserNotificationOptions } from '../../constants/enums';
 import { AuthService } from '../../services/app/auth.services';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { BadRequestException } from '../../errors/BadRequestException.error';
@@ -617,7 +617,7 @@ export async function updateNotificationStatus(
       data: {
         message: 'Notification status changed successfully.',
       },
-      status_code: 200,
+      statusCode: 200,
     });
   } catch (e) {
     // console.log(e);
@@ -664,7 +664,7 @@ export async function initiateAccountWipeout(req: AppAuthenticatedRequest, res: 
           message: `OTP sent to your ${channel === 'phone' ? 'phone/whatsapp' : channel }. Check your messages.`,
           channel: channel
         },
-        status_code: 200,
+        statusCode: 200,
       });
 
     throw new NotFoundException('Phone number, email and whatsapp number missing !');
@@ -741,7 +741,7 @@ export async function verifyOTPForDeleteAppUser(req: AppAuthenticatedRequest, re
       data: {
         message: 'OTP verified. You may proceed.',
       },
-      status_code: 200,
+      statusCode: 200,
     });
   } catch (e: any) {
     if (e.constructor.name === 'RestException') {
@@ -791,7 +791,7 @@ export async function confirmAccountWipeout(req: AppAuthenticatedRequest, res: R
         message: `Your account information will be deleted shortly.`,
         deletedAt: runAt
       },
-      status_code: 200,
+      statusCode: 200,
     });
   } catch (e) {
     // console.log(e);

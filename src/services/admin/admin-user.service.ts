@@ -1,17 +1,11 @@
-import { AdminUserModel } from '../../db/rdb/models';
 import { AdminUserRepository } from '../../db/rdb/repositories/admin-user.repository';
-import { UserBalanceRepository } from '../../db/rdb/repositories/user-balance.repository';
 import { CustomException } from '../../errors/CustomException.error';
-import {
-  deleteMultipleFilesS3,
-  extractS3Fullpaths,
-} from '../../middleware/fileUploadS3.middleware';
 import { UserPayload } from '../../schema/token-payload.schema';
 import {
   CreateAdminUserSchema,
   UpdateAdminUserSchema,
 } from '../../schema/user.schema';
-import { AdminUser, UserBalanceType } from '../../types/common-models.type';
+import { AdminUser, UserBalanceType } from '../../types/common.type';
 import {
   createAdminUserId,
   createUserBalanceId,

@@ -11,7 +11,7 @@ import { capitalizeFirstLetter } from '../../utils/string.utils';
 import { mapAppUserGenerateToken } from '../../mapper/user.mapper';
 import { roundTo2DP } from '../../utils/number.utils';
 import { formatAppUserProfile } from '../../formatter/app-user.formatter';
-import { AppUserService } from '../../services/user.services';
+import { AppUserService } from '../../services/admin/app-user.services';
 
 const jwtMiddleware = new JwtMiddleware();
 const authService = new AuthService();
@@ -31,7 +31,7 @@ export async function authenticateAppUser(req: Request, res: Response) {
       const { token, validity } = jwtMiddleware.generateAppUserToken(
         mapAppUserGenerateToken(
           authUser.data.id,
-          authUser.data.phone_number,
+          authUser.data.phoneNumber,
           authUser.data.name,
           authUser.data.email,
           authUser.data.avatarUrl,
@@ -120,93 +120,8 @@ export async function usernameExists(
       data: {
         message: 'This username is available.',
       },
-      status_code: 200,
+      statusCode: 200,
     });
-  } catch (e) {
-    if (e instanceof CustomException) {
-      return res.status(e.statusCode).json({
-        error: {
-          message: e.message,
-        },
-        code: e.statusCode,
-      });
-    }
-
-    return res.status(500).json({
-      error: {
-        message: 'Something went wrong! Please try again.',
-      },
-      code: 500,
-    });
-  }
-}
-
-export async function updateNameAndUsername(
-  req: AppAuthenticatedRequest,
-  res: Response,
-) {
-  try {
-    const updated = await authService.updateNameAndUsername(
-      req.body,
-      req.user!.id,
-    );
-
-    if (!updated)
-      throw new CustomException(
-        'Failed to update name and username. Please try again.',
-        500,
-      );
-
-    if (updated.authenticated && updated.data) {
-      const { token, validity } = jwtMiddleware.generateAppUserToken(
-        mapAppUserGenerateToken(
-          updated.data.id,
-          updated.data.name!,
-          updated.data.username,
-          updated.data.email,
-          updated.data.phone,
-          updated.data.whatsapp_no,
-          updated.data.verified!,
-          updated.data.guest!,
-        ),
-      );
-
-      await authService.storeOrUpdateAppUserToken(updated.data.id, token);
-
-      return res.json({
-        data: {
-          auth: {
-            jwt: token,
-            validity: validity,
-          },
-          userInfo: {
-            id: updated.data.id,
-            name: updated.data.name,
-            username: updated.data.username,
-            email: updated.data.email,
-            phone: updated.data.phone,
-            whatsapp_no: updated.data.whatsapp_no,
-            avatar_url: updated.data.avatar_url,
-            country: updated.data.country,
-            currency: updated.data.currency,
-            status: updated.data.status,
-            verified: updated.data.verified,
-            registration_method: updated.data.registration_method,
-            guest: updated.data.guest,
-            createdAt: updated.data.createdAt,
-          },
-          balance: {
-            cash_balance: roundTo2DP(Number(updated.data.balance.cash_balance)),
-            coin_balance: Number(updated.data.balance.coin_balance),
-            exp_date: updated.data.balance.exp_date,
-          },
-          tier: updated.data.tier,
-        },
-        statusCode: 200,
-      });
-    }
-
-    throw new UnauthorizedException(updated.message!);
   } catch (e) {
     if (e instanceof CustomException) {
       return res.status(e.statusCode).json({
@@ -235,7 +150,7 @@ export async function sendOTP(req: Request, res: Response) {
         data: {
           message: 'OTP resent. Check your messages.',
         },
-        status_code: 200,
+        statusCode: 200,
       });
     }
   } catch (e) {
@@ -331,7 +246,7 @@ export async function verifyOTP(req: AppAuthenticatedRequest, res: Response) {
         data: {
           message: 'OTP verified. You may proceed.',
         },
-        status_code: 200,
+        statusCode: 200,
       });
 
     if (typeof verified === 'boolean' && !verified)
@@ -414,7 +329,7 @@ export async function resendOTP(req: AppAuthenticatedRequest, res: Response) {
         data: {
           message: 'OTP resent. Check your messages.',
         },
-        status_code: 200,
+        statusCode: 200,
       });
   } catch (e: any) {
     if (e.constructor.name === 'RestException') {
@@ -470,7 +385,7 @@ export async function sendOTPToWhatsappOrEmail(
         data: {
           message: 'OTP sent. Check your messages.',
         },
-        status_code: 200,
+        statusCode: 200,
       });
   } catch (e: any) {
     if (e.constructor.name === 'RestException') {
@@ -623,6 +538,6 @@ export async function checkAuthenticationStatus(req: Request, res: Response) {
     data: {
       message: 'User authenticated.',
     },
-    status_code: 200,
+    statusCode: 200,
   });
 }

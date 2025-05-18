@@ -1,26 +1,27 @@
 import { Op, Transaction } from 'sequelize';
-import { UserModel } from '../models';
+import { AppUserModel } from '../models';
 import {
-  User,
-  UserUpdate,
-} from '../../../types/app.user.type';
-import { updateUserOptions } from 'types/repository.type';
+  AppUser,
+  UpdateAppUserData,
+  StoreAppUser,
+} from '../../../types/app-user.type';
+import { datetimeYMDHis } from '../../../utils/datetime.utils';
 export class AppUserRepository {
   constructor() {}
-  async createUser(
-    user: User,
-    transaction: Transaction,
-  ): Promise<User> {
-      const createdUser = await UserModel.create(user, {
+  async createUser(user: AppUser, transaction: Transaction): Promise<AppUser> {
+      const createdUser = await AppUserModel.create(user, {
         transaction: transaction,
       });
       return createdUser;
   }
 
-  async findUserById(id: string, select: string[]|null = null): Promise<User> {
+  async findUserById(id: string, select: string[]|null = null): Promise<AppUser> {
     const options: any = {
       where: {
         id: id,
+        deletedAt:{
+          [Op.eq]: null
+        } 
       },
     }
 
@@ -28,93 +29,92 @@ export class AppUserRepository {
       options.attributes = select
     }
 
-    return (await UserModel.findOne(options)) as unknown as User;
+    return (await AppUserModel.findOne(options)) as unknown as AppUser;
   }
 
-  async findUserByIds(ids: string[]): Promise<User[]> {
-    return (await UserModel.findAll({
+  async findUserByIds(ids: string[]): Promise<AppUser[]> {
+    return (await AppUserModel.findAll({
       where: {
         id: {
           [Op.in]: ids,
+          deletedAt:{
+            [Op.eq]: null
+          } 
         },
       },
-    })) as unknown as User[];
+    })) as unknown as AppUser[];
   }
 
   async userExistsById(id: string): Promise<number> {
-    return await UserModel.count({
+    return await AppUserModel.count({
       where: {
         id: id,
+        deletedAt:{
+          [Op.eq]: null
+        }
       },
     });
   }
 
-  async userExistsByUsername(
-    username: string,
-    id: string | null = null,
-  ): Promise<number> {
-    const options: { where: { username: string; id?: object } } = {
-      where: {
-        username: username,
-      },
-    };
-    if (id) options.where.id = { [Op.ne]: id };
-
-    return await UserModel.count(options);
-  }
-
-  async findUserByEmail(email: string): Promise<User> {
-    return (await UserModel.findOne({
+  async findUserByEmail(email: string, exceptId: string | null = null): Promise<AppUser> {
+    const options: any = {
       where: {
         email: email,
+        deletedAt:{
+          [Op.eq]: null
+        }
       },
-    })) as unknown as User;
+    };
+
+    if (exceptId) options.where.id = { [Op.ne]: exceptId };
+
+    return (await AppUserModel.findOne(options)) as unknown as AppUser;
   }
 
-  async userExistsByEmail(
-    email: string,
-    id: string | null = null,
-  ): Promise<User> {
-    const options: { where: { email: string; id?: object } } = {
+  async userExistsByEmail(email: string, exceptId: string | null = null): Promise<AppUser> {
+    const options: any = {
       where: {
         email: email,
+        deletedAt:{
+          [Op.eq]: null
+        }
       },
     };
-    if (id) options.where.id = { [Op.ne]: id };
+    if (exceptId) options.where.id = { [Op.ne]: exceptId };
 
-    return (await UserModel.count(options)) as unknown as User;
+    return (await AppUserModel.count(options)) as unknown as AppUser;
   }
 
-  async findUserByPhone(
-    phone: string,
-    id: string | null = null,
-  ): Promise<User> {
-    const options: { where: { phone: string; id?: object } } = {
+  async findUserByPhone(phoneNumber: string, exceptId: string | null = null): Promise<AppUser> {
+    const options: any = {
       where: {
-        phone: phone,
+        phoneNumber: phoneNumber,
+        deletedAt:{
+          [Op.eq]: null
+        }
       },
     };
-    if (id) options.where.id = { [Op.ne]: id };
+    if (exceptId) options.where.id = { [Op.ne]: exceptId };
 
-    return (await UserModel.findOne(options)) as unknown as User;
+    return (await AppUserModel.findOne(options)) as unknown as AppUser;
   }
 
-  async userExistsByPhone(
-    phone: string,
-    id: string | null = null,
-  ): Promise<User> {
-    const options: { where: { phone: string; id?: object } } = {
+  async userExistsByPhone(phoneNumber: string, exceptId: string | null = null): Promise<AppUser> {
+    const options: any = {
       where: {
-        phone: phone,
+        phoneNumber: phoneNumber,
+        deletedAt:{
+          [Op.eq]: null
+        }
       },
     };
-    if (id) options.where.id = { [Op.ne]: id };
+    if (exceptId) options.where.id = { [Op.ne]: exceptId };
 
-    return (await UserModel.count(options)) as unknown as User;
+    return (await AppUserModel.count(options)) as unknown as AppUser;
   }
 
-  // async nullifyUserOtp(id: string): Promise<User> {
-  //   return (await UserModel.update(
+  // async nullifyUserOtp(id: string): Promise<AppUser> {
+  //   return (await AppUserModel.update(
   //     {
   //       otp: null,
   //       otp_expires_at: null,
@@ -124,14 +124,14 @@ export class AppUserRepository {
   //         id: id,
   //       },
   //     },
-  //   )) as unknown as User;
+  //   )) as unknown as AppUser;
   // }
 
-  // async setOtp(id: string, otp: string): Promise<User> {
+  // async setOtp(id: string, otp: string): Promise<AppUser> {
   //   const otp_validity = Number(getEnvVar('OTP_EXPIRY'));
-  //   return (await UserModel.update(
+  //   return (await AppUserModel.update(
   //     {
-  //       otp: otp,
+  //       // otp: otp,
   //       otp_expires_at: datetimeYMDHis(null, 'mins', otp_validity),
   //     },
   //     {
@@ -139,23 +139,30 @@ export class AppUserRepository {
   //         id: id,
   //       },
   //     },
-  //   )) as unknown as User;
+  //   )) as unknown as AppUser;
   // }
 
-  async deleteById(id: string): Promise<User> {
-    return (await UserModel.destroy({
+  async getAllAppUsers(): Promise<AppUser[]> {
+    return (await AppUserModel.findAll({
       where: {
-        id: id,
+        deletedAt: {
+          [Op.eq]: null
+        }
       },
-    })) as unknown as User;
+      order: [['createdAt', 'DESC']],
+    })) as unknown as AppUser[];
   }
 
-  async updateUser(
-    data: UserUpdate,
-    id: string,
-    transaction?: Transaction,
-  ): Promise<User> {
-    const options: updateUserOptions = {
+  async storeAppUser(data: StoreAppUser, transaction?: Transaction): Promise<AppUser> {
+    const options: any = {};
+
+    if(transaction) options.transaction = transaction;
+
+    return await AppUserModel.create(data, options) as unknown as AppUser;
+  }
+
+  async updateAppUser(data: UpdateAppUserData, id: string, transaction?: Transaction): Promise<AppUser> {
+    const options: any = {
       where: {
         id: id,
       },
@@ -163,21 +170,35 @@ export class AppUserRepository {
 
     if(transaction) options.transaction = transaction;
 
-    return (await UserModel.update(data, options)) as unknown as User;
+    return (await AppUserModel.update(data, options)) as unknown as AppUser;
   }
 
-  async getAllAppUsers(): Promise<User[]> {
-    return (await UserModel.findAll({
-      order: [['createdAt', 'DESC']],
-    })) as unknown as User[];
+  async deleteAppUser(id: string, deletedBy: string, transaction?: Transaction): Promise<AppUser> {
+    const options: any = {
+      where: {
+        id: id,
+      },
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return await AppUserModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as AppUser;
   }
 
-  async getAllAppUsersWithOptions(select: string[]|null = null): Promise<User[]> {
+  async hardDeleteById(id: string): Promise<AppUser> {
+    return (await AppUserModel.destroy({
+      where: {
+        id: id,
+      },
+    })) as unknown as AppUser;
+  }
+
+  async getAllAppUsersWithOptions(select: string[]|null = null): Promise<AppUser[]> {
     const options: any = {};
 
     if(select && select.length > 0)
       options.attributes = select
 
-    return (await UserModel.findAll(options));
+    return (await AppUserModel.findAll(options));
   }
 }

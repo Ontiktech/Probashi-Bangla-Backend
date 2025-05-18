@@ -1,8 +1,10 @@
-import { rollbackMultipleFileS3 } from '../middleware/fileUploadS3.middleware';
+// import { rollbackMultipleFileS3 } from '../middleware/fileUploadS3.middleware';
 import { z } from 'zod';
+import { rollbackMultipleFileLocalUpload } from '../middleware/fileUploadLocal.middleware';
+import { NextFunction, Request, Response } from 'express';
 
 export const validateRequestBody =
-  (schema: z.ZodSchema) => async (req: any, res: any, next: any) => {
+  (schema: z.ZodSchema) => async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync({
         ...req.body,
@@ -11,20 +13,26 @@ export const validateRequestBody =
       });
       next();
     } catch (error: any) {
-      rollbackMultipleFileS3(req);
+      console.log('validateRequestBody', error);
+      // rollbackMultipleFileS3(req);
+      rollbackMultipleFileLocalUpload(req);
       if (error instanceof z.ZodError) {
-        res.status(422).json({
-          status: 'error',
-          message: 'Validation failed',
-          errors: error.issues.map((e) => ({
-            path: e.path.join('.'),
-            message: e.message,
-          })),
+        return res.status(422).json({
+          error:{
+            message: 'Validation failed',
+            errors: error.issues.map((e) => ({
+              path: e.path.join('.'),
+              message: e.message,
+            })),
+          },
+          code: 500,
         });
       } else {
-        res.status(500).json({
-          status: 'error',
-          message: 'Internal server error',
+        return res.status(500).json({
+          error: {
+            message: 'Internal server error',
+          },
+          code: 500,
         });
       }
     }

@@ -22,21 +22,28 @@ export async function login(req: Request, res: Response) {
   
     return res.json({
       data: {
-        user: user,
+        message: 'Login successful.',
         jwt: token,
+        user: user,
       },
-      status_code: 200,
+      statusCode: 200,
     });
   } catch (error) {
+    console.log('admin login', error);
     if (error instanceof CustomException) {
-      return res.status(error.statusCode).send({
-        message: error.message,
-        status: error.statusCode,
+      return res.status(error.statusCode).json({
+        error: {
+          message: error.message,
+        },
+        code: error.statusCode,
       });
     }
 
-    res.status(500).send({
-      error: error,
+    return res.status(500).json({
+      error: {
+        message: 'Something went wrong! Please try again.',
+      },
+      code: 500,
     });
   }
 }

@@ -4,7 +4,7 @@ import {
   UserWithTimeStamps,
   // UserProviders,
   AppUserGenerateToken,
-} from '../types/app.user.type';
+} from '../types/app-user.type';
 import { 
   AppUserStatus, 
   // RegistrationMethod
@@ -106,14 +106,14 @@ export function mapToAppUserAuthResponse(
 
 export function mapAppUserGenerateToken(
   id: string,
-  phone_number: string,
+  phoneNumber: string,
   name: string | null,
   email: string | null,
   avatarUrl: string | null
 ): AppUserGenerateToken {
   return {
     id: id,
-    phone_number: phone_number,
+    phoneNumber: phoneNumber,
     name: name ? name : null,
     email: email ? email : null,
     avatarUrl: avatarUrl ? avatarUrl : null,

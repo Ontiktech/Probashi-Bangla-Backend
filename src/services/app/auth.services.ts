@@ -2,14 +2,13 @@ import { AppUserRepository } from '../../db/rdb/repositories/app-user.repository
 import { mapToUserModel } from '../../mapper/user.mapper';
 import {
   createUserBalanceId,
+  generateOtp,
   generateUserId /*, generateOtp*/,
 } from '../../utils/id.utils';
 import {
-  SocialAuthProviders,
-  UserAllDataTypes,
-  UserUpdate,
+  UpdateAppUser,
   UserWithTimeStamps,
-} from '../../types/app.user.type';
+} from '../../types/app-user.type';
 import fs from 'fs';
 import admin from 'firebase-admin';
 import twilio from 'twilio';
@@ -24,26 +23,22 @@ import { Transaction } from 'sequelize';
 import { capitalizeFirstLetter } from '../../utils/string.utils';
 import { NameAndUsernameSchema } from 'schema/app-auth.schema';
 import { ValidationException } from '../../errors/ValidationException.error';
-import { CurrencyRepository } from '../../db/rdb/repositories/currency.repository';
 import { AppUserPayload } from 'schema/token-payload.schema';
-import { AppUserNotificationOptions, RegistrationMethod, ResendOTPChannel } from '../../constants/enums';
+import { ResendOTPChannel } from '../../constants/enums';
 
 export class AuthService {
   private appUserRepo: AppUserRepository;
-  private currencyRepo: CurrencyRepository;
 
   constructor() {
     this.appUserRepo = new AppUserRepository();
-    this.currencyRepo = new CurrencyRepository();
   }
 
   async loginWithPhone(phone: string, transaction: Transaction) {
-    const user: UserWithTimeStamps = await this.appUserRepo.findUserByPhone(phone);
-    // const otp = generateOtp();
+    const user = await this.appUserRepo.findUserByPhone(phone);
+    const otp = generateOtp();
 
     if (user) {
-      // await this.appUserRepo.setOtp(user.id, otp);
-      const userData = await this.appUserRepo.getUserProfile(user.id);
+      await this.appUserRepo.setOtp(user.id, otp);
 
       if(phone !== "+8801700000000"){
         const twilioVerifyServiceSid = getEnvVar('TWILIO_VERIFY_SERVICE_SID');
@@ -224,7 +219,7 @@ export class AuthService {
     if (verificationCheck) {
       if (verificationCheck.status === 'approved' && verificationCheck.valid) {
         if (verifyAppUserId) {
-          const data: UserUpdate = { verified: true };
+          const data: UpdateAppUser = { verified: true };
           const updated = await this.appUserRepo.updateUser(
             data,
             verifyAppUserId,
@@ -491,7 +486,7 @@ export class AuthService {
     userExists = await this.appUserRepo.findUserByEmail(data.email);
 
     if (userExists) {
-      const updateUser: UserUpdate = {
+      const updateUser: UpdateAppUser = {
         username: userExists.username ?? data.displayName,
         providers: [
           ...userExists.providers,

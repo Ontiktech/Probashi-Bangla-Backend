@@ -4,7 +4,7 @@ import fs from 'fs';
 import multer, { FileFilterCallback } from 'multer';
 import {
   fieldsType,
-  fileFieldNameType,
+  fieldType,
   formattedPathsType,
 } from 'types/file.types';
 
@@ -13,7 +13,7 @@ type FileNameCallback = (error: Error | null, filename: string) => void;
 
 // FILEFIELDNAME(required), DEFAULT PATH = 'temp' & DEFAULT MAXSIZE = 30 MB
 export const multipleFileLocalUploader = (
-  fileFieldName: fileFieldNameType,
+  fileFieldName: fieldType,
   path = 'temp',
   maxSize = 31457280,
 ) => {
@@ -70,13 +70,12 @@ export const multipleFileLocalUploader = (
   // RETURN MULTER INSTANCE WITH NECESSARY OPTIONS
   return multer({
     storage: storage,
-    // limits: limits,
     fileFilter: additionalValidation,
   }).fields(fileFieldName);
 };
 
 export const rollbackMultipleFileLocalUpload = async (req: Request) => {
-  if (!Object.keys(req.files!).length) return;
+  if (!req.files || !Object.keys(req.files).length) return;
 
   // IF EXISTS/NOT EMPTY CHECK
   Object.values(req.files!).forEach(async (fields: fieldsType[]) => {
@@ -109,14 +108,14 @@ export const deleteMultipleFileLocal = async (
 
   filePaths.map(async (filePath) => {
     const tempFilePath =
-      'src/public/uploads/' +
+      'src/public/' +
       filePath.replace(
         (!process.env.FILE_BASE_URL || process.env.FILE_BASE_URL === ''
           ? req.protocol + '://' + req.get('host')
           : process.env.FILE_BASE_URL) + '/',
         '',
       );
-    // console.log(tempFilePath);
+    // console.log('tempFilePath', tempFilePath);
     if (fs.existsSync(tempFilePath)) await fs.unlinkSync(tempFilePath);
   });
 
@@ -124,7 +123,7 @@ export const deleteMultipleFileLocal = async (
 };
 
 export const multipleFileLocalFullPathResolver = (req: Request) => {
-  if (!Object.keys(req.files!).length) return;
+  if (!req.files || !Object.keys(req.files).length) return;
 
   const formatted_paths: formattedPathsType = {};
 
@@ -142,7 +141,8 @@ export const multipleFileLocalFullPathResolver = (req: Request) => {
               fields.path.indexOf('\\') + 1,
               fields.path.lastIndexOf('\\'),
             )
-            .replace('public\\', '') +
+            .replace('public\\', '')
+            .replace('\\', '/') +
           '/' +
           fields.filename,
         ...paths,
