@@ -4,6 +4,7 @@ import { AdminAuthenticatedRequest } from '../../types/authenticate.type';
 import { deleteMultipleFileLocal, multipleFileLocalFullPathResolver, rollbackMultipleFileLocalUpload } from '../../middleware/fileUploadLocal.middleware';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { LessonService } from '../../services/admin/lesson.services';
+import { BadRequestException } from '../../errors/BadRequestException.error';
 
 const lessonService = new LessonService();
 
@@ -117,6 +118,8 @@ export async function createLesson(req: AdminAuthenticatedRequest, res: Response
 export async function updateLesson(req: AdminAuthenticatedRequest, res: Response) {
   try {
     const lessonId = req.params.id
+    if(lessonId !== req.body.id)
+      throw new BadRequestException('Incorrect lesson id provided.')
     const lesson = await lessonService.findLessonById(lessonId, ['id', 'audioIntro', 'deletedAt'])
     if(!lesson)
       throw new NotFoundException('Lesson not found.')

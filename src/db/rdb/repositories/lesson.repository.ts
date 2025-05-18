@@ -17,19 +17,20 @@ export class LessonRepository {
     if(select)
       options.attributes = select
 
-    if(withRelations){
-      options.include = [
-        {
-          as: 'lessons',
-          model: LessonModel,
-          where: {
-            deletedAt: {
-              [Op.eq]: null
-            }
-          }
-        },
-      ];
-    }
+    // # TODO: AFTER FLASH CARD IS DONE
+    // if(withRelations){
+    //   options.include = [
+    //     {
+    //       as: 'lessons',
+    //       model: LessonModel,
+    //       where: {
+    //         deletedAt: {
+    //           [Op.eq]: null
+    //         }
+    //       }
+    //     },
+    //   ];
+    // }
 
     return (await LessonModel.findOne(options)) as unknown as Lesson;
   }
@@ -116,5 +117,17 @@ export class LessonRepository {
       options.attributes = select
 
     return (await LessonModel.findAll(options));
+  }
+
+  async dayWithLessonExists(dayId: string, lessonOrder : number): Promise<number> {
+    return await LessonModel.count({
+      where: {
+        dayId: dayId,
+        lessonOrder: lessonOrder,
+        deletedAt:{
+          [Op.eq]: null
+        }
+      },
+    });
   }
 }

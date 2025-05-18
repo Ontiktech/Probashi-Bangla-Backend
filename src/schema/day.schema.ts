@@ -98,43 +98,45 @@ export const updateDaySchema = z.object({
 .superRefine(async (data, ctx) => {
   const { id } = data;
   let { courseId, dayNumber } = data;
-  const day = await dayService.findDayById(id, ['id', 'courseId', 'dayNumber', 'deletedAt'])
+  const day = await dayService.findDayById(id, ['id', 'courseId', 'dayNumber'])
 
-  if(!courseId)
-    courseId = day.courseId
-  if(!dayNumber)
-    dayNumber = day.dayNumber
-
-  const course = await courseService.findCourseById(courseId, ['id', 'totalDays'])
-  if(!course){
-    ctx.addIssue({
-      code: 'custom',
-      path: ['courseId'],
-      message: 'Course with this course id doesn\'t exist.',
-    });
-  }
-
-  // Check if course with day already exists
-  const courseWithDay = await dayService.courseWithDayExists(courseId, dayNumber);
-  if (courseWithDay && dayNumber !== day.dayNumber) {
-    ctx.addIssue({
-      code: 'custom',
-      path: ['courseId'],
-      message: 'Course id with this day number already exists.',
-    });
-
-    ctx.addIssue({
-      code: 'custom',
-      path: ['dayNumber'],
-      message: 'Course id with this day number already exists.',
-    });
-  }
-
-  if(course && data.dayNumber && data.dayNumber > course.totalDays){
-    ctx.addIssue({
-      code: 'custom',
-      path: ['dayNumber'],
-      message: 'Day number cannot exceed course\'s total days.',
-    });
+  if(day){
+    if(!courseId)
+      courseId = day.courseId
+    if(!dayNumber)
+      dayNumber = day.dayNumber
+  
+    const course = await courseService.findCourseById(courseId, ['id', 'totalDays'])
+    if(!course){
+      ctx.addIssue({
+        code: 'custom',
+        path: ['courseId'],
+        message: 'Course with this course id doesn\'t exist.',
+      });
+    }
+  
+    // Check if course with day already exists
+    const courseWithDay = await dayService.courseWithDayExists(courseId, dayNumber);
+    if (day && courseWithDay && dayNumber !== day.dayNumber) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['courseId'],
+        message: 'Course id with this day number already exists.',
+      });
+  
+      ctx.addIssue({
+        code: 'custom',
+        path: ['dayNumber'],
+        message: 'Course id with this day number already exists.',
+      });
+    }
+  
+    if(course && data.dayNumber && data.dayNumber > course.totalDays){
+      ctx.addIssue({
+        code: 'custom',
+        path: ['dayNumber'],
+        message: 'Day number cannot exceed course\'s total days.',
+      });
+    }
   }
 });

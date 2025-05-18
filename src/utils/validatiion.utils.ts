@@ -25,14 +25,14 @@ export const validateRequestBody =
               message: e.message,
             })),
           },
-          code: 500,
+          statusCode: 422,
         });
       } else {
         return res.status(500).json({
           error: {
             message: 'Internal server error',
           },
-          code: 500,
+          statusCode: 500,
         });
       }
     }

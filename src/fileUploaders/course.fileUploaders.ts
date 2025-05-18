@@ -4,7 +4,7 @@ import multer from "multer";
 
 const courseUploader = multipleFileLocalUploader(
   [
-    { name: 'audioIntro', maxCount: 1 },
+    { name: 'imagePath', maxCount: 1 },
   ],
   'courses',
   5242880, // 5 MB
@@ -12,17 +12,21 @@ const courseUploader = multipleFileLocalUploader(
 
 export const courseFileUploaderMiddleware = (req: Request, res: Response, next: NextFunction) => {
   courseUploader(req, res, function (error) {
+    console.log('courseUploader', error);
+    const statusCode = error && error.statusCode ? error.statusCode : 400
+    const message = error && error.message ? error.message : 'Something went wrong.'
     if (error instanceof multer.MulterError) {
-      return res.status(Number(error.code)).json({
+      return res.status(statusCode).json({
         error: {
-          message: error.message,
+          message: `Multer Error: ${message}`,
         },
-        statusCode: Number(error.code),
+        statusCode: statusCode,
       });
-    } else if (error) {
+    }
+    else if(error){
       return res.status(500).json({
         error: {
-          message: error.message,
+          message: `Multer Error: ${message}`,
         },
         statusCode: 500,
       });
