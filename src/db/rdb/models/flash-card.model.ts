@@ -14,7 +14,6 @@ class FlashCardModel extends Model<
 > {
   declare id: string
   declare dayId: string
-  declare cardOrder: number
   declare frontText: string
   declare frontSubtext: string | null
   declare backText: string
@@ -24,6 +23,7 @@ class FlashCardModel extends Model<
   declare usageNotes: string | null
   declare imageUrl: string | null
   declare audioUrl: string | null
+  declare cardOrder: number
   declare updatedBy: string
   declare deletedAt: string | null
   declare deletedBy: string | null

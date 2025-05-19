@@ -15,7 +15,7 @@ export async function getAllFlashCards(req: AdminAuthenticatedRequest, res: Resp
     return res.status(200).json({
       data: {
         message: 'Flash card list fetched successfully!',
-        flashCards: flashCards,
+        flash_cards: flashCards,
       },
       statusCode: 200,
     });
@@ -53,7 +53,7 @@ export async function getSingleFlashCard(req: AdminAuthenticatedRequest, res: Re
     return res.status(200).json({
       data: {
         message: 'Flash card fetched successfully!',
-        flashCard: flashCard,
+        flash_card: flashCard,
       },
       statusCode: 200,
     });
@@ -88,7 +88,7 @@ export async function createFlashCard(req: AdminAuthenticatedRequest, res: Respo
       return res.status(201).json({
         data: {
           message: 'Flash card created successfully!',
-          flashCard: response,
+          flash_card: response,
         },
         statusCode: 201,
       });
@@ -151,7 +151,7 @@ export async function updateFlashCard(req: AdminAuthenticatedRequest, res: Respo
       return res.json({
         data: {
           message: 'Flash card updated successfully!',
-          flashCard: flashCard,
+          flash_card: flashCard,
         },
         statusCode: 200,
       });

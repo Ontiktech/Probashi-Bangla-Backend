@@ -1,0 +1,1245 @@
+{
+  "v": 6,
+  "name": "LinguaLearn",
+  "folders": [
+    {
+      "v": 6,
+      "name": "Tests",
+      "folders": [],
+      "requests": [
+        {
+          "v": "11",
+          "name": "Check DB",
+          "method": "GET",
+          "endpoint": "<<baseUrl>>/test/db",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {}
+        },
+        {
+          "v": "11",
+          "name": "Migrate DB",
+          "method": "GET",
+          "endpoint": "<<baseUrl>>/test/db/migrate",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {}
+        },
+        {
+          "v": "11",
+          "name": "Refresh Migration",
+          "method": "GET",
+          "endpoint": "<<baseUrl>>/test/db/refreshMigration",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {}
+        },
+        {
+          "v": "11",
+          "name": "Seed Admin User",
+          "method": "GET",
+          "endpoint": "<<baseUrl>>/test/db/seed-admin-user",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {}
+        },
+        {
+          "v": "11",
+          "name": "Drop Columns",
+          "method": "GET",
+          "endpoint": "<<baseUrl>>/test/db/drop-cols",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {}
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "_ref_id": "coll_mamb25cq_20a46ce3-e50a-4317-be45-dfa6537d0e56"
+    },
+    {
+      "v": 6,
+      "name": "Admin",
+      "folders": [
+        {
+          "v": 6,
+          "name": "Admin Auth",
+          "folders": [],
+          "requests": [
+            {
+              "v": "11",
+              "name": "Login",
+              "method": "POST",
+              "endpoint": "<<baseUrl>>/admin/auth/login",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "const jwt = pw.response.body.data.jwt;\npw.env.set(\"adminJwt\", jwt);",
+              "auth": {
+                "authType": "none",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\r\n    \"email\": \"admin1@mail.com\",\r\n    \"password\": \"password\"\r\n}"
+              },
+              "requestVariables": [],
+              "responses": {}
+            }
+          ],
+          "auth": {
+            "authActive": true,
+            "authType": "inherit"
+          },
+          "headers": [],
+          "_ref_id": "coll_mamb25cq_e09bc433-3733-40f6-bdb5-d17e0bb2dc1e"
+        },
+        {
+          "v": 6,
+          "name": "App User",
+          "folders": [],
+          "requests": [
+            {
+              "v": "11",
+              "name": "Get All",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/app-users",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Get Single",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/app-users/0196cdf1-0937-719e-9c5a-3dafbdbf7917",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Create",
+              "method": "POST",
+              "endpoint": "<<baseUrl>>/admin/app-users",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [
+                  {
+                    "key": "phoneNumber",
+                    "active": true,
+                    "isFile": false,
+                    "value": "+8801762214316"
+                  },
+                  {
+                    "key": "firstName",
+                    "active": true,
+                    "isFile": false,
+                    "value": "new"
+                  },
+                  {
+                    "key": "lastName",
+                    "active": true,
+                    "isFile": false,
+                    "value": "user 2"
+                  },
+                  {
+                    "key": "email",
+                    "active": true,
+                    "isFile": false,
+                    "value": "newuser2@mail.com"
+                  },
+                  {
+                    "key": "nativeLanguage",
+                    "active": true,
+                    "isFile": false,
+                    "value": "English"
+                  },
+                  {
+                    "key": "learningGoal",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Speak english nigga"
+                  }
+                ],
+                "isBulkEditing": false
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Update",
+              "method": "PATCH",
+              "endpoint": "<<baseUrl>>/admin/app-users/0196cdf1-0937-719e-9c5a-3dafbdbf7917",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [
+                  {
+                    "key": "phoneNumber",
+                    "active": true,
+                    "isFile": false,
+                    "value": "+8801762214316"
+                  },
+                  {
+                    "key": "firstName",
+                    "active": true,
+                    "isFile": false,
+                    "value": "new"
+                  },
+                  {
+                    "key": "lastName",
+                    "active": true,
+                    "isFile": false,
+                    "value": "user 2"
+                  },
+                  {
+                    "key": "email",
+                    "active": true,
+                    "isFile": false,
+                    "value": "newuser2@mail.com"
+                  },
+                  {
+                    "key": "nativeLanguage",
+                    "active": true,
+                    "isFile": false,
+                    "value": "English"
+                  },
+                  {
+                    "key": "learningGoal",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Speak english nigga"
+                  }
+                ],
+                "isBulkEditing": false
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Delete",
+              "method": "DELETE",
+              "endpoint": "<<baseUrl>>/admin/app-users/0196cdf1-0937-719e-9c5a-3dafbdbf7917",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": null,
+                "body": null
+              },
+              "requestVariables": [],
+              "responses": {}
+            }
+          ],
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "headers": [],
+          "_ref_id": "coll_mamb25cq_29d29433-0b83-4574-b032-2664b860602e"
+        },
+        {
+          "v": 6,
+          "name": "Courses",
+          "folders": [],
+          "requests": [
+            {
+              "v": "11",
+              "name": "Get All",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/courses",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Get Single",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/courses/0196e837-7d0e-72ea-b71b-760a7bb62b37",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Create",
+              "method": "POST",
+              "endpoint": "<<baseUrl>>/admin/courses",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [
+                  {
+                    "key": "title",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Test Course 1"
+                  },
+                  {
+                    "key": "description",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Test Course 1 Des"
+                  },
+                  {
+                    "key": "language",
+                    "active": true,
+                    "isFile": false,
+                    "value": "ENGLISH"
+                  },
+                  {
+                    "key": "targetLanguage",
+                    "active": true,
+                    "isFile": false,
+                    "value": "BANGLA"
+                  },
+                  {
+                    "key": "difficulty",
+                    "active": true,
+                    "isFile": false,
+                    "value": "INTERMEDIATE"
+                  },
+                  {
+                    "key": "estimatedHours",
+                    "active": true,
+                    "isFile": false,
+                    "value": "3"
+                  },
+                  {
+                    "key": "imagePath",
+                    "active": true,
+                    "isFile": false,
+                    "value": "FILE"
+                  }
+                ],
+                "isBulkEditing": true
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Update",
+              "method": "PATCH",
+              "endpoint": "<<baseUrl>>/admin/courses/0196cdf1-0937-719e-9c5a-3dafbdbf7917",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [
+                  {
+                    "key": "phoneNumber",
+                    "active": true,
+                    "isFile": false,
+                    "value": "+8801762214316"
+                  },
+                  {
+                    "key": "firstName",
+                    "active": true,
+                    "isFile": false,
+                    "value": "new"
+                  },
+                  {
+                    "key": "lastName",
+                    "active": true,
+                    "isFile": false,
+                    "value": "user 2"
+                  },
+                  {
+                    "key": "email",
+                    "active": true,
+                    "isFile": false,
+                    "value": "newuser2@mail.com"
+                  },
+                  {
+                    "key": "nativeLanguage",
+                    "active": true,
+                    "isFile": false,
+                    "value": "English"
+                  },
+                  {
+                    "key": "learningGoal",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Speak english nigga"
+                  }
+                ],
+                "isBulkEditing": false
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Delete",
+              "method": "DELETE",
+              "endpoint": "<<baseUrl>>/admin/courses/0196e837-7d0e-72ea-b71b-760a7bb62b37",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": null,
+                "body": null
+              },
+              "requestVariables": [],
+              "responses": {}
+            }
+          ],
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "headers": [],
+          "_ref_id": "coll_manw1f3z_1285cfb4-d347-488f-956d-fce46d190b92"
+        },
+        {
+          "v": 6,
+          "name": "Days",
+          "folders": [],
+          "requests": [
+            {
+              "v": "11",
+              "name": "Get All",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/days",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Get Single",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/days/0196e842-279c-70e9-ab88-0ba20a17ccf1",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Create",
+              "method": "POST",
+              "endpoint": "<<baseUrl>>/admin/days",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n  \"courseId\": \"0196e341-ad89-774b-bc17-81d2f53e3ff5\",\n  \"dayNumber\": 1,\n  \"title\": \"Test Day 1\",\n  \"description\": \"Test Day 1 Des\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Update",
+              "method": "PATCH",
+              "endpoint": "<<baseUrl>>/admin/lessons/0196e7f2-72f6-77be-9595-9bda4cd8f651",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [
+                  {
+                    "key": "id",
+                    "active": true,
+                    "isFile": false,
+                    "value": "0196e341-f82e-76db-a409-bfb0b2b95333"
+                  },
+                  {
+                    "key": "courseId",
+                    "active": true,
+                    "isFile": false,
+                    "value": "0196e341-f82e-76db-a409-bfb0b2b95333"
+                  },
+                  {
+                    "key": "title",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Test Lesson 1"
+                  },
+                  {
+                    "key": "description",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Test Lesson 1 Des"
+                  },
+                  {
+                    "key": "estimatedMinutes",
+                    "active": true,
+                    "isFile": false,
+                    "value": "20"
+                  },
+                  {
+                    "key": "difficulty",
+                    "active": true,
+                    "isFile": false,
+                    "value": "BEGINNER"
+                  },
+                  {
+                    "key": "xpReward",
+                    "active": true,
+                    "isFile": false,
+                    "value": "30"
+                  },
+                  {
+                    "key": "lessonOrder",
+                    "active": true,
+                    "isFile": false,
+                    "value": "1"
+                  },
+                  {
+                    "key": "audioIntro",
+                    "active": true,
+                    "isFile": false,
+                    "value": "FILE"
+                  }
+                ],
+                "isBulkEditing": false
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Delete",
+              "method": "DELETE",
+              "endpoint": "<<baseUrl>>/admin/days/0196e842-279c-70e9-ab88-0ba20a17ccf1",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": null,
+                "body": null
+              },
+              "requestVariables": [],
+              "responses": {}
+            }
+          ],
+          "auth": {
+            "authActive": true,
+            "authType": "inherit"
+          },
+          "headers": [],
+          "_ref_id": "coll_matbb7aj_a6995923-8edc-46e0-b7da-a4784b2eeecc"
+        },
+        {
+          "v": 6,
+          "name": "Lessons",
+          "folders": [],
+          "requests": [
+            {
+              "v": "11",
+              "name": "Get All",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/lessons",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Get Single",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/lessons/0196e83e-684e-76c8-822a-4805b2570acf",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Create",
+              "method": "POST",
+              "endpoint": "<<baseUrl>>/admin/lessons",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [
+                  {
+                    "key": "dayId",
+                    "active": true,
+                    "isFile": false,
+                    "value": "0196e341-f82e-76db-a409-bfb0b2b95333"
+                  },
+                  {
+                    "key": "title",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Test Lesson 1"
+                  },
+                  {
+                    "key": "description",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Test Lesson 1 Des"
+                  },
+                  {
+                    "key": "estimatedMinutes",
+                    "active": true,
+                    "isFile": false,
+                    "value": "20"
+                  },
+                  {
+                    "key": "difficulty",
+                    "active": true,
+                    "isFile": false,
+                    "value": "BEGINNER"
+                  },
+                  {
+                    "key": "xpReward",
+                    "active": true,
+                    "isFile": false,
+                    "value": "30"
+                  },
+                  {
+                    "key": "lessonOrder",
+                    "active": true,
+                    "isFile": false,
+                    "value": "1"
+                  },
+                  {
+                    "key": "audioIntro",
+                    "active": true,
+                    "isFile": false,
+                    "value": "FILE"
+                  }
+                ],
+                "isBulkEditing": true
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Update",
+              "method": "PATCH",
+              "endpoint": "<<baseUrl>>/admin/lessons/0196e7f2-d3fd-73ca-a088-098fcbc41775",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [
+                  {
+                    "key": "id",
+                    "active": true,
+                    "isFile": false,
+                    "value": "0196e7f2-d3fd-73ca-a088-098fcbc41775"
+                  },
+                  {
+                    "key": "courseId",
+                    "active": true,
+                    "isFile": false,
+                    "value": "0196e7f2-72f6-77be-9595-9bda4cd8f652"
+                  },
+                  {
+                    "key": "title",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Test Lesson 1"
+                  },
+                  {
+                    "key": "description",
+                    "active": true,
+                    "isFile": false,
+                    "value": "Test Lesson 1 Des"
+                  },
+                  {
+                    "key": "estimatedMinutes",
+                    "active": true,
+                    "isFile": false,
+                    "value": "20"
+                  },
+                  {
+                    "key": "difficulty",
+                    "active": true,
+                    "isFile": false,
+                    "value": "BEGINNER"
+                  },
+                  {
+                    "key": "xpReward",
+                    "active": true,
+                    "isFile": false,
+                    "value": "30"
+                  },
+                  {
+                    "key": "lessonOrder",
+                    "active": true,
+                    "isFile": false,
+                    "value": "1"
+                  },
+                  {
+                    "key": "audioIntro",
+                    "active": true,
+                    "isFile": false,
+                    "value": ""
+                  }
+                ],
+                "isBulkEditing": true
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Delete",
+              "method": "DELETE",
+              "endpoint": "<<baseUrl>>/admin/lessons/0196e83e-684e-76c8-822a-4805b2570acf",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": null,
+                "body": null
+              },
+              "requestVariables": [],
+              "responses": {}
+            }
+          ],
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "headers": [],
+          "_ref_id": "coll_matg4pmb_79f78b45-84a9-40ef-a6ec-4ba07bf4196f"
+        },
+        {
+          "v": 6,
+          "name": "Flash Cards",
+          "folders": [],
+          "requests": [
+            {
+              "v": "11",
+              "name": "Get All",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/flash-cards",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Get Single",
+              "method": "GET",
+              "endpoint": "<<baseUrl>>/admin/flash-cards/0196e84b-6da4-76cc-854e-31cc3b4164d7",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": []
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Create",
+              "method": "POST",
+              "endpoint": "<<baseUrl>>/admin/flash-cards",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [
+                  {
+                    "key": "dayId",
+                    "value": "0196e842-279c-70e9-ab88-0ba20a17ccf1",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "cardOrder",
+                    "value": "2",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "frontText",
+                    "value": "front text 2",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "frontSubtext",
+                    "value": "front subtext 2",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "backText",
+                    "value": "back text 2",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "backSubtext",
+                    "value": "back subtext 2",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "example",
+                    "value": "example text 2",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "exampleTranslation",
+                    "value": "example translation 2",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "usageNotes",
+                    "value": "usage notes 2",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "imageUrl",
+                    "value": [
+                      {}
+                    ],
+                    "active": true,
+                    "isFile": true
+                  },
+                  {
+                    "key": "audioUrl",
+                    "value": [
+                      {}
+                    ],
+                    "active": true,
+                    "isFile": true
+                  }
+                ],
+                "isBulkEditing": false
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Update",
+              "method": "PATCH",
+              "endpoint": "<<baseUrl>>/admin/flash-cards/0196e849-6d85-7669-abad-d37bb07a4be7",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [
+                  {
+                    "key": "id",
+                    "value": "0196e849-6d85-7669-abad-d37bb07a4be7",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "dayId",
+                    "value": "0196e842-279c-70e9-ab88-0ba20a17ccf1",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "cardOrder",
+                    "value": "1",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "frontText",
+                    "value": "front text 11",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "frontSubtext",
+                    "value": "front subtext 11",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "backText",
+                    "value": "back text 11",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "backSubtext",
+                    "value": "back subtext 11",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "example",
+                    "value": "example text 11",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "exampleTranslation",
+                    "value": "example translation 11",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "usageNotes",
+                    "value": "usage notes 11",
+                    "active": true,
+                    "isFile": false
+                  },
+                  {
+                    "key": "imageUrl",
+                    "value": [
+                      {}
+                    ],
+                    "active": true,
+                    "isFile": true
+                  },
+                  {
+                    "key": "audioUrl",
+                    "value": [
+                      {}
+                    ],
+                    "active": true,
+                    "isFile": true
+                  }
+                ],
+                "isBulkEditing": false
+              },
+              "requestVariables": [],
+              "responses": {}
+            },
+            {
+              "v": "11",
+              "name": "Delete",
+              "method": "DELETE",
+              "endpoint": "<<baseUrl>>/admin/flash-cards/0196e849-6d85-7669-abad-d37bb07a4be7",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "bearer",
+                "token": "<<adminJwt>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "multipart/form-data",
+                "body": [],
+                "isBulkEditing": false
+              },
+              "requestVariables": [],
+              "responses": {}
+            }
+          ],
+          "auth": {
+            "authActive": true,
+            "authType": "inherit"
+          },
+          "headers": [],
+          "_ref_id": "coll_mauq5mq9_2a12934c-bdc1-43f2-8faf-df36a705f030"
+        }
+      ],
+      "requests": [],
+      "auth": {
+        "authActive": true,
+        "authType": "inherit"
+      },
+      "headers": [],
+      "_ref_id": "coll_mamb25cq_917f5177-e3ba-437a-bcf9-6b796be759b4"
+    },
+    {
+      "v": 6,
+      "name": "Others",
+      "folders": [],
+      "requests": [],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "_ref_id": "coll_mamb25cq_d9d29765-10db-4a80-8506-58966daa1084"
+    }
+  ],
+  "requests": [],
+  "auth": {
+    "authActive": true,
+    "authType": "inherit"
+  },
+  "headers": [],
+  "_ref_id": "coll_mamb25cq_62ff2476-5d36-42fe-b181-d3a1e85ee5f7"
+}

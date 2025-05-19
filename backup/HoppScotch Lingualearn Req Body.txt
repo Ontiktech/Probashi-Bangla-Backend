@@ -52,6 +52,7 @@ Flash card Create/Update: (FORMDATA)
 
 id: 0196e341-f82e-76db-a409-bfb0b2b95333
 dayId: 0196e341-f82e-76db-a409-bfb0b2b95333
+cardOrder: 4
 frontText: front text
 frontSubtext: front subtext
 backText: back text
@@ -61,7 +62,6 @@ exampleTranslation: example translation
 usageNotes: usage notes
 imageUrl: FILE | null
 audioUrl: FILE | full
-cardOrder: 4
 
 -------------------------------------
 
