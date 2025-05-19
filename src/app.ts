@@ -31,7 +31,7 @@ const server = () => {
     app.use(express.json());
 
     // CORS protection
-    app.use(cors(corsOptions));
+    // app.use(cors(corsOptions));
 
     // For security purposes
     app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
