@@ -1,14 +1,14 @@
-import { Request } from 'express';
-import multer, { FileFilterCallback } from 'multer';
-import multerS3 from 'multer-s3';
-import { S3Client, DeleteObjectsCommand } from '@aws-sdk/client-s3';
-import { getEnvVar } from '../utils/common.utils';
-import { findCharIndex } from '../utils/string.utils';
-import {
-  fileFieldNameType,
-  s3FieldsType,
-  s3FilePaths,
-} from '../types/file.types';
+// import { Request } from 'express';
+// import multer, { FileFilterCallback } from 'multer';
+// import multerS3 from 'multer-s3';
+// import { S3Client, DeleteObjectsCommand } from '@aws-sdk/client-s3';
+// import { getEnvVar } from '../utils/common.utils';
+// import { findCharIndex } from '../utils/string.utils';
+// import {
+//   fileFieldNameType,
+//   s3FieldsType,
+//   s3FilePaths,
+// } from '../types/file.types';
 
 // const accessKeyId = getEnvVar('AWS_ACCESS_KEY');
 // const secretAccessKey = getEnvVar('AWS_SECRET_KEY');
