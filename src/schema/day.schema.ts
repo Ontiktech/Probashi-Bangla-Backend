@@ -22,7 +22,6 @@ export const createDaySchema = z.object({
   description: z
     .string({ required_error: 'Description is required.' })
     .trim()
-    .min(3, { message: 'Description has to be at least 3 characters long.' })
     .max(255, { message: 'Description cannot exceed 255 characters.' })
     .optional()
     .nullable(),
@@ -82,7 +81,6 @@ export const updateDaySchema = z.object({
   description: z
     .string({ required_error: 'Description is required.' })
     .trim()
-    .min(3, { message: 'Description has to be at least 3 characters long.' })
     .max(255, { message: 'Description cannot exceed 255 characters.' })
     .optional()
     .nullable(),
