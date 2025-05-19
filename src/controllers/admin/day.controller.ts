@@ -4,10 +4,8 @@ import { AdminAuthenticatedRequest } from '../../types/authenticate.type';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { DayService } from '../../services/admin/day.services';
 import { BadRequestException } from '../../errors/BadRequestException.error';
-import { CourseService } from '../../services/admin/course.services';
 
 const dayService = new DayService();
-const courseService = new CourseService();
 
 export async function getAllDays(req: AdminAuthenticatedRequest, res: Response) {
   try {
@@ -79,12 +77,6 @@ export async function getSingleDay(req: AdminAuthenticatedRequest, res: Response
 
 export async function createDay(req: AdminAuthenticatedRequest, res: Response) {
   try {
-    const course = await courseService.findCourseById(req.body.courseId, ['id', 'totalDays'])
-    if(!course)
-      throw new NotFoundException('Course not found.')
-    if(req.body.dayNumber > course.totalDays)
-      throw new BadRequestException('Day number cannot exceed course\'s total days.')
-
     const data = { ...req.body, updatedBy: req.user!.id }
     const response = await dayService.storeDay(data);
 
@@ -125,7 +117,6 @@ export async function updateDay(req: AdminAuthenticatedRequest, res: Response) {
       throw new BadRequestException('Incorrect day id provided.')
 
     const day = await dayService.findDayById(dayId, ['id', 'deletedAt'])
-
     if(!day)
       throw new NotFoundException('Day not found.')
     if(day.deletedAt)

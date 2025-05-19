@@ -1,8 +1,7 @@
 import { Op, Transaction } from 'sequelize';
-import { LessonModel } from '../models';
+import { DayModel, LessonModel } from '../models';
 import { Lesson, UpdateLessonData, StoreLesson } from '../../../types/lesson.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
-import { FlashCardModel } from '../models/flash-card.model';
 export class LessonRepository {
   constructor() {}
   async findLessonById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<Lesson> {
@@ -21,8 +20,9 @@ export class LessonRepository {
     if(withRelations){
       options.include = [
         {
-          as: 'flash_cards',
-          model: FlashCardModel,
+          as: 'days',
+          model: DayModel,
+          required: false,
           where: {
             deletedAt: {
               [Op.eq]: null
@@ -119,10 +119,10 @@ export class LessonRepository {
     return (await LessonModel.findAll(options));
   }
 
-  async dayWithLessonOrderExists(dayId: string, lessonOrder : number): Promise<number> {
+  async courseWithLessonOrderExists(courseId: string, lessonOrder : number): Promise<number> {
     return await LessonModel.count({
       where: {
-        dayId: dayId,
+        courseId: courseId,
         lessonOrder: lessonOrder,
         deletedAt:{
           [Op.eq]: null

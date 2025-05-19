@@ -16,7 +16,6 @@ class CourseModel extends Model<
   declare id: string
   declare title: string
   declare description: string | null
-  declare totalDays: number
   declare language: string
   declare targetLanguage: string
   declare difficulty: string
@@ -35,15 +34,10 @@ CourseModel.init(
     },
     title: {
       type: DataTypes.STRING,
-      unique: true,
     },
     description: {
       type: DataTypes.STRING,
       defaultValue: null,
-    },
-    totalDays: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
     },
     language: {
       type: DataTypes.ENUM(

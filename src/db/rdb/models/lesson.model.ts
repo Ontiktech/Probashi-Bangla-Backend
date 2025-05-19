@@ -14,14 +14,14 @@ class LessonModel extends Model<
   InferCreationAttributes<LessonModel>
 > {
   declare id: string
-  declare dayId: string
+  declare courseId: string
+  declare lessonOrder: number
   declare title: string
   declare description: string | null
   declare estimatedMinutes: number
   declare difficulty: string
   declare audioIntro: string
   declare xpReward: number
-  declare lessonOrder: number
   declare updatedBy: string
   declare deletedAt: string | null
   declare deletedBy: string | null
@@ -33,9 +33,15 @@ LessonModel.init(
       type: DataTypes.STRING,
       primaryKey: true,
     },
-    dayId: {
+    courseId: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: 'courseId_lessonOrder_unique',
+    },
+    lessonOrder: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: 'courseId_lessonOrder_unique',
     },
     title: {
       type: DataTypes.STRING,
@@ -65,10 +71,6 @@ LessonModel.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 50
-    },
-    lessonOrder: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
     },
     updatedBy: {
       type: DataTypes.STRING,

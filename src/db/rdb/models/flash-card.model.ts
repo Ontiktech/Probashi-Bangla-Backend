@@ -13,7 +13,8 @@ class FlashCardModel extends Model<
   InferCreationAttributes<FlashCardModel>
 > {
   declare id: string
-  declare lessonId: string
+  declare dayId: string
+  declare cardOrder: number
   declare frontText: string
   declare frontSubtext: string | null
   declare backText: string
@@ -23,7 +24,6 @@ class FlashCardModel extends Model<
   declare usageNotes: string | null
   declare imageUrl: string | null
   declare audioUrl: string | null
-  declare cardOrder: number
   declare updatedBy: string
   declare deletedAt: string | null
   declare deletedBy: string | null
@@ -35,9 +35,15 @@ FlashCardModel.init(
       type: DataTypes.STRING,
       primaryKey: true,
     },
-    lessonId: {
+    dayId: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: 'dayId_cardOrder_unique',
+    },
+    cardOrder: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: 'dayId_cardOrder_unique',
     },
     frontText: {
       type: DataTypes.STRING,
@@ -74,10 +80,6 @@ FlashCardModel.init(
     audioUrl: {
       type: DataTypes.STRING,
       defaultValue: null,
-    },
-    cardOrder: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
     },
     updatedBy: {
       type: DataTypes.STRING,

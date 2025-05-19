@@ -1,15 +1,20 @@
 import { z } from 'zod';
 import { audioValidationRule, imageValidationRule } from './common.schema';
 import { FlashCardService } from '../services/admin/flash-card.services';
-import { LessonService } from '../services/admin/lesson.services';
+import { DayService } from '../services/admin/day.services';
 
-const lessonService = new LessonService()
+const dayService = new DayService()
 const flashCardService = new FlashCardService()
 
 export const createFlashCardSchema = z.object({
-  lessonId: z
-    .string({ required_error: 'Lesson id is required.' })
+  dayId: z
+    .string({ required_error: 'Day id is required.' })
     .trim(),
+  cardOrder: z
+    .coerce
+    .number({ required_error: 'Flash card order is required.' })
+    .min(1, { message: 'Flash card order has to be at least 1.' })
+    .max(1000000, { message: 'Flash card order cannot exceed 1000000.' }),
   frontText: z
     .string({ required_error: 'Front text is required.' })
     .trim()
@@ -54,37 +59,32 @@ export const createFlashCardSchema = z.object({
     array(audioValidationRule, {required_error: "Audio url is be required." })
     .optional()
     .nullable(),
-  cardOrder: z
-    .coerce
-    .number({ required_error: 'Flash card order is required.' })
-    .min(1, { message: 'Flash card order has to be at least 1.' })
-    .max(1000000, { message: 'Flash card order cannot exceed 1000000.' }),
 })
 .superRefine(async (data, ctx) => {
-  const { lessonId, cardOrder } = data;
+  const { dayId, cardOrder } = data;
 
-  const lesson = await lessonService.lessonExistsById(lessonId)
-  if(!lesson){
+  const day = await dayService.dayExistsById(dayId)
+  if(!day){
     ctx.addIssue({
       code: 'custom',
-      path: ['lessonId'],
-      message: 'Lesson with this lesson id doesn\'t exist.',
+      path: ['dayId'],
+      message: 'Day with this day id doesn\'t exist.',
     });
   }
 
   // Check if course with day already exists
-  const lessonWithCardOrder = await flashCardService.lessonWithCardOrderExists(lessonId, cardOrder);
-  if (lessonWithCardOrder) {
+  const dayWithCardOrder = await flashCardService.dayWithCardOrderExists(dayId, cardOrder);
+  if (dayWithCardOrder) {
     ctx.addIssue({
       code: 'custom',
-      path: ['lessonId'],
-      message: 'Lesson id with this flash card order already exists.',
+      path: ['dayId'],
+      message: 'Day id with this flash card order already exists.',
     });
 
     ctx.addIssue({
       code: 'custom',
       path: ['cardOrder'],
-      message: 'Lesson id with this flash card order already exists.',
+      message: 'Day id with this flash card order already exists.',
     });
   }
 });
@@ -93,11 +93,18 @@ export const updateFlashCardSchema = z.object({
   id: z
     .string({ required_error: 'Id is required.' })
     .trim(),
-  lessonId: z
-  .string({ required_error: 'Lesson id is required.' })
-  .trim()
-  .optional()
-  .nullable(),
+  dayId: z
+    .string({ required_error: 'Day id is required.' })
+    .trim()
+    .optional()
+    .nullable(),
+  cardOrder: z
+    .coerce
+    .number({ required_error: 'Flash card order is required.' })
+    .min(1, { message: 'Flash card order has to be at least 1.' })
+    .max(1000000, { message: 'Flash card order cannot exceed 1000000.' })
+    .optional()
+    .nullable(),
   frontText: z
     .string({ required_error: 'Front text is required.' })
     .trim()
@@ -148,50 +155,41 @@ export const updateFlashCardSchema = z.object({
     array(audioValidationRule, {required_error: "Audio url is be required." })
     .optional()
     .nullable(),
-  cardOrder: z
-    .coerce
-    .number({ required_error: 'Flash card order is required.' })
-    .min(1, { message: 'Flash card order has to be at least 1.' })
-    .max(1000000, { message: 'Flash card order cannot exceed 1000000.' })
-    .optional()
-    .nullable(),
 })
 .superRefine(async (data, ctx) => {
   const { id } = data;
-  let { lessonId, cardOrder } = data;
-  const flashCard = await flashCardService.findFlashCardById(id, ['id', 'lessonId', 'cardOrder'])
+  let { dayId, cardOrder } = data;
+  const flashCard = await flashCardService.findFlashCardById(id, ['id', 'dayId', 'cardOrder'])
 
   if(flashCard){
-    if(!lessonId)
-      lessonId = flashCard.lessonId
+    if(!dayId)
+      dayId = flashCard.dayId
     if(!cardOrder)
       cardOrder = flashCard.cardOrder
 
-    console.log('flashCard.cardOrder', flashCard.cardOrder);
-
-    const lesson = await lessonService.lessonExistsById(lessonId)
-    if(!lesson){
+    const day = await dayService.dayExistsById(dayId)
+    if(!day){
       ctx.addIssue({
         code: 'custom',
-        path: ['lessonId'],
-        message: 'Lesson with this lesson id doesn\'t exist.',
+        path: ['dayId'],
+        message: 'day with this day id doesn\'t exist.',
       });
     }
 
     // Check if course with day already exists
-    const dayWithFlashCard = await flashCardService.lessonWithCardOrderExists(lessonId, cardOrder);
+    const dayWithFlashCard = await flashCardService.dayWithCardOrderExists(dayId, cardOrder);
     if (dayWithFlashCard && cardOrder && cardOrder !== flashCard.cardOrder) {
       if (dayWithFlashCard) {
         ctx.addIssue({
           code: 'custom',
-          path: ['lessonId'],
-          message: 'Lesson id with this flash card order already exists.',
+          path: ['dayId'],
+          message: 'Day id with this flash card order already exists.',
         });
     
         ctx.addIssue({
           code: 'custom',
           path: ['cardOrder'],
-          message: 'Lesson id with this flash card order already exists.',
+          message: 'Day id with this flash card order already exists.',
         });
       }
     }

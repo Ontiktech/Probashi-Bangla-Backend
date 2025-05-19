@@ -13,7 +13,7 @@ class DayModel extends Model<
   InferCreationAttributes<DayModel>
 > {
   declare id: string
-  declare courseId: string
+  declare lessonId: string
   declare dayNumber: number
   declare title: string
   declare description: string | null
@@ -28,15 +28,15 @@ DayModel.init(
       type: DataTypes.STRING,
       primaryKey: true,
     },
-    courseId: {
+    lessonId: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: 'courseId_dayNumber_unique',
+      unique: 'lessonId_dayNumber_unique',
     },
     dayNumber: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: 'courseId_dayNumber_unique',
+      unique: 'lessonId_dayNumber_unique',
     },
     title: {
       type: DataTypes.STRING,

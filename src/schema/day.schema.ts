@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { DayService } from '../services/admin/day.services';
-import { CourseService } from '../services/admin/course.services';
+import { LessonService } from '../services/admin/lesson.services';
 
 const dayService = new DayService()
-const courseService = new CourseService()
+const lessonService = new LessonService()
 
 export const createDaySchema = z.object({
-  courseId: z
-    .string({ required_error: 'Course id is required.' })
+  lessonId: z
+    .string({ required_error: 'Lesson id is required.' })
     .trim(),
   dayNumber: z
     .coerce
@@ -28,38 +28,30 @@ export const createDaySchema = z.object({
     .nullable(),
 })
 .superRefine(async (data, ctx) => {
-  const { courseId, dayNumber } = data;
+  const { lessonId, dayNumber } = data;
 
-  const course = await courseService.findCourseById(courseId, ['id', 'totalDays'])
-  if(!course){
+  const lesson = await lessonService.findLessonById(lessonId, ['id'])
+  if(!lesson){
     ctx.addIssue({
       code: 'custom',
-      path: ['courseId'],
-      message: 'Course with this course id doesn\'t exist.',
+      path: ['lessonId'],
+      message: 'Lesson with this lesson id doesn\'t exist.',
     });
   }
 
-  // Check if course with day already exists
-  const courseWithDay = await dayService.courseWithDayExists(courseId, dayNumber);
-  if (courseWithDay) {
+  // Check if lesson with day already exists
+  const lessonWithDay = await dayService.lessonWithDayNumberExists(lessonId, dayNumber);
+  if (lessonWithDay) {
     ctx.addIssue({
       code: 'custom',
-      path: ['courseId'],
-      message: 'Course id with this day number already exists.',
+      path: ['lessonId'],
+      message: 'Lesson id with this day number already exists.',
     });
 
     ctx.addIssue({
       code: 'custom',
       path: ['dayNumber'],
-      message: 'Course id with this day number already exists.',
-    });
-  }
-
-  if(course && data.dayNumber > course.totalDays){
-    ctx.addIssue({
-      code: 'custom',
-      path: ['dayNumber'],
-      message: 'Day number cannot exceed course\'s total days.',
+      message: 'Lesson id with this day number already exists.',
     });
   }
 });
@@ -68,8 +60,8 @@ export const updateDaySchema = z.object({
   id: z
     .string({ required_error: 'Id is required.' })
     .trim(),
-  courseId: z
-    .string({ required_error: 'Course id is required.' })
+  lessonId: z
+    .string({ required_error: 'Lesson id is required.' })
     .trim()
     .optional()
     .nullable(),
@@ -97,45 +89,37 @@ export const updateDaySchema = z.object({
 })
 .superRefine(async (data, ctx) => {
   const { id } = data;
-  let { courseId, dayNumber } = data;
-  const day = await dayService.findDayById(id, ['id', 'courseId', 'dayNumber'])
+  let { lessonId, dayNumber } = data;
+  const day = await dayService.findDayById(id, ['id', 'lessonId', 'dayNumber'])
 
   if(day){
-    if(!courseId)
-      courseId = day.courseId
+    if(!lessonId)
+      lessonId = day.lessonId
     if(!dayNumber)
       dayNumber = day.dayNumber
   
-    const course = await courseService.findCourseById(courseId, ['id', 'totalDays'])
-    if(!course){
+    const lesson = await lessonService.findLessonById(lessonId, ['id'])
+    if(!lesson){
       ctx.addIssue({
         code: 'custom',
-        path: ['courseId'],
-        message: 'Course with this course id doesn\'t exist.',
+        path: ['lessonId'],
+        message: 'Lesson with this lesson id doesn\'t exist.',
       });
     }
   
-    // Check if course with day already exists
-    const courseWithDay = await dayService.courseWithDayExists(courseId, dayNumber);
-    if (day && courseWithDay && dayNumber !== day.dayNumber) {
+    // Check if lesson with day already exists
+    const lessonWithDay = await dayService.lessonWithDayNumberExists(lessonId, dayNumber);
+    if (day && lessonWithDay && dayNumber !== day.dayNumber) {
       ctx.addIssue({
         code: 'custom',
-        path: ['courseId'],
-        message: 'Course id with this day number already exists.',
+        path: ['lessonId'],
+        message: 'Lesson id with this day number already exists.',
       });
   
       ctx.addIssue({
         code: 'custom',
         path: ['dayNumber'],
-        message: 'Course id with this day number already exists.',
-      });
-    }
-  
-    if(course && data.dayNumber && data.dayNumber > course.totalDays){
-      ctx.addIssue({
-        code: 'custom',
-        path: ['dayNumber'],
-        message: 'Day number cannot exceed course\'s total days.',
+        message: 'Lesson id with this day number already exists.',
       });
     }
   }

@@ -1,5 +1,5 @@
 import { Op, Transaction } from 'sequelize';
-import { CourseModel, DayModel } from '../models';
+import { CourseModel, LessonModel } from '../models';
 import { Course, UpdateCourseData, StoreCourse } from '../../../types/course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 export class CourseRepository {
@@ -14,14 +14,17 @@ export class CourseRepository {
       },
     }
 
+    console.log('id', id);
+
     if(select)
       options.attributes = select
 
     if(withRelations){
       options.include = [
         {
-          as: 'days',
-          model: DayModel,
+          as: 'lessons',
+          model: LessonModel,
+          required: false,
           where: {
             deletedAt: {
               [Op.eq]: null
