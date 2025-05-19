@@ -14,8 +14,6 @@ export class CourseRepository {
       },
     }
 
-    console.log('id', id);
-
     if(select)
       options.attributes = select
 
