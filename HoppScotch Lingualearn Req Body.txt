@@ -1,29 +1,29 @@
-App User Create/Update:
+App User Create/Update: (FORMDATA)
 
 phoneNumber: +8801762214316
 firstName: new
 lastName: user 2
 email: newuser2@mail.com
 nativeLanguage: English
-learningGoal: Speak english nigga
+learningGoal: Speak english boi
 avatarUrl: FILE
 
 ------------------------------------
 
-Course Create/Update:
+Course Create/Update: (FORMDATA)
 
 title: Test Course 1
 description: Test Course 1 Des
 totalDays: 5
-language: English
-targetLanguage: Bangla
+language: ENGLISH
+targetLanguage: BANGLA
 difficulty: INTERMEDIATE
 estimatedHours: 3
 imagePath: FILE
 
 -------------------------------------
 
-Day Create/Update
+Day Create/Update: (JSON)
 
 {
   "id": "0196e28c-8c29-7671-925e-11b75b169775", (UPDATE ONLY)
@@ -35,9 +35,8 @@ Day Create/Update
 
 -------------------------------------
 
-Lesson Create/Update
+Lesson Create/Update: (FORMDATA)
 
-id: 0196e341-f82e-76db-a409-bfb0b2b95333
 dayId: 0196e341-f82e-76db-a409-bfb0b2b95333
 title: Test Lesson 1
 description: Test Lesson 1 Des
@@ -45,4 +44,28 @@ estimatedMinutes: 20
 difficulty: BEGINNER
 xpReward: 30
 lessonOrder: 1
-audioIntro
+audioIntro: FILE
+
+-------------------------------------
+
+Flash card Create/Update: (FORMDATA)
+
+id: 0196e341-f82e-76db-a409-bfb0b2b95333
+lessonId: 0196e341-f82e-76db-a409-bfb0b2b95333
+frontText: front text
+frontSubtext: front subtext
+backText: back text
+backSubtext: back subtext
+example: example text
+exampleTranslation: example translation
+usageNotes: usage notes
+imageUrl: FILE | null
+audioUrl: FILE | full
+cardOrder: 4
+
+-------------------------------------
+
+
+1. deleted may interfere with exists. Check
+2. Validation message if already exists not OK
+3. Pagination
