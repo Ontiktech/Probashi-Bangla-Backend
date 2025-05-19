@@ -5,6 +5,7 @@ import { UserOTPModel } from './user-otp.model';
 import { CourseModel } from './course.model';
 import { DayModel } from './days.model';
 import { LessonModel } from './lesson.model';
+import { FlashCardModel } from './flash-card.model';
 
 // ADMIN USER ASSOCIATIONS
 AdminUserModel.hasMany(AppUserModel, {
@@ -70,6 +71,15 @@ LessonModel.belongsTo(AdminUserModel, {
   foreignKey: 'deletedBy',
 });
 
+AdminUserModel.hasMany(FlashCardModel, {
+  as: 'deleted_flash_card',
+  foreignKey: 'deletedBy',
+});
+FlashCardModel.belongsTo(AdminUserModel, {
+  as: 'deleted_by',
+  foreignKey: 'deletedBy',
+});
+
 
 // COURSE ASSOCIATIONS
 CourseModel.hasMany(DayModel, {
@@ -83,13 +93,13 @@ DayModel.belongsTo(CourseModel, {
 
 
 // DAy ASSOCIATIONS
-DayModel.hasMany(LessonModel, {
-  as: 'lessons',
-  foreignKey: 'dayId',
+LessonModel.hasMany(FlashCardModel, {
+  as: 'flash_cards',
+  foreignKey: 'lessonId',
 });
-LessonModel.belongsTo(DayModel, {
-  as: 'day',
-  foreignKey: 'dayId',
+FlashCardModel.belongsTo(LessonModel, {
+  as: 'lesson',
+  foreignKey: 'lessonId',
 });
 
 export {

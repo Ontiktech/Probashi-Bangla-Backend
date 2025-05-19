@@ -39,7 +39,7 @@ export class LessonService {
     return await this.lessonRepo.deleteLesson(id, deletedBy, transaction);
   }
 
-  async dayWithLessonExists(dayId: string, lessonOrder : number) {
-    return await this.lessonRepo.dayWithLessonExists(dayId, lessonOrder);
+  async dayWithLessonOrderExists(dayId: string, lessonOrder : number) {
+    return await this.lessonRepo.dayWithLessonOrderExists(dayId, lessonOrder);
   }
 }

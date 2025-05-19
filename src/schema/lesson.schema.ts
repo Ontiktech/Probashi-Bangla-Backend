@@ -55,7 +55,7 @@ export const createLessonSchema = z.object({
   }
 
   // Check if course with day already exists
-  const dayWithLesson = await lessonService.dayWithLessonExists(dayId, lessonOrder);
+  const dayWithLesson = await lessonService.dayWithLessonOrderExists(dayId, lessonOrder);
   if (dayWithLesson) {
     ctx.addIssue({
       code: 'custom',
@@ -146,7 +146,7 @@ export const updateLessonSchema = z.object({
     }
 
     // Check if course with day already exists
-    const dayWithLesson = await lessonService.dayWithLessonExists(dayId, lessonOrder);
+    const dayWithLesson = await lessonService.dayWithLessonOrderExists(dayId, lessonOrder);
     if (dayWithLesson && lessonOrder &&lessonOrder !== lesson.lessonOrder) {
       if (dayWithLesson) {
         ctx.addIssue({

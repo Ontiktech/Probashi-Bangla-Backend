@@ -14,6 +14,7 @@ import { adminAuthRouter } from './routes/admin/auth.routes';
 import { CourseRouter } from './routes/admin/course.routes';
 import { DayRouter } from './routes/admin/day.routes';
 import { LessonRouter } from './routes/admin/lesson.routes';
+import { FlashCardRouter } from './routes/admin/flash-card.routes';
 
 // const numCPUs = os.cpus().length
 
@@ -52,6 +53,7 @@ const server = () => {
     app.use('/api/v1/admin/courses', jwtMiddleware.verifyToken, CourseRouter);
     app.use('/api/v1/admin/days', jwtMiddleware.verifyToken, DayRouter);
     app.use('/api/v1/admin/lessons', jwtMiddleware.verifyToken, LessonRouter);
+    app.use('/api/v1/admin/flash-cards', jwtMiddleware.verifyToken, FlashCardRouter);
     // // app routes
     // app.use('/api/v1/app/auth', appAuthRouter);
 
