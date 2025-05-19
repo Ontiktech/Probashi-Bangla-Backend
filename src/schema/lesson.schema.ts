@@ -40,7 +40,9 @@ export const createLessonSchema = z.object({
     .number({ required_error: 'Lesson order is required.' })
     .min(1, { message: 'Lesson order has to be at least 1.' })
     .max(1000000, { message: 'Lesson order cannot exceed 1000000.' }),
-  audioIntro: z.array(audioValidationRule, {required_error: "Audio intro is be required." }),
+  audioIntro: z.array(audioValidationRule, {required_error: "Audio intro is be required." })
+    .optional()
+    .nullable(),
 })
 .superRefine(async (data, ctx) => {
   const { courseId, lessonOrder } = data;

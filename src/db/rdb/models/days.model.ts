@@ -40,7 +40,6 @@ DayModel.init(
     },
     title: {
       type: DataTypes.STRING,
-      unique: true,
     },
     description: {
       type: DataTypes.STRING,
