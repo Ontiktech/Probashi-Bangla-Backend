@@ -10,6 +10,7 @@ const allowedOrigins = [
   'http://127.0.0.1:5173',
   'http://localhost:5173',
   'http://ec2-16-171-142-79.eu-north-1.compute.amazonaws.com',
+  'https://probashi-bangla-frontend.vercel.app'
 ];
 
 export const corsOptions = {
