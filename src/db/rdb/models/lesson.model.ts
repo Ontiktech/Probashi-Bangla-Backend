@@ -36,12 +36,10 @@ LessonModel.init(
     courseId: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: 'courseId_lessonOrder_unique',
     },
     lessonOrder: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: 'courseId_lessonOrder_unique',
     },
     title: {
       type: DataTypes.STRING,

@@ -38,12 +38,10 @@ FlashCardModel.init(
     dayId: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: 'dayId_cardOrder_unique',
     },
     cardOrder: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: 'dayId_cardOrder_unique',
     },
     frontText: {
       type: DataTypes.STRING,

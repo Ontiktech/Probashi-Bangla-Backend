@@ -6,6 +6,7 @@ import { CourseModel } from './course.model';
 import { DayModel } from './days.model';
 import { LessonModel } from './lesson.model';
 import { FlashCardModel } from './flash-card.model';
+import { AppUserCourseModel } from './app-user-course.model';
 
 // ADMIN USER ASSOCIATIONS
 AdminUserModel.hasMany(AppUserModel, {
@@ -113,6 +114,27 @@ FlashCardModel.belongsTo(DayModel, {
   foreignKey: 'dayId',
 });
 
+
+// APP USER COURSE ASSOCIATIONS
+CourseModel.hasMany(AppUserCourseModel, {
+  as: 'user_courses',
+  foreignKey: 'courseId',
+});
+AppUserCourseModel.belongsTo(CourseModel, {
+  as: 'course',
+  foreignKey: 'courseId',
+});
+
+AppUserModel.hasMany(AppUserCourseModel, {
+  as: 'user_courses',
+  foreignKey: 'appUserId',
+});
+AppUserCourseModel.belongsTo(AppUserModel, {
+  as: 'app_user',
+  foreignKey: 'appUserId',
+});
+
+
 export {
   AppUserModel,
   AdminUserModel,
@@ -120,4 +142,5 @@ export {
   CourseModel,
   DayModel,
   LessonModel,
+  AppUserCourseModel,
 };

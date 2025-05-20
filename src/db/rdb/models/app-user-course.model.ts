@@ -8,40 +8,31 @@ import {
 
 const sequelize = UserClient.getInstance();
 
-class DayModel extends Model<
-  InferAttributes<DayModel>,
-  InferCreationAttributes<DayModel>
+class AppUserCourseModel extends Model<
+  InferAttributes<AppUserCourseModel>,
+  InferCreationAttributes<AppUserCourseModel>
 > {
   declare id: string
-  declare lessonId: string
-  declare dayNumber: number
-  declare title: string
-  declare description: string | null
+  declare appUserId: string
+  declare courseId: string
   declare updatedBy: string
   declare deletedAt: string | null
   declare deletedBy: string | null
 }
 
-DayModel.init(
+AppUserCourseModel.init(
   {
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
     },
-    lessonId: {
+    appUserId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    dayNumber: {
-      type: DataTypes.INTEGER,
+    courseId: {
+      type: DataTypes.STRING,
       allowNull: false,
-    },
-    title: {
-      type: DataTypes.STRING,
-    },
-    description: {
-      type: DataTypes.STRING,
-      defaultValue: null,
     },
     updatedBy: {
       type: DataTypes.STRING,
@@ -57,10 +48,10 @@ DayModel.init(
     },
   },
   {
-    tableName: 'days',
+    tableName: 'user_courses',
     sequelize,
     timestamps: true,
   },
 );
 
-export { DayModel };
+export { AppUserCourseModel };
