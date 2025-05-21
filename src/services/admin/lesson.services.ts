@@ -26,6 +26,14 @@ export class LessonService {
     return await this.lessonRepo.getAllLessonsWithOptions(select);
   }
 
+  async getAllLessonsCount() {
+    return await this.lessonRepo.getAllLessonsCount();
+  }
+
+  async getAllAssociatedLessonsCount(dayId: string) {
+    return await this.lessonRepo.getAllAssociatedLessonsCount(dayId);
+  }
+
   async storeLesson(data: StoreLessonData, transaction?: Transaction) {
     const id = generateId()
     return await this.lessonRepo.storeLesson({ id, ...data }, transaction);

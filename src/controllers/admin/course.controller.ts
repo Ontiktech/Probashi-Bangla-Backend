@@ -4,9 +4,12 @@ import { AdminAuthenticatedRequest } from '../../types/authenticate.type';
 import { CourseService } from '../../services/admin/course.services';
 import { deleteMultipleFileLocal, multipleFileLocalFullPathResolver, rollbackMultipleFileLocalUpload } from '../../middleware/fileUploadLocal.middleware';
 import { NotFoundException } from '../../errors/NotFoundException.error';
+import { DayService } from '../../services/admin/day.services';
 import { BadRequestException } from '../../errors/BadRequestException.error';
+import { ForbiddenException } from '../../errors/ForbiddenException.error';
 
 const courseService = new CourseService();
+const dayService = new DayService();
 
 export async function getAllCourses(req: AdminAuthenticatedRequest, res: Response) {
   try {
@@ -124,6 +127,10 @@ export async function updateCourse(req: AdminAuthenticatedRequest, res: Response
     if(course.deletedAt)
       throw new NotFoundException('Course not found.')
 
+    const daysGreaterThanNewTotalDaysCount = await dayService.daysGreaterThanNewTotalDaysCount(courseId, req.body.totalDays)
+    if(daysGreaterThanNewTotalDaysCount)
+      throw new BadRequestException('This lesson has days that has day number greater than the new total days.')
+
     let data = { ...req.body, updatedBy: req.user!.id }
 
     if(req.files?.imagePath && req.files?.imagePath.length > 0){
@@ -177,6 +184,10 @@ export async function deleteCourse(req: AdminAuthenticatedRequest, res: Response
       throw new NotFoundException('Course not found.')
     if(course.deletedAt)
       throw new NotFoundException('Course not found.')
+
+    const associatedDaysCount = await dayService.getAllAssociatedDaysCount(courseId)
+    if(associatedDaysCount)
+      throw new ForbiddenException('This course has existing assocaited days. Please delete them first.')
 
     if(course.imagePath)
       deleteMultipleFileLocal(req, [course.imagePath])

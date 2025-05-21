@@ -26,6 +26,14 @@ export class FlashCardService {
     return await this.flashCardRepo.getAllFlashCardsWithOptions(select);
   }
 
+  async getAllFlashCardsCount() {
+    return await this.flashCardRepo.getAllFlashCardsCount();
+  }
+
+  async getAllAssociatedFlashCardsCount(lessonId: string) {
+    return await this.flashCardRepo.getAllAssociatedFlashCardsCount(lessonId);
+  }
+
   async storeFlashCard(data: StoreFlashCardData, transaction?: Transaction) {
     const id = generateId()
     return await this.flashCardRepo.storeFlashCard({ id, ...data }, transaction);

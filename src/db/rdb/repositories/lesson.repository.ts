@@ -71,6 +71,27 @@ export class LessonRepository {
     })) as unknown as Lesson[];
   }
 
+  async getAllLessonsCount(): Promise<number> {
+    return await LessonModel.count({
+      where: {
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+    });
+  }
+
+  async getAllAssociatedLessonsCount(dayId: string): Promise<number> {
+    return await LessonModel.count({
+      where: {
+        dayId: dayId,
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+    });
+  }
+
   async storeLesson(data: StoreLesson, transaction?: Transaction): Promise<Lesson> {
     const options: any = {};
 

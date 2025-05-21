@@ -70,6 +70,27 @@ export class FlashCardRepository {
     })) as unknown as FlashCard[];
   }
 
+  async getAllFlashCardsCount(): Promise<number> {
+    return await FlashCardModel.count({
+      where: {
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+    });
+  }
+
+  async getAllAssociatedFlashCardsCount(lessonId: string): Promise<number> {
+    return await FlashCardModel.count({
+      where: {
+        lessonId: lessonId,
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+    });
+  }
+
   async storeFlashCard(data: StoreFlashCard, transaction?: Transaction): Promise<FlashCard> {
     const options: any = {};
 

@@ -29,7 +29,7 @@ export class JwtMiddleware {
       const authHeader = req.headers.authorization;
 
       if (!authHeader || !authHeader?.startsWith('Bearer '))
-        return res.status(401).json({ message: 'You are not logged in!' });
+        throw new UnauthorizedException('You are not logged in!')
 
       const token = authHeader.split(' ')[1];
 
@@ -40,27 +40,30 @@ export class JwtMiddleware {
         const adminRepo = new AdminUserRepository();
         const checkUser = await adminRepo.findUserById(req.user.id);
 
-        if (!checkUser) {
+        if (!checkUser)
           throw new UnauthorizedException('Invalid Token Data');
-        }
 
-        next();
-      } else {
-        throw new UnauthorizedException('Token Expired');
+        return next();
       }
+
+      throw new UnauthorizedException('Token Expired');
     } catch (e: any) {
-      console.log('admin verifyToken middleware', e);
-      if (e instanceof UnauthorizedException)
-        res.status(e.statusCode).json({
+      console.log('verifyToken', e);
+      if (e instanceof CustomException){
+        return res.status(e.statusCode).json({
           error:{
             message: e.message,
           },
-          code: e.statusCode,
+          statusCode: e.statusCode,
         });
+      }
 
-      return res
-        .status(500)
-        .json({ message: 'Something went wrong! Please try again.' });
+      return res.status(500).json({
+        error:{
+          message: 'Something went wrong! Please try again.',
+        },
+        statusCode: 500,
+      });
     }
   }
 
@@ -86,7 +89,7 @@ export class JwtMiddleware {
       const authHeader = req.headers.authorization;
 
       if (!authHeader || !authHeader?.startsWith('Bearer '))
-        return res.status(401).json({ message: 'You are not logged in!' });
+        throw new UnauthorizedException('You are not logged in!')
 
       const token = authHeader.split(' ')[1];
 
@@ -99,31 +102,31 @@ export class JwtMiddleware {
 
         if (!checkUser)
           throw new UnauthorizedException('Invalid token provided!')
-          // throw new UnauthorizedException('Invalid token provided!', new Date());
 
-        if (checkUser)
+        if (checkUser.deletedAt)
           throw new UnauthorizedException('This user has been deleted!')
-          // throw new UnauthorizedException('This user has been deleted!');
 
-        next();
-      } else {
-        throw new UnauthorizedException('Auth token expired! Please login again.')
+        return next();
       }
-    } catch (e: any) {
-      // console.log('jwt middleware error', e);
 
+      throw new UnauthorizedException('Auth token expired! Please login again.')
+    } catch (e: any) {
+      // console.log('verifyAppUserToken', e);
       if (e instanceof CustomException) {
         return res.status(e.statusCode).json({
           error: {
             message: e.message,
           },
-          code: e.statusCode,
+          statusCode: e.statusCode,
         });
       }
 
-      return res
-        .status(500)
-        .json({ message: 'Something went wrong! Please try again.' });
+      return res.status(500).json({
+        error: {
+          message: 'Something went wrong! Please try again.'
+        },
+        statusCode: 500,
+      });
     }
   }
 
@@ -148,29 +151,30 @@ export class JwtMiddleware {
             if (!checkUser)
               throw new UnauthorizedException('Invalid token provided!')
 
-            next();
+            return next();
           }
-        } else {
-          throw new UnauthorizedException('Auth token expired! Please login again.')
         }
-      } else {
-        next();
+        throw new UnauthorizedException('Auth token expired! Please login again.');
       }
-    } catch (e: any) {
-      // console.log(e);
 
+      return next();
+    } catch (e: any) {
+      // console.log('optionalVerifyAppUserToken', e);
       if (e instanceof CustomException) {
         return res.status(e.statusCode).json({
           error: {
             message: e.message,
           },
-          code: e.statusCode,
+          statusCode: e.statusCode,
         });
       }
 
-      return res
-        .status(500)
-        .json({ message: 'Something went wrong! Please try again.' });
+      return res.status(500).json({
+        error: {
+          message: 'Something went wrong! Please try again.'
+        },
+        statusCode: 500,
+      });
     }
   }
 }

@@ -10,7 +10,7 @@ export class CourseRepository {
         id: id,
         deletedAt:{
           [Op.eq]: null
-        } 
+        }
       },
     }
 
@@ -69,6 +69,15 @@ export class CourseRepository {
       order: [['createdAt', 'DESC']],
     })) as unknown as Course[];
   }
+  
+  async getAllCoursesWithOptions(select: string[]|null = null): Promise<Course[]> {
+    const options: any = {};
+
+    if(select && select.length > 0)
+      options.attributes = select
+
+    return (await CourseModel.findAll(options));
+  }
 
   async storeCourse(data: StoreCourse, transaction?: Transaction): Promise<Course> {
     const options: any = {};
@@ -108,14 +117,5 @@ export class CourseRepository {
         id: id,
       },
     })) as unknown as Course;
-  }
-
-  async getAllCoursesWithOptions(select: string[]|null = null): Promise<Course[]> {
-    const options: any = {};
-
-    if(select && select.length > 0)
-      options.attributes = select
-
-    return (await CourseModel.findAll(options));
   }
 }

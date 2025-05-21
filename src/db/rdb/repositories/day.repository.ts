@@ -70,6 +70,27 @@ export class DayRepository {
     })) as unknown as Day[];
   }
 
+  async getAllDaysCount(): Promise<number> {
+    return await DayModel.count({
+      where: {
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+    });
+  }
+
+  async getAllAssociatedDaysCount(courseId: string): Promise<number> {
+    return await DayModel.count({
+      where: {
+        courseId: courseId,
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+    });
+  }
+
   async storeDay(data: StoreDay, transaction?: Transaction): Promise<Day> {
     const options: any = {};
 
@@ -124,6 +145,20 @@ export class DayRepository {
       where: {
         courseId: courseId,
         dayNumber: dayNumber,
+        deletedAt:{
+          [Op.eq]: null
+        }
+      },
+    });
+  }
+
+  async daysGreaterThanNewTotalDaysCount(courseId: string, totalDays: number): Promise<number> {
+    return await DayModel.count({
+      where: {
+        courseId: courseId,
+        dayNumber: {
+          [Op.gt] : totalDays
+        },
         deletedAt:{
           [Op.eq]: null
         }

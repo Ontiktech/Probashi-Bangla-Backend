@@ -26,6 +26,14 @@ export class DayService {
     return await this.dayRepo.getAllDaysWithOptions(select);
   }
 
+  async getAllDaysCount() {
+    return await this.dayRepo.getAllDaysCount();
+  }
+
+  async getAllAssociatedDaysCount(courseId: string) {
+    return await this.dayRepo.getAllAssociatedDaysCount(courseId);
+  }
+
   async storeDay(data: StoreDayData, transaction?: Transaction) {
     const id = generateId()
     return await this.dayRepo.storeDay({ id, ...data }, transaction);
@@ -41,5 +49,9 @@ export class DayService {
 
   async courseWithDayExists(courseId: string, dayNumber: number) {
     return await this.dayRepo.courseWithDayExists(courseId, dayNumber);
+  }
+
+  async daysGreaterThanNewTotalDaysCount(courseId: string, totalDays: number) {
+    return await this.dayRepo.daysGreaterThanNewTotalDaysCount(courseId, totalDays);
   }
 }

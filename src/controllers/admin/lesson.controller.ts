@@ -5,8 +5,11 @@ import { deleteMultipleFileLocal, multipleFileLocalFullPathResolver, rollbackMul
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { LessonService } from '../../services/admin/lesson.services';
 import { BadRequestException } from '../../errors/BadRequestException.error';
+import { ForbiddenException } from '../../errors/ForbiddenException.error';
+import { FlashCardService } from '../../services/admin/flash-card.services';
 
 const lessonService = new LessonService();
+const flashCardsService = new FlashCardService();
 
 export async function getAllLessons(req: AdminAuthenticatedRequest, res: Response) {
   try {
@@ -179,6 +182,10 @@ export async function deleteLesson(req: AdminAuthenticatedRequest, res: Response
       throw new NotFoundException('Lesson not found.')
     if(lesson.deletedAt)
       throw new NotFoundException('Lesson not found.')
+
+    const associatedFlashCardsCount = await flashCardsService.getAllAssociatedFlashCardsCount(lessonId)
+      if(associatedFlashCardsCount)
+        throw new ForbiddenException('This lesson has existing associated flash cards. Please delete them first.')
 
     if(lesson.audioIntro)
       deleteMultipleFileLocal(req, [lesson.audioIntro])

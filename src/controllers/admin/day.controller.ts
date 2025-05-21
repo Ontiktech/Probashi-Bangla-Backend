@@ -5,9 +5,12 @@ import { NotFoundException } from '../../errors/NotFoundException.error';
 import { DayService } from '../../services/admin/day.services';
 import { BadRequestException } from '../../errors/BadRequestException.error';
 import { CourseService } from '../../services/admin/course.services';
+import { LessonService } from '../../services/admin/lesson.services';
+import { ForbiddenException } from '../../errors/ForbiddenException.error';
 
-const dayService = new DayService();
 const courseService = new CourseService();
+const dayService = new DayService();
+const lessonService = new LessonService();
 
 export async function getAllDays(req: AdminAuthenticatedRequest, res: Response) {
   try {
@@ -174,6 +177,10 @@ export async function deleteDay(req: AdminAuthenticatedRequest, res: Response) {
       throw new NotFoundException('Day not found.')
     if(day.deletedAt)
       throw new NotFoundException('Day not found.')
+
+    const associatedLessonsCount = await lessonService.getAllAssociatedLessonsCount(dayId)
+    if(associatedLessonsCount)
+      throw new ForbiddenException('This day has existing associated lessons. Please delete them first.')
 
     const response = await dayService.deleteDay(dayId, req.user!.id);
 
