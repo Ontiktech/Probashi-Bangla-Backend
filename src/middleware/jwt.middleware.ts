@@ -38,7 +38,7 @@ export class JwtMiddleware {
       if (payload) {
         req.user = payload as AdminUserPayload;
         const adminRepo = new AdminUserRepository();
-        const checkUser = await adminRepo.findUserById(req.user.id);
+        const checkUser = await adminRepo.findAdminUserById(req.user.id);
 
         if (!checkUser)
           throw new UnauthorizedException('Invalid Token Data');

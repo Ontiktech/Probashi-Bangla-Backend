@@ -24,7 +24,6 @@ export async function getAllLessons(req: AdminAuthenticatedRequest, res: Respons
     });
   } catch (error) {
     console.log('getAllLessons', error)
-    rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -62,7 +61,6 @@ export async function getSingleLesson(req: AdminAuthenticatedRequest, res: Respo
     });
   } catch (error) {
     console.log('getSingleAllLesson', error)
-    rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

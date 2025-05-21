@@ -64,5 +64,5 @@ audioUrl: FILE | full
 
 -------------------------------------
 
-
+1. Add deletedAt, deletedBy, updatedBy to admin user
 2. Pagination

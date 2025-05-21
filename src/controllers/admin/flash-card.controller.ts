@@ -21,7 +21,6 @@ export async function getAllFlashCards(req: AdminAuthenticatedRequest, res: Resp
     });
   } catch (error) {
     console.log('getAllFlashCards', error)
-    rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -59,7 +58,6 @@ export async function getSingleFlashCard(req: AdminAuthenticatedRequest, res: Re
     });
   } catch (error) {
     console.log('getSingleAllFlashCard', error)
-    rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

@@ -21,7 +21,38 @@ export async function getAllAppUsers(req: AdminAuthenticatedRequest, res: Respon
     });
   } catch (error) {
     console.log('getAllAppUsers', error)
-    rollbackMultipleFileLocalUpload(req)
+    if (error instanceof CustomException) {
+      return res.status(error.statusCode).json({
+        error: {
+          message: error.message,
+        },
+        statusCode: error.statusCode,
+      });
+    }
+
+    return res.status(500).json({
+      error: {
+        message: 'Something went wrong! Please try again.',
+      },
+      statusCode: 500,
+    });
+  }
+}
+
+export async function getPaginatedAppUsers(req: AdminAuthenticatedRequest, res: Response) {
+  try {
+    const { limit, offset, orderBy } = req.params
+    const users = await appUserService.getPaginatedAppUsers(limit, offset, orderBy);
+
+    return res.status(200).json({
+      data: {
+        message: 'User list fetched successfully!',
+        users: users,
+      },
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log('getAllAppUsers', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -59,7 +90,6 @@ export async function getSingleAppUser(req: AdminAuthenticatedRequest, res: Resp
     });
   } catch (error) {
     console.log('getSingleAllAppUser', error)
-    rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

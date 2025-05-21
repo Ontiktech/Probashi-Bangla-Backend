@@ -201,4 +201,14 @@ export class AppUserRepository {
 
     return (await AppUserModel.findAll(options));
   }
+
+  async getPaginatedAppUsers(limit: number, offset: number, orderBy: string): Promise<AppUser[]> {
+    const options: any = {
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy,
+    };
+
+    return await AppUserModel.findAll(options);
+  }
 }

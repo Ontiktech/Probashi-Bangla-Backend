@@ -15,7 +15,7 @@ export class AdminAuthService {
   }
 
   async adminLogin(request: LoginRequestSchema) {
-    const user = await this.adminUserRepo.findUserByEmail(request.email);
+    const user = await this.adminUserRepo.findAdminUserByEmail(request.email);
 
     if (user) {
       const isMatch = await comparePassword(

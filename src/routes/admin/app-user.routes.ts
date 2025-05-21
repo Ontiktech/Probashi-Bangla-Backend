@@ -25,7 +25,6 @@ appUserRouter.patch(
   validateRequestBody(updateAppUserSchema),
   updateAppUser,
 );
-
 appUserRouter.delete('/:id', jwtMiddleware.verifyToken, deleteAppUser);
 
 export { appUserRouter };

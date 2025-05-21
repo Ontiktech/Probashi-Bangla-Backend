@@ -24,7 +24,6 @@ export async function getAllCourses(req: AdminAuthenticatedRequest, res: Respons
     });
   } catch (error) {
     console.log('getAllCourses', error)
-    rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -62,7 +61,6 @@ export async function getSingleCourse(req: AdminAuthenticatedRequest, res: Respo
     });
   } catch (error) {
     console.log('getSingleAllCourse', error)
-    rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

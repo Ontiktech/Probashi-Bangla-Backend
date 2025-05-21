@@ -42,6 +42,12 @@ export class AppUserService {
     return await this.appUserRepo.getAllAppUsersWithOptions(select);
   }
 
+  async getPaginatedAppUsers(limit: number|string, offset: number|string, orderBy: string) {
+    limit = Number(limit)
+    offset = Number(offset)
+    return await this.appUserRepo.getPaginatedAppUsers(limit, offset, orderBy);
+  }
+
   async storeAppUser(data: StoreAppUserData, transaction?: Transaction) {
     const id = generateId()
     return await this.appUserRepo.storeAppUser({ id, ...data }, transaction);
