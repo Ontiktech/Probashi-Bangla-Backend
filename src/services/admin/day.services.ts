@@ -39,7 +39,7 @@ export class DayService {
     return await this.dayRepo.deleteDay(id, deletedBy, transaction);
   }
 
-  async lessonWithDayNumberExists(lessonId: string, dayNumber: number) {
-    return await this.dayRepo.lessonWithDayNumberExists(lessonId, dayNumber);
+  async courseWithDayExists(courseId: string, dayNumber: number) {
+    return await this.dayRepo.courseWithDayExists(courseId, dayNumber);
   }
 }

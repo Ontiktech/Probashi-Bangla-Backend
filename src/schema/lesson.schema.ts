@@ -1,15 +1,15 @@
 import { z } from 'zod';
 import { DIFFICULTIES } from '../constants/enums';
+import { DayService } from '../services/admin/day.services';
 import { audioValidationRule } from './common.schema';
 import { LessonService } from '../services/admin/lesson.services';
-import { CourseService } from '../services/admin/course.services';
 
-const courseService = new CourseService()
+const dayService = new DayService()
 const lessonService = new LessonService()
 
 export const createLessonSchema = z.object({
-  courseId: z
-    .string({ required_error: 'Course id is required.' })
+  dayId: z
+    .string({ required_error: 'Day id is required.' })
     .trim(),
   title: z
     .string({ required_error: 'Title is required.' })
@@ -44,30 +44,30 @@ export const createLessonSchema = z.object({
     .nullable(),
 })
 .superRefine(async (data, ctx) => {
-  const { courseId, lessonOrder } = data;
+  const { dayId, lessonOrder } = data;
 
-  const course = await courseService.courseExistsById(courseId)
-  if(!course){
+  const day = await dayService.dayExistsById(dayId)
+  if(!day){
     ctx.addIssue({
       code: 'custom',
-      path: ['courseId'],
-      message: 'Course with this course id doesn\'t exist.',
+      path: ['dayId'],
+      message: 'Day with this day id doesn\'t exist.',
     });
   }
 
-  // Check if course with course already exists
-  const courseWithLesson = await lessonService.courseWithLessonOrderExists(courseId, lessonOrder);
-  if (courseWithLesson) {
+  // Check if course with day already exists
+  const dayWithLesson = await lessonService.dayWithLessonOrderExists(dayId, lessonOrder);
+  if (dayWithLesson) {
     ctx.addIssue({
       code: 'custom',
-      path: ['courseId'],
-      message: 'Course id with this lesson order already exists.',
+      path: ['dayId'],
+      message: 'Day id with this lesson order already exists.',
     });
 
     ctx.addIssue({
       code: 'custom',
       path: ['lessonOrder'],
-      message: 'Course id with this lesson order already exists.',
+      message: 'Day id with this lesson order already exists.',
     });
   }
 });
@@ -76,8 +76,8 @@ export const updateLessonSchema = z.object({
   id: z
     .string({ required_error: 'Id is required.' })
     .trim(),
-  courseId: z
-    .string({ required_error: 'Course id is required.' })
+  dayId: z
+    .string({ required_error: 'Day id is required.' })
     .trim()
     .optional()
     .nullable(),
@@ -125,38 +125,40 @@ export const updateLessonSchema = z.object({
 })
 .superRefine(async (data, ctx) => {
   const { id } = data;
-  let { courseId, lessonOrder } = data;
-  const lesson = await lessonService.findLessonById(id, ['id', 'courseId', 'lessonOrder'])
+  let { dayId, lessonOrder } = data;
+  const lesson = await lessonService.findLessonById(id, ['id', 'dayId', 'lessonOrder'])
 
   if(lesson){
-    if(!courseId)
-      courseId = lesson.courseId
+    if(!dayId)
+      dayId = lesson.dayId
     if(!lessonOrder)
       lessonOrder = lesson.lessonOrder
 
-    const course = await courseService.courseExistsById(courseId)
-    if(!course){
+    console.log('lesson.lessonOrder', lesson.lessonOrder);
+
+    const day = await dayService.dayExistsById(dayId)
+    if(!day){
       ctx.addIssue({
         code: 'custom',
-        path: ['courseId'],
-        message: 'Course with this course id doesn\'t exist.',
+        path: ['dayId'],
+        message: 'Day with this day id doesn\'t exist.',
       });
     }
 
-    // Check if course with course already exists
-    const courseWithLesson = await lessonService.courseWithLessonOrderExists(courseId, lessonOrder);
-    if (courseWithLesson && lessonOrder &&lessonOrder !== lesson.lessonOrder) {
-      if (courseWithLesson) {
+    // Check if course with day already exists
+    const dayWithLesson = await lessonService.dayWithLessonOrderExists(dayId, lessonOrder);
+    if (dayWithLesson && lessonOrder &&lessonOrder !== lesson.lessonOrder) {
+      if (dayWithLesson) {
         ctx.addIssue({
           code: 'custom',
-          path: ['courseId'],
-          message: 'Course id with this lesson order already exists.',
+          path: ['dayId'],
+          message: 'Day id with this lesson order already exists.',
         });
     
         ctx.addIssue({
           code: 'custom',
           path: ['lessonOrder'],
-          message: 'Course id with this lesson order already exists.',
+          message: 'Day id with this lesson order already exists.',
         });
       }
     }

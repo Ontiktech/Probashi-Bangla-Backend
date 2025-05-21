@@ -14,6 +14,11 @@ export const createCourseSchema = z.object({
     .max(255, { message: 'Description cannot exceed 255 characters.' })
     .optional()
     .nullable(),
+  totalDays: z
+    .coerce
+    .number({ required_error: 'Total days is required.' })
+    .min(1, { message: 'Total days has to be at least 1.' })
+    .max(1000000, { message: 'Total days cannot exceed 1000000.' }),
   language: z
     .enum(LANGUAGES, { required_error: 'Language is required.' }),
   targetLanguage: z
@@ -40,6 +45,13 @@ export const updateCourseSchema = z.object({
     .string({ required_error: 'Description is required.' })
     .trim()
     .max(255, { message: 'Description cannot exceed 255 characters.' })
+    .optional()
+    .nullable(),
+  totalDays: z
+    .coerce
+    .number({ required_error: 'Total days is required.' })
+    .min(1, { message: 'Total days has to be at least 1.' })
+    .max(1000000, { message: 'Total days cannot exceed 1000000.' })
     .optional()
     .nullable(),
   language: z

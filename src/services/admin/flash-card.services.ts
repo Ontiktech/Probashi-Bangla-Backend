@@ -39,7 +39,7 @@ export class FlashCardService {
     return await this.flashCardRepo.deleteFlashCard(id, deletedBy, transaction);
   }
 
-  async dayWithCardOrderExists(dayId: string, flashCardOrder : number) {
-    return await this.flashCardRepo.dayWithCardOrderExists(dayId, flashCardOrder);
+  async lessonWithCardOrderExists(dayId: string, flashCardOrder : number) {
+    return await this.flashCardRepo.lessonWithCardOrderExists(dayId, flashCardOrder);
   }
 }

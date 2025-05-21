@@ -4,6 +4,7 @@ import { AdminAuthenticatedRequest } from '../../types/authenticate.type';
 import { CourseService } from '../../services/admin/course.services';
 import { deleteMultipleFileLocal, multipleFileLocalFullPathResolver, rollbackMultipleFileLocalUpload } from '../../middleware/fileUploadLocal.middleware';
 import { NotFoundException } from '../../errors/NotFoundException.error';
+import { BadRequestException } from '../../errors/BadRequestException.error';
 
 const courseService = new CourseService();
 

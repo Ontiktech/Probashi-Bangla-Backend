@@ -119,10 +119,10 @@ export class FlashCardRepository {
     return (await FlashCardModel.findAll(options));
   }
 
-  async dayWithCardOrderExists(dayId: string, cardOrder : number): Promise<number> {
+  async lessonWithCardOrderExists(lessonId: string, cardOrder : number): Promise<number> {
     return await FlashCardModel.count({
       where: {
-        dayId: dayId,
+        lessonId: lessonId,
         cardOrder: cardOrder,
         deletedAt:{
           [Op.eq]: null

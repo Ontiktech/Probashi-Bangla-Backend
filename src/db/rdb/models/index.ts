@@ -83,22 +83,22 @@ FlashCardModel.belongsTo(AdminUserModel, {
 
 
 // COURSE ASSOCIATIONS
-CourseModel.hasMany(LessonModel, {
-  as: 'lessons',
+CourseModel.hasMany(DayModel, {
+  as: 'days',
   foreignKey: 'courseId',
 });
-LessonModel.belongsTo(CourseModel, {
+DayModel.belongsTo(CourseModel, {
   as: 'course',
   foreignKey: 'courseId',
 });
 
 
-// DAY ASSOCIATIONS
-LessonModel.hasMany(DayModel, {
-  as: 'days',
+// DAy ASSOCIATIONS
+LessonModel.hasMany(FlashCardModel, {
+  as: 'flash_cards',
   foreignKey: 'lessonId',
 });
-DayModel.belongsTo(LessonModel, {
+FlashCardModel.belongsTo(LessonModel, {
   as: 'lesson',
   foreignKey: 'lessonId',
 });

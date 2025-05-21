@@ -21,6 +21,7 @@ export async function getAllLessons(req: AdminAuthenticatedRequest, res: Respons
     });
   } catch (error) {
     console.log('getAllLessons', error)
+    rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -58,6 +59,7 @@ export async function getSingleLesson(req: AdminAuthenticatedRequest, res: Respo
     });
   } catch (error) {
     console.log('getSingleAllLesson', error)
+    rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -172,7 +174,7 @@ export async function deleteLesson(req: AdminAuthenticatedRequest, res: Response
   try {
     const lessonId = req.params.id
 
-    const lesson = await lessonService.findLessonById(lessonId, ['id', 'audioIntro', 'deletedAt'])
+    const lesson = await lessonService.findLessonById(lessonId)
     if(!lesson)
       throw new NotFoundException('Lesson not found.')
     if(lesson.deletedAt)

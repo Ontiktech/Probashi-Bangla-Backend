@@ -13,7 +13,7 @@ class FlashCardModel extends Model<
   InferCreationAttributes<FlashCardModel>
 > {
   declare id: string
-  declare dayId: string
+  declare lessonId: string
   declare frontText: string
   declare frontSubtext: string | null
   declare backText: string
@@ -35,7 +35,7 @@ FlashCardModel.init(
       type: DataTypes.STRING,
       primaryKey: true,
     },
-    dayId: {
+    lessonId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
