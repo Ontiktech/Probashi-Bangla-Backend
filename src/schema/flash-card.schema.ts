@@ -68,7 +68,7 @@ export const createFlashCardSchema = z.object({
     ctx.addIssue({
       code: 'custom',
       path: ['lessonId'],
-      message: 'Lesson with this lesson id doesn\'t exist.',
+      message: 'Lesson not found.',
     });
   }
 
@@ -78,13 +78,13 @@ export const createFlashCardSchema = z.object({
     ctx.addIssue({
       code: 'custom',
       path: ['lessonId'],
-      message: 'Lesson id with this flash card order already exists.',
+      message: 'Lesson with this flash card order already exists.',
     });
 
     ctx.addIssue({
       code: 'custom',
       path: ['cardOrder'],
-      message: 'Lesson id with this flash card order already exists.',
+      message: 'Lesson with this flash card order already exists.',
     });
   }
 });
@@ -174,7 +174,7 @@ export const updateFlashCardSchema = z.object({
       ctx.addIssue({
         code: 'custom',
         path: ['lessonId'],
-        message: 'Lesson with this lesson id doesn\'t exist.',
+        message: 'Lesson not found.',
       });
     }
 
@@ -185,13 +185,13 @@ export const updateFlashCardSchema = z.object({
         ctx.addIssue({
           code: 'custom',
           path: ['lessonId'],
-          message: 'Lesson id with this flash card order already exists.',
+          message: 'Lesson with this flash card order already exists.',
         });
     
         ctx.addIssue({
           code: 'custom',
           path: ['cardOrder'],
-          message: 'Lesson id with this flash card order already exists.',
+          message: 'Lesson with this flash card order already exists.',
         });
       }
     }

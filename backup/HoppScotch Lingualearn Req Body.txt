@@ -65,6 +65,4 @@ audioUrl: FILE | full
 -------------------------------------
 
 
-1. deleted may interfere with exists. Check
-2. Validation message if already exists not OK
-3. Pagination
+2. Pagination

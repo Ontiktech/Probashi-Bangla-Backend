@@ -34,7 +34,7 @@ export const createDaySchema = z.object({
     ctx.addIssue({
       code: 'custom',
       path: ['courseId'],
-      message: 'Course with this course id doesn\'t exist.',
+      message: 'Course not found.',
     });
   }
 
@@ -44,13 +44,13 @@ export const createDaySchema = z.object({
     ctx.addIssue({
       code: 'custom',
       path: ['courseId'],
-      message: 'Course id with this day number already exists.',
+      message: 'Course with this day number already exists.',
     });
 
     ctx.addIssue({
       code: 'custom',
       path: ['dayNumber'],
-      message: 'Course id with this day number already exists.',
+      message: 'Course with this day number already exists.',
     });
   }
 
@@ -109,7 +109,7 @@ export const updateDaySchema = z.object({
       ctx.addIssue({
         code: 'custom',
         path: ['courseId'],
-        message: 'Course with this course id doesn\'t exist.',
+        message: 'Course not found.',
       });
     }
   
@@ -119,13 +119,13 @@ export const updateDaySchema = z.object({
       ctx.addIssue({
         code: 'custom',
         path: ['courseId'],
-        message: 'Course id with this day number already exists.',
+        message: 'Course with this day number already exists.',
       });
   
       ctx.addIssue({
         code: 'custom',
         path: ['dayNumber'],
-        message: 'Course id with this day number already exists.',
+        message: 'Course with this day number already exists.',
       });
     }
   
