@@ -23,6 +23,7 @@ export class LessonRepository {
         {
           as: 'flash_cards',
           model: FlashCardModel,
+          required: false,
           where: {
             deletedAt: {
               [Op.eq]: null

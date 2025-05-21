@@ -93,6 +93,17 @@ DayModel.belongsTo(CourseModel, {
 });
 
 
+// FLASH CARDS ASSOCIATIONS
+DayModel.hasMany(LessonModel, {
+  as: 'lessons',
+  foreignKey: 'dayId',
+});
+LessonModel.belongsTo(DayModel, {
+  as: 'day',
+  foreignKey: 'dayId',
+});
+
+
 // DAy ASSOCIATIONS
 LessonModel.hasMany(FlashCardModel, {
   as: 'flash_cards',
@@ -101,17 +112,6 @@ LessonModel.hasMany(FlashCardModel, {
 FlashCardModel.belongsTo(LessonModel, {
   as: 'lesson',
   foreignKey: 'lessonId',
-});
-
-
-// FLASH CARDS ASSOCIATIONS
-DayModel.hasMany(FlashCardModel, {
-  as: 'flash_cards',
-  foreignKey: 'dayId',
-});
-FlashCardModel.belongsTo(DayModel, {
-  as: 'day',
-  foreignKey: 'dayId',
 });
 
 

@@ -22,6 +22,7 @@ export class DayRepository {
         {
           as: 'lessons',
           model: LessonModel,
+          required: false,
           where: {
             deletedAt: {
               [Op.eq]: null

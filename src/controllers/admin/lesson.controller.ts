@@ -174,7 +174,7 @@ export async function deleteLesson(req: AdminAuthenticatedRequest, res: Response
   try {
     const lessonId = req.params.id
 
-    const lesson = await lessonService.findLessonById(lessonId)
+    const lesson = await lessonService.findLessonById(lessonId, ['id', 'audioIntro', 'deletedAt'])
     if(!lesson)
       throw new NotFoundException('Lesson not found.')
     if(lesson.deletedAt)
