@@ -2,9 +2,9 @@ import { Response } from 'express';
 import { CustomException } from '../../errors/CustomException.error';
 import { AdminAuthenticatedRequest } from '../../types/authenticate.type';
 import { NotFoundException } from '../../errors/NotFoundException.error';
-import { BadRequestException } from '../../errors/BadRequestException.error';
 import { AdminUserService } from '../../services/admin/admin-user.services';
 import { hashPassword } from '../../utils/password.utils';
+import { BadRequestException } from '../../errors/BadRequestException.error';
 
 const adminUserService = new AdminUserService();
 
@@ -124,8 +124,13 @@ export async function updateAdmin(req: AdminAuthenticatedRequest, res: Response)
     //   throw new NotFoundException('Admin not found.')
 
     let hashedPassword = undefined
-    if(req.body.password)
-      hashedPassword = await hashPassword(req.body.password);
+    const { password, confirmPassword } = req.body
+    if(password && confirmPassword){
+      if(password !== confirmPassword)
+        throw new BadRequestException('Password and confirm password doesn\'t match.')
+      else
+        hashedPassword = await hashPassword(password);
+    }
     const data = { ...req.body, updatedBy: req.user!.id, password: hashedPassword}
     const response = await adminUserService.updateAdminUser(data, adminId);
 

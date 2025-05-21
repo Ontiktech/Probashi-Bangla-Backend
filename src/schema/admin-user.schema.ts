@@ -74,6 +74,13 @@ export const updateAdminUserSchema = z.object({
     .max(255, { message: 'Password cannot exceed 255 characters.' })
     .optional()
     .nullable(),
+  confirmPassword: z
+    .string({ required_error: 'Confirm password is required' })
+    .trim()
+    .min(8, { message: 'Confirm password has to be at least 8 characters long.' })
+    .max(255, { message: 'Confirm password cannot exceed 255 characters.' })
+    .optional()
+    .nullable(),
   // email: z
   //   .string({ required_error: 'Email is required' })
   //   .trim()
@@ -81,4 +88,34 @@ export const updateAdminUserSchema = z.object({
   //   .max(255, { message: 'Email cannot exceed 255 characters.' })
   //   .optional()
   //   .nullable(),
+}).superRefine(async (data, ctx) => {
+  const { password, confirmPassword } = data;
+
+  if (password && !confirmPassword) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['password'],
+      message: 'Confirm password is required if password is provided.',
+    });
+
+    ctx.addIssue({
+      code: 'custom',
+      path: ['confirmPassword'],
+      message: 'Confirm password is required if password is provided.',
+    });
+  }
+
+  if (password && confirmPassword && password !== confirmPassword) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['password'],
+      message: 'Password and confirm password doesn\'t match.',
+    });
+
+    ctx.addIssue({
+      code: 'custom',
+      path: ['confirmPassword'],
+      message: 'Password and confirm password doesn\'t match.',
+    });
+  }
 });

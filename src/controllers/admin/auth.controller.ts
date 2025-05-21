@@ -43,7 +43,7 @@ export async function login(req: Request, res: Response) {
       error: {
         message: 'Something went wrong! Please try again.',
       },
-      code: 500,
+      statusCode: 500,
     });
   }
 }

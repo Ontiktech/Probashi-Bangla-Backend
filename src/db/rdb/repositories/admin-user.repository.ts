@@ -8,6 +8,7 @@ export class AdminUserRepository {
       where: {
         email: email,
       },
+      attributes: ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'createdAt', 'updatedAt']
     };
 
     return (await AdminUserModel.findOne(options,)) as unknown as AdminUser;
@@ -15,9 +16,10 @@ export class AdminUserRepository {
 
   async adminUserExistsByEmail(email: string, exceptId: string | null = null): Promise<number> {
     const options: any = {
-      where: {
-      email: email
-    }}
+        where: {
+        email: email
+      }
+    }
 
     if (exceptId) options.where.id = { [Op.ne]: exceptId };
 
@@ -29,6 +31,7 @@ export class AdminUserRepository {
       where: {
         phone: phone,
       },
+      attributes: ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'createdAt', 'updatedAt']
     };
 
     if (exceptId) options.where.id = { [Op.ne]: exceptId };
@@ -49,7 +52,10 @@ export class AdminUserRepository {
   }
 
   async getAllAdminUsers(): Promise<AdminUser[]> {
-    return (await AdminUserModel.findAll({ order: [['createdAt', 'DESC']] })) as unknown as AdminUser[];
+    return (await AdminUserModel.findAll({
+      attributes: ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'createdAt', 'updatedAt'],
+      order: [['createdAt', 'DESC']]
+    })) as unknown as AdminUser[];
   }
 
   async findAdminUserById(id: string, select: string[]|null = null): Promise<AdminUser> {
@@ -57,6 +63,7 @@ export class AdminUserRepository {
       where: {
         id: id,
       },
+      attributes: ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'createdAt', 'updatedAt']
     };
 
     if(select && select.length > 0)
@@ -75,6 +82,7 @@ export class AdminUserRepository {
             } 
           },
         },
+        attributes: ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'createdAt', 'updatedAt']
       })) as unknown as AdminUser[];
     }
     
