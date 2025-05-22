@@ -8,6 +8,7 @@ export type StoreLesson = Partial<InferCreationAttributes<LessonModel>> & {
   dayId: string
   lessonOrder: number
   title: string
+  estimatedMinutes: number
   updatedBy: string
   createdAt?: string | null
   updatedAt?: string | null
