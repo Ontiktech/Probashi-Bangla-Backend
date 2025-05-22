@@ -4,6 +4,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
+  CreationOptional,
 } from 'sequelize';
 
 const sequelize = UserClient.getInstance();
@@ -16,10 +17,10 @@ class DayModel extends Model<
   declare courseId: string
   declare dayNumber: number
   declare title: string
-  declare description: string | null
+  declare description: CreationOptional<string | null>
   declare updatedBy: string
-  declare deletedAt: string | null
-  declare deletedBy: string | null
+  declare deletedAt: CreationOptional<string | null>
+  declare deletedBy: CreationOptional<string | null>
 }
 
 DayModel.init(
@@ -38,6 +39,7 @@ DayModel.init(
     },
     title: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING,

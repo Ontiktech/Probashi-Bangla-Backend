@@ -1,0 +1,49 @@
+import { Transaction } from 'sequelize';
+import { generateId } from '../../utils/id.utils';
+import { StoreAppUserCourseData, UpdateAppUserCourseData } from '../../types/app-user-course.type';
+import { AppUserCourseRepository } from '../../db/rdb/repositories/app-user-course.repository';
+
+export class AppUserCourseService {
+  private appUserCourseRepo: AppUserCourseRepository;
+
+  constructor() {
+    this.appUserCourseRepo = new AppUserCourseRepository();
+  }
+
+  async findAppUserCourseById(id: string, select: string[]|null = null, withRelations: boolean = false) {
+    return await this.appUserCourseRepo.findAppUserCourseById(id, select, withRelations);
+  }
+
+  async appUserCourseExistsById(id: string) {
+    return await this.appUserCourseRepo.appUserCourseExistsById(id);
+  }
+
+  async getAllAppUserCourses() {
+    return await this.appUserCourseRepo.getAllAppUserCourses();
+  }
+
+  async getAllAppUserCoursesWithOptions(select: string[]|null = null) {
+    return await this.appUserCourseRepo.getAllAppUserCoursesWithOptions(select);
+  }
+
+  async storeAppUserCourse(data: StoreAppUserCourseData, transaction?: Transaction) {
+    const id = generateId()
+    return await this.appUserCourseRepo.storeAppUserCourse({ id, ...data }, transaction);
+  }
+
+  async updateAppUserCourse(data: UpdateAppUserCourseData, id: string, transaction?: Transaction) {
+    return await this.appUserCourseRepo.updateAppUserCourse(data, id, transaction);
+  }
+
+  async deleteAppUserCourse(id: string, deletedBy: string, transaction?: Transaction) {
+    return await this.appUserCourseRepo.deleteAppUserCourse(id, deletedBy, transaction);
+  }
+
+  async findAppUserCourseByAppUserIdAndCourseId(appUserId: string, courseId: string) {
+    return await this.appUserCourseRepo.findAppUserCourseByAppUserIdAndCourseId(appUserId, courseId);
+  }
+
+  async appUserCourseExistsByAppUserIdAndCourseId(appUserId: string, courseId: string) {
+    return await this.appUserCourseRepo.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseId);
+  }
+}

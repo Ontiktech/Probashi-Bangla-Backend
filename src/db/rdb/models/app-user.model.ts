@@ -1,10 +1,10 @@
-import { ProficiencyLevel, AppUserVerificationStatus } from '../../../constants/enums';
 import { UserClient } from '../../clients/postgres.client';
 import {
   Model,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
+  CreationOptional,
 } from 'sequelize';
 
 const sequelize = UserClient.getInstance();
@@ -13,22 +13,17 @@ class AppUserModel extends Model<
   InferAttributes<AppUserModel>,
   InferCreationAttributes<AppUserModel>
 > {
-  declare id: string
-  declare phoneNumber: string
-  declare firstName: string
-  declare lastName: string
-  declare email: string | null
-  declare streak: number
-  declare xpPoints: number
-  declare avatarUrl: string | null
-  declare nativeLanguage: string
-  declare learningGoal: string
-  declare proficiencyLevel?: string | null
-  declare isNewUser: boolean
-  declare lastLoginAt: string
-  declare verified: string
-  declare deletedAt: string | null
-  declare deletedBy: string | null
+  declare id: string;
+  declare phoneNumber: string;
+  declare firstName: CreationOptional<string | null>;
+  declare lastName: CreationOptional<string | null>;
+  declare email: CreationOptional<string | null>;
+  declare streak: CreationOptional<number>;
+  declare avatarUrl: CreationOptional<string | null>;
+  declare isNewUser: CreationOptional<boolean>;
+  declare lastLoginAt: CreationOptional<string>;
+  declare deletedAt: CreationOptional<string | null>;
+  declare deletedBy: CreationOptional<string | null>;
 }
 
 AppUserModel.init(
@@ -39,49 +34,23 @@ AppUserModel.init(
     },
     phoneNumber: {
       type: DataTypes.STRING,
-      // unique: true, // Not needed since we are using soft-deletes
       allowNull: false,
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      // unique: true, // Not needed since we are using soft-deletes
-      allowNull: true,
     },
     streak: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
-    xpPoints: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
     avatarUrl: {
       type: DataTypes.STRING,
-      allowNull: true,
-    },
-    nativeLanguage: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    learningGoal: {
-      type: DataTypes.TEXT,
-    },
-    proficiencyLevel: {
-      type: DataTypes.ENUM(
-        ProficiencyLevel.BEGINNER,
-        ProficiencyLevel.INTERMEDIATE,
-        ProficiencyLevel.ADVANCED,
-      ),
-      allowNull: false,
-      defaultValue: ProficiencyLevel.BEGINNER
     },
     isNewUser: {
       type: DataTypes.BOOLEAN,
@@ -89,15 +58,7 @@ AppUserModel.init(
     },
     lastLoginAt: {
       type: DataTypes.DATE,
-      defaultValue: Date.now(),
-    },
-    verified: {
-      type: DataTypes.ENUM(
-        AppUserVerificationStatus.VERIFIED,
-        AppUserVerificationStatus.UNVERIFIED,
-        AppUserVerificationStatus.BANNED,
-      ),
-      defaultValue: AppUserVerificationStatus.UNVERIFIED,
+      defaultValue: () => new Date(),
     },
     deletedAt: {
       type: DataTypes.DATE,

@@ -23,9 +23,9 @@ export type AppUserWithTimeStamps = {
   updatedAt?: string | null
 };
 
-export type StoreAppUser = InferCreationAttributes<AppUserModel> & {
-  createdAt?: string | null
-  updatedAt?: string | null
+export type StoreAppUser = Partial<InferCreationAttributes<AppUserModel>> & {
+  id: string;
+  phoneNumber: string;
 };
 
 export type StoreAppUserData = Omit<StoreAppUser, 'id'>;

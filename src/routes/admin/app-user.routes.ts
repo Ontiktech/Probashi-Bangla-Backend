@@ -4,10 +4,11 @@ import { createAppUser, deleteAppUser, getAllAppUsers, getSingleAppUser, updateA
 import { validateRequestBody } from '../../utils/validatiion.utils';
 import { createAppUserSchema, updateAppUserSchema } from '../../schema/app-user.schema';
 import { appUserFileUploaderMiddleware } from '../../fileUploaders/app-user.fileUploaders';
+import { enrollAppUserToCourse } from '../../controllers/admin/admin-user.controller';
+import { enrollAppUserToCourseSchema } from '../../schema/enroll-app-user-to-course.schema';
 
 const appUserRouter = express.Router();
 const jwtMiddleware = new JwtMiddleware();
-
 
 appUserRouter.get('/', jwtMiddleware.verifyToken, getAllAppUsers);
 appUserRouter.get('/:id', jwtMiddleware.verifyToken, getSingleAppUser);
@@ -26,5 +27,12 @@ appUserRouter.patch(
   updateAppUser,
 );
 appUserRouter.delete('/:id', jwtMiddleware.verifyToken, deleteAppUser);
+
+appUserRouter.post(
+  '/enroll',
+  jwtMiddleware.verifyToken,
+  validateRequestBody(enrollAppUserToCourseSchema),
+  enrollAppUserToCourse,
+);
 
 export { appUserRouter };

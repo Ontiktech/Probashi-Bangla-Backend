@@ -5,6 +5,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
+  CreationOptional,
 } from 'sequelize';
 
 const sequelize = UserClient.getInstance();
@@ -15,16 +16,16 @@ class LessonModel extends Model<
 > {
   declare id: string
   declare dayId: string
-  declare title: string
-  declare description: string | null
-  declare estimatedMinutes: number
-  declare difficulty: string
-  declare audioIntro: string
-  declare xpReward: number
   declare lessonOrder: number
+  declare title: string
+  declare description: CreationOptional<string | null>
+  declare estimatedMinutes: number
+  declare difficulty: CreationOptional<string>
+  declare audioIntro: CreationOptional<string | null>
+  // declare xpReward: CreationOptional<number>
   declare updatedBy: string
-  declare deletedAt: string | null
-  declare deletedBy: string | null
+  declare deletedAt: CreationOptional<string | null>
+  declare deletedBy: CreationOptional<string | null>
 }
 
 LessonModel.init(
@@ -43,6 +44,7 @@ LessonModel.init(
     },
     title: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING,
@@ -64,11 +66,11 @@ LessonModel.init(
     audioIntro: {
       type: DataTypes.STRING,
     },
-    xpReward: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 50
-    },
+    // xpReward: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   defaultValue: 50
+    // },
     updatedBy: {
       type: DataTypes.STRING,
       allowNull: false,

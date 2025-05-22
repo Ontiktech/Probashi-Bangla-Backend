@@ -3,7 +3,12 @@ import { LessonModel } from '../db/rdb/models/lesson.model';
 
 export type Lesson = InferAttributes<LessonModel>;
 
-export type StoreLesson = InferCreationAttributes<LessonModel> & {
+export type StoreLesson = Partial<InferCreationAttributes<LessonModel>> & {
+  id: string
+  dayId: string
+  lessonOrder: number
+  title: string
+  updatedBy: string
   createdAt?: string | null
   updatedAt?: string | null
 };

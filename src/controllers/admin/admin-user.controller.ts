@@ -5,8 +5,10 @@ import { NotFoundException } from '../../errors/NotFoundException.error';
 import { AdminUserService } from '../../services/admin/admin-user.services';
 import { hashPassword } from '../../utils/password.utils';
 import { BadRequestException } from '../../errors/BadRequestException.error';
+import { AppUserCourseService } from '../../services/admin/app-user-course.services';
 
 const adminUserService = new AdminUserService();
+const appUserCourseService = new AppUserCourseService();
 
 export async function getAllAdminUsers(req: AdminAuthenticatedRequest, res: Response) {
   try {
@@ -204,3 +206,43 @@ export async function updateAdmin(req: AdminAuthenticatedRequest, res: Response)
 //     });
 //   }
 // }
+
+export async function enrollAppUserToCourse(req: AdminAuthenticatedRequest, res: Response) {
+  try {
+    const { appUserId, courseId } = req.body
+    const enrolled = await appUserCourseService.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseId);
+    if(enrolled)
+      throw new BadRequestException('This app user is already enrolled in this course.')
+
+    const data = { ...req.body, updatedBy: req.user!.id }
+    const response = await appUserCourseService.storeAppUserCourse(data);
+
+    if(response){
+      return res.json({
+        data: {
+          message: 'App user enrolled successfully!',
+          enrolled: response,
+        },
+        statusCode: 200,
+      });
+    }
+    throw new CustomException('Something went wrong! Please try again.', 500)
+  } catch (error) {
+    console.log('enrollAppUserToCourse', error);
+    if (error instanceof CustomException) {
+      return res.status(error.statusCode).json({
+        error: {
+          message: error.message,
+        },
+        statusCode: error.statusCode,
+      });
+    }
+
+    return res.status(500).json({
+      error: {
+        message: 'Something went wrong! Please try again.',
+      },
+      statusCode: 500,
+    });
+  }
+}

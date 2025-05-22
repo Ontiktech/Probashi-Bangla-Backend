@@ -1,7 +1,7 @@
 import { AdminUserRepository } from '../../db/rdb/repositories/admin-user.repository';
 import { BadRequestException } from '../../errors/BadRequestException.error';
 import { UnauthorizedException } from '../../errors/UnauthorizedException.error';
-import { LoginRequestSchema } from '../../schema/login.schema';
+import { adminUserLoginRequest } from '../../schema/admin-login.schema';
 import { 
   comparePassword, 
   // hashPassword 
@@ -14,7 +14,7 @@ export class AdminAuthService {
     this.adminUserRepo = new AdminUserRepository();
   }
 
-  async adminLogin(request: LoginRequestSchema) {
+  async adminLogin(request: adminUserLoginRequest) {
     const user = await this.adminUserRepo.findAdminUserByEmail(request.email);
 
     if (user) {

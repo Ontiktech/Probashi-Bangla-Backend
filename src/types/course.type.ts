@@ -3,7 +3,12 @@ import { CourseModel } from '../db/rdb/models';
 
 export type Course = InferAttributes<CourseModel>;
 
-export type StoreCourse = InferCreationAttributes<CourseModel> & {
+export type StoreCourse = Partial<InferCreationAttributes<CourseModel>> & {
+  id: string
+  title: string
+  totalDays: number
+  imagePath: string
+  updatedBy: string
   createdAt?: string | null
   updatedAt?: string | null
 };

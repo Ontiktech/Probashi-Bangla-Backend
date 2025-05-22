@@ -1,12 +1,12 @@
 import { z } from 'zod';
-import { imageValidationS3Rule } from './common.schema';
+import { imageValidationRule } from './common.schema';
 
 export const phoneNoSchema = z.object({
-  phone: z
-    .string({ required_error: 'Phone no. is required' })
+  phoneNo: z
+    .string({ required_error: 'Phone number is required' })
     .trim()
-    .min(3, { message: 'Phone no. has to be at least 3 characters long.' })
-    .max(255, { message: 'Phone no. cannot exceed 255 characters.' }),
+    .min(3, { message: 'Phone number has to be at least 3 characters long.' })
+    .max(255, { message: 'Phone number cannot exceed 255 characters.' }),
 });
 
 export type PhoneNoSchema = z.infer<typeof phoneNoSchema>;
@@ -24,41 +24,20 @@ export const appVerifyOtpSchema = z.object({
 
 export type AppVerifyOtpSchema = z.infer<typeof appVerifyOtpSchema>;
 
-export const nameAndUsernameSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(3, { message: 'Name has to be at least 3 characters long.' })
-    .max(255, { message: 'Name cannot exceed 255 characters.' })
-    .optional(),
-  username: z
-    .string({ required_error: 'Username is required' })
-    .trim()
-    .min(3, { message: 'Username has to be at least 3 characters long.' })
-    .max(255, { message: 'Username cannot exceed 255 characters.' }),
-});
-
-export type NameAndUsernameSchema = z.infer<typeof nameAndUsernameSchema>;
-
 export const nameSchema = z.object({
-  name: z
-    .string({ required_error: 'Username is required' })
+  firstName: z
+    .string({ required_error: 'First name is required' })
     .trim()
-    .min(3, { message: 'Name has to be at least 3 characters long.' })
-    .max(255, { message: 'Name cannot exceed 255 characters.' }),
+    .min(3, { message: 'First name has to be at least 3 characters long.' })
+    .max(255, { message: 'First name cannot exceed 255 characters.' }),
+  lastName: z
+    .string({ required_error: 'Last name is required' })
+    .trim()
+    .min(3, { message: 'Last name has to be at least 3 characters long.' })
+    .max(255, { message: 'Last name cannot exceed 255 characters.' }),
 });
 
 export type nameSchema = z.infer<typeof nameSchema>;
-
-export const usernameSchema = z.object({
-  username: z
-    .string({ required_error: 'Username is required' })
-    .trim()
-    .min(3, { message: 'Username has to be at least 3 characters long.' })
-    .max(255, { message: 'Username cannot exceed 255 characters.' }),
-});
-
-export type UsernameSchema = z.infer<typeof usernameSchema>;
 
 export const emailSchema = z.object({
   email: z
@@ -70,29 +49,8 @@ export const emailSchema = z.object({
 
 export type EmailSchema = z.infer<typeof emailSchema>;
 
-export const whatsappNoSchema = z.object({
-  whatsapp_no: z
-    .string({ required_error: 'Whatsapp no. is required' })
-    .trim()
-    .min(3, { message: 'Whatsapp no. has to be at least 3 characters long.' })
-    .max(255, { message: 'WhatsApp no. cannot exceed 255 characters.' }),
+export const avtatarUrlSchama = z.object({
+  avatar_url: z.array(imageValidationRule).optional().nullable(),
 });
 
-export type WhatsappNoSchema = z.infer<typeof whatsappNoSchema>;
-
-export const avatarSchama = z.object({
-  avatar_url: z
-    .string({ required_error: 'Avatar is required' })
-    .trim()
-    .min(1, { message: 'Avatar is required.' })
-    .max(255, { message: 'Max characters reached.' }),
-});
-
-export type AvatarSchema = z.infer<typeof avatarSchama>;
-
-export const profileImageSchama = z.object({
-  avatar_url: z.array(imageValidationS3Rule).optional().nullable(),
-  profile_image: z.array(imageValidationS3Rule),
-});
-
-export type profileImageSchama = z.infer<typeof profileImageSchama>;
+export type avtatarUrlSchama = z.infer<typeof avtatarUrlSchama>;

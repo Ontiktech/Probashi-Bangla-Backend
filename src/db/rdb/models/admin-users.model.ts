@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
@@ -14,9 +15,9 @@ class AdminUserModel extends Model<
   InferCreationAttributes<AdminUserModel>
 > {
   declare id: string
-  declare firstName: string
-  declare lastName: string
-  declare email: string | null
+  declare firstName: CreationOptional<string | null>
+  declare lastName: CreationOptional<string | null>
+  declare email: string
   declare phoneNumber: string | null
   declare password: string
 }
@@ -35,6 +36,7 @@ AdminUserModel.init(
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
       unique: true,
     },
     phoneNumber: {

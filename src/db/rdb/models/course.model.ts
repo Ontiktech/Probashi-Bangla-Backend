@@ -5,6 +5,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
+  CreationOptional,
 } from 'sequelize';
 
 const sequelize = UserClient.getInstance();
@@ -15,16 +16,16 @@ class CourseModel extends Model<
 > {
   declare id: string
   declare title: string
-  declare description: string | null
+  declare description: CreationOptional<string | null>
   declare totalDays: number
-  declare language: string
-  declare targetLanguage: string
-  declare difficulty: string
+  declare language: CreationOptional<string>
+  declare targetLanguage: CreationOptional<string>
+  declare difficulty: CreationOptional<string | null>
   declare imagePath: string
-  declare estimatedHours: number
+  declare estimatedHours: CreationOptional<number | null>
   declare updatedBy: string
-  declare deletedAt: string | null
-  declare deletedBy: string | null
+  declare deletedAt: CreationOptional<string | null>
+  declare deletedBy: CreationOptional<string | null>
 }
 
 CourseModel.init(
@@ -48,7 +49,6 @@ CourseModel.init(
     language: {
       type: DataTypes.ENUM(
         Languages.ENGLISH,
-        Languages.BANGLA,
         Languages.FRENCH,
         Languages.SPANISH
       ),
@@ -58,9 +58,16 @@ CourseModel.init(
     targetLanguage: {
       type: DataTypes.ENUM(
         Languages.ENGLISH,
-        Languages.BANGLA,
+        Languages.SPANISH,
         Languages.FRENCH,
-        Languages.SPANISH
+        Languages.GERMAN,
+        Languages.ITALIAN,
+        Languages.PORTUGUESE,
+        Languages.RUSSIAN,
+        Languages.MANDARIN,
+        Languages.JAPANESE,
+        Languages.KOREAN,
+        Languages.ARABIC,
       ),
       allowNull: false,
       defaultValue: Languages.ENGLISH,
@@ -68,6 +75,7 @@ CourseModel.init(
     difficulty: {
       type: DataTypes.ENUM(
         Difficulty.BEGINNER,
+        Difficulty.ELEMENTARY,
         Difficulty.INTERMEDIATE,
         Difficulty.ADVANCED,
       ),

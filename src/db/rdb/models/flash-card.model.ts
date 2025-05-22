@@ -4,6 +4,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
+  CreationOptional,
 } from 'sequelize';
 
 const sequelize = UserClient.getInstance();
@@ -14,19 +15,19 @@ class FlashCardModel extends Model<
 > {
   declare id: string
   declare lessonId: string
-  declare frontText: string
-  declare frontSubtext: string | null
-  declare backText: string
-  declare backSubtext: string | null
-  declare example: string | null
-  declare exampleTranslation: string | null
-  declare usageNotes: string | null
-  declare imageUrl: string | null
-  declare audioUrl: string | null
   declare cardOrder: number
+  declare frontText: string
+  declare frontSubtext: CreationOptional<string | null>
+  declare backText: string
+  declare backSubtext: CreationOptional<string | null>
+  declare example: CreationOptional<string | null>
+  declare exampleTranslation: CreationOptional<string | null>
+  declare usageNotes: CreationOptional<string | null>
+  declare imageUrl: CreationOptional<string | null>
+  declare audioUrl: CreationOptional<string | null>
   declare updatedBy: string
-  declare deletedAt: string | null
-  declare deletedBy: string | null
+  declare deletedAt: CreationOptional<string | null>
+  declare deletedBy: CreationOptional<string | null>
 }
 
 FlashCardModel.init(

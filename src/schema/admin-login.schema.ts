@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
-export const loginRequestSchema = z.object({
+export const adminUserLoginRequestSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8).max(128),
 });
 
-export const passwordResetSchema = z
+export const adminUserPasswordResetSchema = z
   .object({
     password: z
       .string()
@@ -33,5 +33,5 @@ export const passwordResetSchema = z
     }
   });
 
-export type LoginRequestSchema = z.infer<typeof loginRequestSchema>;
-export type PasswordResetSchema = z.infer<typeof passwordResetSchema>;
+export type adminUserLoginRequest = z.infer<typeof adminUserLoginRequestSchema>;
+export type adminUserPasswordReset = z.infer<typeof adminUserPasswordResetSchema>;

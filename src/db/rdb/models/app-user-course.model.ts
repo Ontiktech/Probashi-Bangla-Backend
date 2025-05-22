@@ -4,6 +4,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
+  CreationOptional,
 } from 'sequelize';
 
 const sequelize = UserClient.getInstance();
@@ -16,8 +17,8 @@ class AppUserCourseModel extends Model<
   declare appUserId: string
   declare courseId: string
   declare updatedBy: string
-  declare deletedAt: string | null
-  declare deletedBy: string | null
+  declare deletedAt: CreationOptional<string | null>
+  declare deletedBy: CreationOptional<string | null>
 }
 
 AppUserCourseModel.init(

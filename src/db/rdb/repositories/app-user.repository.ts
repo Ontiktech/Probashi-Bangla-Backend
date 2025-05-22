@@ -8,7 +8,7 @@ import {
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 export class AppUserRepository {
   constructor() {}
-  async createUser(user: AppUser, transaction: Transaction): Promise<AppUser> {
+  async createUser(user: StoreAppUser, transaction?: Transaction): Promise<AppUser> {
       const createdUser = await AppUserModel.create(user, {
         transaction: transaction,
       });
