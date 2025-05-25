@@ -178,7 +178,7 @@ export class AppUserOTPRepository {
     return await AppUserOTPModel.findAll(options);
   }
 
-  async verifyAppUserOTP(phoneNumber: string, otp: number, deletedBy: string, transaction?: Transaction): Promise<AppUserOTP|boolean> {
+  async verifyAppUserOTP(phoneNumber: string, otp: string, deletedBy: string, transaction?: Transaction): Promise<AppUserOTP|boolean> {
     const options: any = {
       where:{
         phoneNumber: phoneNumber,

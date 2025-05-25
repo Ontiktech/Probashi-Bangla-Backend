@@ -25,7 +25,6 @@ CourseRouter.patch(
   validateRequestBody(updateCourseSchema),
   updateCourse,
 );
-
 CourseRouter.delete('/:id', jwtMiddleware.verifyToken, deleteCourse);
 
 export { CourseRouter };

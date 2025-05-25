@@ -2,6 +2,7 @@ import { Op, Transaction } from 'sequelize';
 import { AppUserCourseModel, AppUserModel, CourseModel } from '../models';
 import { AppUserCourse, UpdateAppUserCourseData, StoreAppUserCourse } from '../../../types/app-user-course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
+import { AppUser } from '../../../types/app-user.type';
 export class AppUserCourseRepository {
   constructor() {}
   async findAppUserCourseById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<AppUserCourse> {
@@ -173,5 +174,35 @@ export class AppUserCourseRepository {
           }
         },
       });
+  }
+
+  async findAppUserWithCoursesById(id: string, select: string[]|null = null): Promise<AppUser> {
+    const options: any = {
+      where: {
+        id: id,
+        deletedAt:{
+          [Op.eq]: null
+        }
+      },
+      include: [
+        {
+          as: 'user_courses',
+          model: AppUserCourseModel,
+          required: false,
+          include: [
+            {
+              as: 'course',
+              model: CourseModel,
+              required: false,
+            },
+          ]
+        },
+      ]
+    }
+
+    if(select && select.length > 0)
+      options.attributes = select
+
+    return (await AppUserModel.findOne(options)) as unknown as AppUser;
   }
 }

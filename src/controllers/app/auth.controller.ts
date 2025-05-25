@@ -7,6 +7,7 @@ import { UserClient } from '../../db/clients/postgres.client';
 import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { AppUserService } from '../../services/admin/app-user.services';
 import { BadRequestException } from '../../errors/BadRequestException.error';
+import { getEnvVar } from '../../utils/common.utils';
 
 const appUserAuthService = new AppUserAuthService();
 const appUserervice = new AppUserService();
@@ -62,16 +63,21 @@ export async function login(req: Request, res: Response) {
 
 export async function verifyOTP(req: AppAuthenticatedRequest, res: Response) {
   try {
-    const otp = Number(req.body.otp) // NOTE: using phoneNo instead of phoneNumber because of some obscure error
+    const { otp } = req.body // NOTE: using phoneNo instead of phoneNumber because of some obscure error
 
     const appUser = await appUserervice.findUserByPhone(req.user!.phoneNumber, null, ['id', 'phoneNumber', 'firstName', 'lastName', 'email']);
     if(!appUser)
       throw new BadRequestException('Something went wrong. Please logout and try again.')
 
-    const response = await appUserAuthService.verifyOTP(req.user!.phoneNumber, otp, req.user!.id);
-
-    if(!response)
-      throw new CustomException('Something went wrong! Please try again.', 500)
+    if(getEnvVar('APP_ENV') !== 'local'){
+      const response = await appUserAuthService.verifyOTP(req.user!.phoneNumber, otp, req.user!.id);
+  
+      if(!response)
+        throw new CustomException('Something went wrong! Please try again.', 500)
+    }
+    else if(otp !== '000000'){
+      throw new BadRequestException('OTP mismatch.');
+    }
 
     const user = {
       id: appUser.id,
@@ -88,12 +94,12 @@ export async function verifyOTP(req: AppAuthenticatedRequest, res: Response) {
       data: {
         message: 'OTP verified successful.',
         jwt: token,
-        user: response,
+        user: appUser,
       },
       statusCode: 200,
     });
   } catch (error) {
-    console.log('app user login', error);
+    console.log('verifyOTP', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

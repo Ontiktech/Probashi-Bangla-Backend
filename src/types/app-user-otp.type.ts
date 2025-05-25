@@ -6,7 +6,7 @@ export type AppUserOTP = InferAttributes<AppUserOTPModel>;
 export type StoreAppUserOTP = Partial<InferCreationAttributes<AppUserOTPModel>> & {
   id: string
   phoneNumber: string
-  otp: number
+  otp: string
   otp_expires_at: string
 };
 

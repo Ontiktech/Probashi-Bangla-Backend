@@ -16,3 +16,8 @@ export type StoreCourse = Partial<InferCreationAttributes<CourseModel>> & {
 export type StoreCourseData = Omit<StoreCourse, 'id'>;
 
 export type UpdateCourseData = Partial<StoreCourseData>;
+
+export type CourseWithTimestamps = InferAttributes<CourseModel> & {
+  createdAt: string
+  updatedAt: string
+};

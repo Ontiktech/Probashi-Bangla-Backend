@@ -5,8 +5,12 @@ import { AppUserService } from '../../services/admin/app-user.services';
 import { deleteMultipleFileLocal, multipleFileLocalFullPathResolver, rollbackMultipleFileLocalUpload } from '../../middleware/fileUploadLocal.middleware';
 import { BadRequestException } from '../../errors/BadRequestException.error';
 import { NotFoundException } from '../../errors/NotFoundException.error';
+import { AppUserCourseService } from '../../services/admin/app-user-course.services';
+import { formatAppUserWithCourses } from '../../formatter/app-user.formatter';
+import { AppUserWithAppUserCoursesWithCourse } from '../../types/app-user.type';
 
 const appUserService = new AppUserService();
+const appUserCourseService = new AppUserCourseService();
 
 export async function getAllAppUsers(req: AdminAuthenticatedRequest, res: Response) {
   try {
@@ -248,6 +252,88 @@ export async function deleteAppUser(req: AdminAuthenticatedRequest, res: Respons
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
     console.log('updateAppUser', error);
+    if (error instanceof CustomException) {
+      return res.status(error.statusCode).json({
+        error: {
+          message: error.message,
+        },
+        statusCode: error.statusCode,
+      });
+    }
+
+    return res.status(500).json({
+      error: {
+        message: 'Something went wrong! Please try again.',
+      },
+      statusCode: 500,
+    });
+  }
+}
+
+export async function enrollAppUserToCourse(req: AdminAuthenticatedRequest, res: Response) {
+  try {
+    const { appUserId, courseIds } = req.body
+
+    const data = []
+    for (let i = 0; i < courseIds.length; i++) {
+      const enrolled = await appUserCourseService.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseIds);
+      if(enrolled)
+        throw new BadRequestException('This app user is already enrolled in this course.')
+
+      data.push({ appUserId: req.body.appUserId, courseId: courseIds[i], updatedBy: req.user!.id, deletedAt: null, deletedBy: null })
+    }
+
+    const response = await appUserCourseService.bulkStoreAppUserCourse(data);
+
+    if(response){
+      return res.json({
+        data: {
+          message: 'App user enrolled successfully!',
+          enrolled: response,
+        },
+        statusCode: 200,
+      });
+    }
+    throw new CustomException('Something went wrong! Please try again.', 500)
+  } catch (error) {
+    console.log('enrollAppUserToCourse', error);
+    if (error instanceof CustomException) {
+      return res.status(error.statusCode).json({
+        error: {
+          message: error.message,
+        },
+        statusCode: error.statusCode,
+      });
+    }
+
+    return res.status(500).json({
+      error: {
+        message: 'Something went wrong! Please try again.',
+      },
+      statusCode: 500,
+    });
+  }
+}
+
+export async function appUserEnrolled(req: AdminAuthenticatedRequest, res: Response) {
+  try {
+    const { id } = req.params
+
+    const appUserWithCourses = await appUserCourseService.findAppUserWithCoursesById(id) as AppUserWithAppUserCoursesWithCourse
+    const formattedAppUserWithCourses = formatAppUserWithCourses(appUserWithCourses)
+
+    if(appUserWithCourses){
+      return res.json({
+        data: {
+          message: 'User with enrolled courses list.',
+          appUser: formattedAppUserWithCourses,
+        },
+        statusCode: 200,
+      });
+    }
+    throw new CustomException('Something went wrong! Please try again.', 500)
+  } catch (error) {
+    console.log('enrollAppUserToCourse', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

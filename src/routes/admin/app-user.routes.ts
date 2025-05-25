@@ -1,10 +1,9 @@
 import express from 'express';
 import { JwtMiddleware } from '../../middleware/jwt.middleware';
-import { createAppUser, deleteAppUser, getAllAppUsers, getSingleAppUser, updateAppUser } from '../../controllers/admin/app-user.controller';
+import { appUserEnrolled, createAppUser, deleteAppUser, enrollAppUserToCourse, getAllAppUsers, getSingleAppUser, updateAppUser } from '../../controllers/admin/app-user.controller';
 import { validateRequestBody } from '../../utils/validatiion.utils';
 import { createAppUserSchema, updateAppUserSchema } from '../../schema/app-user.schema';
 import { appUserFileUploaderMiddleware } from '../../fileUploaders/app-user.fileUploaders';
-import { enrollAppUserToCourse } from '../../controllers/admin/admin-user.controller';
 import { enrollAppUserToCourseSchema } from '../../schema/enroll-app-user-to-course.schema';
 
 const appUserRouter = express.Router();
@@ -33,6 +32,12 @@ appUserRouter.post(
   jwtMiddleware.verifyToken,
   validateRequestBody(enrollAppUserToCourseSchema),
   enrollAppUserToCourse,
+);
+
+appUserRouter.get(
+  '/enrolled_courses/:id',
+  jwtMiddleware.verifyToken,
+  appUserEnrolled,
 );
 
 export { appUserRouter };

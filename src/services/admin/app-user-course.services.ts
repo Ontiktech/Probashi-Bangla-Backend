@@ -53,4 +53,8 @@ export class AppUserCourseService {
   async appUserCourseExistsByAppUserIdAndCourseId(appUserId: string, courseId: string) {
     return await this.appUserCourseRepo.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseId);
   }
+
+  async findAppUserWithCoursesById(id: string, select: string[]|null = null) {
+    return await this.appUserCourseRepo.findAppUserWithCoursesById(id, select);
+  }
 }

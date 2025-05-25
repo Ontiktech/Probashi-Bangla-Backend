@@ -34,14 +34,14 @@ export class AppUserAuthService {
       transaction,
     );
     if (!storeOTP)
-      throw new NotFoundException('Failed to stroe OTP.')
+      throw new NotFoundException('Failed to store OTP.')
 
     await this.appUserRepo.updateAppUser({ lastLoginAt: datetimeYMDHis() }, appUser.id, transaction); // update user
 
     return appUser
   }
 
-  async verifyOTP(phoneNumber: string, otp: number, appUserId: string, transaction?: Transaction) {
+  async verifyOTP(phoneNumber: string, otp: string, appUserId: string, transaction?: Transaction) {
     const verified = await this.appUserOTPRepo.verifyAppUserOTP(phoneNumber, otp, appUserId, transaction);
     if (!verified)
       throw new BadRequestException('Something went wrong. Please logout and try again.')

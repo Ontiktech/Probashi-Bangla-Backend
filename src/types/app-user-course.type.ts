@@ -1,5 +1,6 @@
 import { InferAttributes, InferCreationAttributes } from 'sequelize';
 import { AppUserCourseModel } from '../db/rdb/models';
+import { CourseWithTimestamps } from './course.type';
 
 export type AppUserCourse = InferAttributes<AppUserCourseModel>;
 
@@ -19,3 +20,9 @@ export type BulkStoreAppUserCourseData = Omit<StoreAppUserCourse, "id"> & {
 };
 
 export type UpdateAppUserCourseData = Partial<StoreAppUserCourseData>;
+
+export type AppUserCourseWithCourseAndTimestamps = InferAttributes<AppUserCourseModel> & {
+  createdAt: string
+  updatedAt: string
+  course: CourseWithTimestamps
+}

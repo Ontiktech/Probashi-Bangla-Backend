@@ -1,5 +1,7 @@
 import { AppUserModel } from '../db/rdb/models/app-user.model';
 import { InferAttributes, InferCreationAttributes } from 'sequelize';
+import { AppUserCourseWithCourseAndTimestamps } from './app-user-course.type';
+import { CourseWithTimestamps } from './course.type';
 
 export type AppUser = InferAttributes<AppUserModel>;
 
@@ -33,9 +35,22 @@ export type StoreAppUserData = Omit<StoreAppUser, 'id'>;
 export type UpdateAppUserData = Partial<StoreAppUserData>;
 
 export type AppUserGenerateToken = {
-  id: string,
-  phoneNumber: string,
-  name: string | null,
-  email: string | null,
+  id: string
+  phoneNumber: string
+  name: string | null
+  email: string | null
   avatarUrl: string | null
+};
+
+export type AppUserWithTimestamps = InferAttributes<AppUserModel> & {
+  createdAt: string
+  updatedAt: string
+};
+
+export type AppUserWithAppUserCoursesWithCourse = AppUserWithTimestamps & {
+  user_courses: AppUserCourseWithCourseAndTimestamps[]
+};
+
+export type AppUserWithCourses = AppUserWithTimestamps & {
+  courses: CourseWithTimestamps[]
 };

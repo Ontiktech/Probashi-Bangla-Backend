@@ -15,7 +15,7 @@ class AppUserOTPModel extends Model<
 > {
   declare id: string
   declare phoneNumber: string
-  declare otp: number
+  declare otp: string
   declare otp_expires_at: string
   declare deletedAt: CreationOptional<string | null>;
   declare deletedBy: CreationOptional<string | null>;
@@ -31,7 +31,7 @@ AppUserOTPModel.init(
       type: DataTypes.STRING,
     },
     otp: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     otp_expires_at: {
       type: DataTypes.DATE,
