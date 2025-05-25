@@ -57,3 +57,7 @@ export const isEmptyObject = (obj: any) => {
 
   return true
 }
+
+export function getOTPExpiry(): number {
+  return Number(getEnvVar('OTP_EXPIRY'));
+}

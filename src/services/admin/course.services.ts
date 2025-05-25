@@ -27,8 +27,7 @@ export class CourseService {
   }
 
   async storeCourse(data: StoreCourseData, transaction?: Transaction) {
-    const id = generateId()
-    return await this.courseRepo.storeCourse({ id, ...data }, transaction);
+    return await this.courseRepo.storeCourse({ id: generateId(), ...data }, transaction);
   }
 
   async updateCourse(data: UpdateCourseData, id: string, transaction?: Transaction) {

@@ -110,18 +110,20 @@ export async function getSingleAppUser(req: AdminAuthenticatedRequest, res: Resp
 
 export async function createAppUser(req: AdminAuthenticatedRequest, res: Response) {
   try {
-    const phoneNumberExists = await appUserService.userExistsByPhone(req.body.phoneNumber)
+    const { phoneNumber, firstName, lastName, email } = req.body
+
+    const phoneNumberExists = await appUserService.userExistsByPhone(phoneNumber)
     if(phoneNumberExists)
       throw new BadRequestException('Phone number already taken.')
 
-    if(req.body.email){
+    if(email){
       const emailExists = await appUserService.userExistsByEmail(req.body.email)
       if(emailExists)
         throw new BadRequestException('Email already taken.')
     }
 
     const filesWithFullPaths = multipleFileLocalFullPathResolver(req)
-    const data = { ...req.body, isNewUser: true, avatarUrl: filesWithFullPaths?.avatarUrl[0] }
+    const data = { ...req.body, isNewUser: firstName && lastName ? false : true, avatarUrl: filesWithFullPaths?.avatarUrl[0] }
     const response = await appUserService.storeAppUser(data);
 
     if(response)

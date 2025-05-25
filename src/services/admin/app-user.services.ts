@@ -26,8 +26,8 @@ export class AppUserService {
     return await this.appUserRepo.userExistsByEmail(email, exceptId);
   }
 
-  async findUserByPhone(phoneNumber: string, exceptId: string | null = null) {
-    return await this.appUserRepo.findUserByPhone(phoneNumber, exceptId);
+  async findUserByPhone(phoneNumber: string, exceptId: string | null = null, select: string[]|null = null) {
+    return await this.appUserRepo.findUserByPhone(phoneNumber, exceptId, select);
   }
 
   async userExistsByPhone(phoneNumber: string, exceptId: string | null = null) {
@@ -49,8 +49,7 @@ export class AppUserService {
   }
 
   async storeAppUser(data: StoreAppUserData, transaction?: Transaction) {
-    const id = generateId()
-    return await this.appUserRepo.storeAppUser({ id, ...data }, transaction);
+    return await this.appUserRepo.storeAppUser({ id: generateId(), ...data }, transaction);
   }
 
   async updateAppUser(data: UpdateAppUserData, id: string, transaction?: Transaction) {

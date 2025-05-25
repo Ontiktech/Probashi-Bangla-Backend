@@ -6,9 +6,8 @@ export type AppUserOTP = InferAttributes<AppUserOTPModel>;
 export type StoreAppUserOTP = Partial<InferCreationAttributes<AppUserOTPModel>> & {
   id: string
   phoneNumber: string
-  otp: string
+  otp: number
   otp_expires_at: string
-  verified: boolean
 };
 
 export type StoreAppUserOTPData = Omit<StoreAppUserOTP, 'id'>;

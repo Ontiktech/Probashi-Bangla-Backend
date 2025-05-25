@@ -15,7 +15,7 @@ export class FlashCardRepository {
       },
     }
 
-    if(select)
+    if(select && select.length > 0)
       options.attributes = select
 
     // # TODO: ESTABLISH ANY RELATIONS LATER IF NEED BE

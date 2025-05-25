@@ -167,8 +167,6 @@ export const updateFlashCardSchema = z.object({
     if(!cardOrder)
       cardOrder = flashCard.cardOrder
 
-    console.log('flashCard.cardOrder', flashCard.cardOrder);
-
     const lesson = await lessonService.lessonExistsById(lessonId)
     if(!lesson){
       ctx.addIssue({

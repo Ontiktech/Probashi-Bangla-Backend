@@ -134,8 +134,6 @@ export const updateLessonSchema = z.object({
     if(!lessonOrder)
       lessonOrder = lesson.lessonOrder
 
-    console.log('lesson.lessonOrder', lesson.lessonOrder);
-
     const day = await dayService.dayExistsById(dayId)
     if(!day){
       ctx.addIssue({

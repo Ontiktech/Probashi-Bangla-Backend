@@ -80,6 +80,58 @@ export class JwtMiddleware {
     };
   }
 
+  async verifyAppUserTokenWithoutOTPVerification(
+    req: AppAuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const authHeader = req.headers.authorization;
+
+      if (!authHeader || !authHeader?.startsWith('Bearer '))
+        throw new UnauthorizedException('You are not logged in!')
+
+      const token = authHeader.split(' ')[1];
+
+      const payload = verify(token, getEnvVar('JWT_SECRET'));
+
+      if (payload) {
+        req.user = payload as AppUserPayload;
+        const appUserRepo = new AppUserRepository();
+        const checkUser = await appUserRepo.findUserById(req.user.id);
+
+        if (!checkUser)
+          throw new UnauthorizedException('Invalid token provided!')
+
+        if (checkUser.deletedAt)
+          throw new UnauthorizedException('This user has been deleted!')
+
+        return next();
+      }
+
+      throw new UnauthorizedException('Auth token expired! Please login again.')
+    } catch (e: any) {
+      // console.log('verifyAppUserToken', e);
+      if (e instanceof CustomException) {
+        return res.status(e.statusCode).json({
+          error: {
+            message: e.message,
+          },
+          statusCode: e.statusCode,
+        });
+      }
+
+      return res.status(500).json({
+        error: {
+          message: 'Something went wrong! Please try again.'
+        },
+        statusCode: 500,
+      });
+    }
+  }
+
+
+
   async verifyAppUserToken(
     req: AppAuthenticatedRequest,
     res: Response,
@@ -97,8 +149,18 @@ export class JwtMiddleware {
 
       if (payload) {
         req.user = payload as AppUserPayload;
-        const userRepo = new AppUserRepository();
-        const checkUser = await userRepo.findUserById(req.user.id);
+        console.log('req.user', req.user);
+        if(!req.user.verified)
+          return res.json({
+            error: {
+              message: 'Account unverified. Please verify OTP to proceed.',
+              otpVerified: false,
+            },
+            statusCode: 403
+          })
+
+        const appUserRepo = new AppUserRepository();
+        const checkUser = await appUserRepo.findUserById(req.user.id);
 
         if (!checkUser)
           throw new UnauthorizedException('Invalid token provided!')

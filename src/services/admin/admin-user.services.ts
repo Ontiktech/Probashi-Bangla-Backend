@@ -43,8 +43,7 @@ export class AdminUserService {
   }
 
   async storeAdminUser(data: StoreAdminUserData, transaction?: Transaction) {
-    const id = generateId()
-    return await this.appAdminUserRepo.storeAdminUser({ id, ...data }, transaction);
+    return await this.appAdminUserRepo.storeAdminUser({ id: generateId(), ...data }, transaction);
   }
 
   async updateAdminUser(data: UpdateAdminUserData, id: string, transaction?: Transaction) {

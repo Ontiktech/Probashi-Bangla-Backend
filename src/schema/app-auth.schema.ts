@@ -22,6 +22,14 @@ export const phoneNoSchema = z.object({
   }
 });
 
+export const otpVerifySchema = z.object({
+  otp: z
+    .string({ required_error: 'OTP is required' })
+    .trim()
+    .min(6, { message: 'OTP has to be 6 characters long.' })
+    .max(6, { message: 'OTP has to be 6 characters long.' }),
+});
+
 export type PhoneNoSchema = z.infer<typeof phoneNoSchema>;
 
 export const appVerifyOtpSchema = z.object({

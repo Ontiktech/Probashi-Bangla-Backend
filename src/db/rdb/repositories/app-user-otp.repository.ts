@@ -1,7 +1,8 @@
 import { Op, Transaction } from 'sequelize';
 import { AppUserOTPModel } from '../models';
-import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { AppUserOTP, StoreAppUserOTP, UpdateAppUserOTPData } from '../../../types/app-user-otp.type';
+import { datetimeYMDHis } from '../../../utils/datetime.utils';
+import { BadRequestException } from '../../../errors/BadRequestException.error';
 export class AppUserOTPRepository {
   constructor() {}
   async createAppUserOTP(user: StoreAppUserOTP, transaction?: Transaction): Promise<AppUserOTP> {
@@ -21,9 +22,8 @@ export class AppUserOTPRepository {
       },
     }
 
-    if(select){
+    if(select && select.length > 0)
       options.attributes = select
-    }
 
     return (await AppUserOTPModel.findOne(options)) as unknown as AppUserOTP;
   }
@@ -97,35 +97,6 @@ export class AppUserOTPRepository {
     return (await AppUserOTPModel.count(options)) as unknown as AppUserOTP;
   }
 
-  // async nullifyUserOtp(id: string): Promise<AppUserOTP> {
-  //   return (await AppUserOTPModel.update(
-  //     {
-  //       otp: null,
-  //       otp_expires_at: null,
-  //     },
-  //     {
-  //       where: {
-  //         id: id,
-  //       },
-  //     },
-  //   )) as unknown as AppUserOTP;
-  // }
-
-  // async setOtp(id: string, otp: string): Promise<AppUserOTP> {
-  //   const otp_validity = Number(getEnvVar('OTP_EXPIRY'));
-  //   return (await AppUserOTPModel.update(
-  //     {
-  //       // otp: otp,
-  //       otp_expires_at: datetimeYMDHis(null, 'mins', otp_validity),
-  //     },
-  //     {
-  //       where: {
-  //         id: id,
-  //       },
-  //     },
-  //   )) as unknown as AppUserOTP;
-  // }
-
   async getAllAppUserOTPs(): Promise<AppUserOTP[]> {
     return (await AppUserOTPModel.findAll({
       order: [['createdAt', 'DESC']],
@@ -152,8 +123,28 @@ export class AppUserOTPRepository {
     return (await AppUserOTPModel.update(data, options)) as unknown as AppUserOTP;
   }
 
-  async deleteAppUserOTP(id: string, transaction?: Transaction): Promise<AppUserOTP> {
-    return this.hardDeleteById(id, transaction);
+  async deleteAppUserOTP(id: string, deletedBy: string, transaction?: Transaction): Promise<AppUserOTP> {
+    const options: any = {
+      where: {
+        id: id,
+      },
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return await AppUserOTPModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as AppUserOTP;
+  }
+
+  async deleteAppUserOTPByPhoneNo(phoneNumber: string, deletedBy: string, transaction?: Transaction): Promise<AppUserOTP> {
+    const options: any = {
+      where: {
+        phoneNumber: phoneNumber,
+      },
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return await AppUserOTPModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as AppUserOTP;
   }
 
   async hardDeleteById(id: string, transaction?: Transaction): Promise<AppUserOTP> {
@@ -185,5 +176,28 @@ export class AppUserOTPRepository {
     };
 
     return await AppUserOTPModel.findAll(options);
+  }
+
+  async verifyAppUserOTP(phoneNumber: string, otp: number, deletedBy: string, transaction?: Transaction): Promise<AppUserOTP|boolean> {
+    const options: any = {
+      where:{
+        phoneNumber: phoneNumber,
+        deletedAt: {
+          [Op.eq]: null,
+        },
+      },
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    const otpData = await AppUserOTPModel.findOne(options) as unknown as AppUserOTP;
+    if(!otpData)
+      throw new BadRequestException('OTP not set. Please logout and try again.')
+    if(otpData.otp !== otp)
+      throw new BadRequestException('OTP mismatch.')
+
+    await AppUserOTPModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options);
+
+    return otpData
   }
 }

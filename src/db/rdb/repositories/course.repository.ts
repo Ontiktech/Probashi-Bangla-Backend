@@ -14,7 +14,7 @@ export class CourseRepository {
       },
     }
 
-    if(select)
+    if(select && select.length > 0)
       options.attributes = select
 
     if(withRelations){

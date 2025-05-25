@@ -14,7 +14,7 @@ export class UserCourseRepository {
       },
     }
 
-    if(select)
+    if(select && select.length > 0)
       options.attributes = select
 
     return (await AppUserCourseModel.findOne(options)) as unknown as AppUserCourse;
@@ -119,7 +119,7 @@ export class UserCourseRepository {
       },
     }
 
-    if(select)
+    if(select && select.length > 0)
       options.attributes = select
 
     return (await AppUserCourseModel.findOne(options)) as unknown as AppUserCourse;

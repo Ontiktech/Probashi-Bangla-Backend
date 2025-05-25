@@ -38,9 +38,11 @@ AppUserModel.init(
     },
     firstName: {
       type: DataTypes.STRING,
+      defaultValue: null,
     },
     lastName: {
       type: DataTypes.STRING,
+      defaultValue: null,
     },
     email: {
       type: DataTypes.STRING,

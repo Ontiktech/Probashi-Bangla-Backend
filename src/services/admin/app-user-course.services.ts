@@ -35,8 +35,7 @@ export class AppUserCourseService {
   }
 
   async storeAppUserCourse(data: StoreAppUserCourseData, transaction?: Transaction) {
-    const id = generateId()
-    return await this.appUserCourseRepo.storeAppUserCourse({ id, ...data }, transaction);
+    return await this.appUserCourseRepo.storeAppUserCourse({ id: generateId(), ...data }, transaction);
   }
 
   async updateAppUserCourse(data: UpdateAppUserCourseData, id: string, transaction?: Transaction) {

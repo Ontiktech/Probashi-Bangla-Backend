@@ -35,8 +35,7 @@ export class LessonService {
   }
 
   async storeLesson(data: StoreLessonData, transaction?: Transaction) {
-    const id = generateId()
-    return await this.lessonRepo.storeLesson({ id, ...data }, transaction);
+    return await this.lessonRepo.storeLesson({ id: generateId(), ...data }, transaction);
   }
 
   async updateLesson(data: UpdateLessonData, id: string, transaction?: Transaction) {

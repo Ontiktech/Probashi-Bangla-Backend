@@ -35,8 +35,7 @@ export class DayService {
   }
 
   async storeDay(data: StoreDayData, transaction?: Transaction) {
-    const id = generateId()
-    return await this.dayRepo.storeDay({ id, ...data }, transaction);
+    return await this.dayRepo.storeDay({ id: generateId(), ...data }, transaction);
   }
 
   async updateDay(data: UpdateDayData, id: string, transaction?: Transaction) {

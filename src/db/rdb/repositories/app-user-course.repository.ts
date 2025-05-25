@@ -14,7 +14,7 @@ export class AppUserCourseRepository {
       },
     }
 
-    if(select)
+    if(select && select.length > 0)
       options.attributes = select
 
     if(withRelations){
@@ -142,7 +142,7 @@ export class AppUserCourseRepository {
       },
     }
 
-    if(select)
+    if(select && select.length > 0)
       options.attributes = select
 
     if(withRelations){

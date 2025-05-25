@@ -4,6 +4,7 @@ import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
+  CreationOptional,
 } from 'sequelize';
 
 const sequelize = UserClient.getInstance();
@@ -14,9 +15,10 @@ class AppUserOTPModel extends Model<
 > {
   declare id: string
   declare phoneNumber: string
-  declare otp: string
+  declare otp: number
   declare otp_expires_at: string
-  declare verified: boolean
+  declare deletedAt: CreationOptional<string | null>;
+  declare deletedBy: CreationOptional<string | null>;
 }
 
 AppUserOTPModel.init(
@@ -34,9 +36,13 @@ AppUserOTPModel.init(
     otp_expires_at: {
       type: DataTypes.DATE,
     },
-    verified: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    deletedAt: {
+      type: DataTypes.DATE,
+      defaultValue: null,
+    },
+    deletedBy: {
+      type: DataTypes.STRING,
+      defaultValue: null,
     },
   },
   {

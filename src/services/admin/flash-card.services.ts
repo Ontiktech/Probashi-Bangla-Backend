@@ -35,8 +35,7 @@ export class FlashCardService {
   }
 
   async storeFlashCard(data: StoreFlashCardData, transaction?: Transaction) {
-    const id = generateId()
-    return await this.flashCardRepo.storeFlashCard({ id, ...data }, transaction);
+    return await this.flashCardRepo.storeFlashCard({ id: generateId(), ...data }, transaction);
   }
 
   async updateFlashCard(data: UpdateFlashCardData, id: string, transaction?: Transaction) {

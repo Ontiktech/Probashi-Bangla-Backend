@@ -25,9 +25,8 @@ export class AppUserRepository {
       },
     }
 
-    if(select){
+    if(select && select.length > 0)
       options.attributes = select
-    }
 
     return (await AppUserModel.findOne(options)) as unknown as AppUser;
   }
@@ -85,7 +84,7 @@ export class AppUserRepository {
     return (await AppUserModel.count(options)) as unknown as AppUser;
   }
 
-  async findUserByPhone(phoneNumber: string, exceptId: string | null = null): Promise<AppUser> {
+  async findUserByPhone(phoneNumber: string, exceptId: string | null = null, select: string[]|null = null): Promise<AppUser> {
     const options: any = {
       where: {
         phoneNumber: phoneNumber,
@@ -95,11 +94,14 @@ export class AppUserRepository {
       },
     };
     if (exceptId) options.where.id = { [Op.ne]: exceptId };
+
+    if(select && select.length > 0)
+      options.attributes = select
 
     return (await AppUserModel.findOne(options)) as unknown as AppUser;
   }
 
-  async userExistsByPhone(phoneNumber: string, exceptId: string | null = null): Promise<AppUser> {
+  async userExistsByPhone(phoneNumber: string, exceptId: string | null = null) {
     const options: any = {
       where: {
         phoneNumber: phoneNumber,
@@ -110,7 +112,7 @@ export class AppUserRepository {
     };
     if (exceptId) options.where.id = { [Op.ne]: exceptId };
 
-    return (await AppUserModel.count(options)) as unknown as AppUser;
+    return (await AppUserModel.count(options));
   }
 
   // async nullifyUserOtp(id: string): Promise<AppUser> {

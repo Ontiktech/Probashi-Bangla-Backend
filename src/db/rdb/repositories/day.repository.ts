@@ -14,7 +14,7 @@ export class DayRepository {
       },
     }
 
-    if(select)
+    if(select && select.length > 0)
       options.attributes = select
 
     if(withRelations){
