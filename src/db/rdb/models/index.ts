@@ -1,7 +1,7 @@
 // import {TestModel} from "./test.model"
 import { AdminUserModel } from './admin-users.model';
 import { AppUserModel } from './app-user.model';
-import { UserOTPModel } from './user-otp.model';
+import { AppUserOTPModel } from './app-user-otp.model';
 import { CourseModel } from './course.model';
 import { DayModel } from './days.model';
 import { LessonModel } from './lesson.model';
@@ -138,7 +138,7 @@ AppUserCourseModel.belongsTo(AppUserModel, {
 export {
   AppUserModel,
   AdminUserModel,
-  UserOTPModel,
+  AppUserOTPModel,
   CourseModel,
   DayModel,
   LessonModel,

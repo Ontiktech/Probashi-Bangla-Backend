@@ -185,12 +185,16 @@ export class AppUserRepository {
     return await AppUserModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as AppUser;
   }
 
-  async hardDeleteById(id: string): Promise<AppUser> {
-    return (await AppUserModel.destroy({
+  async hardDeleteById(id: string, transaction?: Transaction): Promise<AppUser> {
+    const options: any = {
       where: {
         id: id,
       },
-    })) as unknown as AppUser;
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return (await AppUserModel.destroy(options)) as unknown as AppUser;
   }
 
   async getAllAppUsersWithOptions(select: string[]|null = null): Promise<AppUser[]> {

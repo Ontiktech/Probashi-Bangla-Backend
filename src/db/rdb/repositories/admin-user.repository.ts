@@ -131,12 +131,16 @@ export class AdminUserRepository {
   //   return await AdminUserModel.update(options) as unknown as AdminUser;
   // }
 
-  async hardDeleteById(id: string): Promise<AdminUser> {
-    return (await AdminUserModel.destroy({
+  async hardDeleteById(id: string, transaction?: Transaction): Promise<AdminUser> {
+    const options: any = {
       where: {
         id: id,
       },
-    })) as unknown as AdminUser;
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return (await AdminUserModel.destroy(options) ) as unknown as AdminUser;
   }
 
   async getAllAdminUsersWithOptions(select: string[]|null = null): Promise<AdminUser[]> {

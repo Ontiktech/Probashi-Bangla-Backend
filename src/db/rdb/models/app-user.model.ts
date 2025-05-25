@@ -70,7 +70,7 @@ AppUserModel.init(
     },
   },
   {
-    tableName: 'users',
+    tableName: 'app_users',
     sequelize,
     timestamps: true,
   },

@@ -111,11 +111,15 @@ export class CourseRepository {
     return await CourseModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as Course;
   }
 
-  async hardDeleteById(id: string): Promise<Course> {
-    return (await CourseModel.destroy({
+  async hardDeleteById(id: string, transaction?: Transaction): Promise<Course> {
+    const options: any = {
       where: {
         id: id,
       },
-    })) as unknown as Course;
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return (await CourseModel.destroy(options)) as unknown as Course;
   }
 }

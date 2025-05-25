@@ -13,6 +13,8 @@ export class AppUserAuthService {
   async appUserLogin(phoneNumber: string, transaction?: Transaction) {
     const appUser = await this.appUserRepo.findUserByPhone(phoneNumber);
 
+    await 
+
     if (!appUser)
       throw new NotFoundException('User with this phone number not found.')
 
@@ -24,14 +26,11 @@ export class AppUserAuthService {
       isNewUser = false
     }
 
-    // STORE OTP AND SEND
     if (!isNewUser)
       data = { ...data, lastLoginAt: datetimeYMDHis() }
 
     const updateUser = await this.appUserRepo.updateAppUser(data, appUser.id, transaction);
     console.log('updateUser', updateUser);
-
-    // isEmptyObject
 
     return appUser
   }

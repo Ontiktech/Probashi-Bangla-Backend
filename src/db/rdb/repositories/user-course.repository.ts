@@ -87,12 +87,16 @@ export class UserCourseRepository {
     return await AppUserCourseModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as AppUserCourse;
   }
 
-  async hardDeleteById(id: string): Promise<AppUserCourse> {
-    return (await AppUserCourseModel.destroy({
+  async hardDeleteById(id: string, transaction?: Transaction): Promise<AppUserCourse> {
+    const options: any = {
       where: {
         id: id,
       },
-    })) as unknown as AppUserCourse;
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return (await AppUserCourseModel.destroy(options)) as unknown as AppUserCourse;
   }
 
   async getAllUserCoursesWithOptions(select: string[]|null = null): Promise<AppUserCourse[]> {

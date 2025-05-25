@@ -2,6 +2,7 @@ import { Op, Transaction } from 'sequelize';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { FlashCardModel } from '../models/flash-card.model';
 import { FlashCard, StoreFlashCard, UpdateFlashCardData } from '../../../types/flash-card.type';
+import { OptionalObjectAttributes } from '@aws-sdk/client-s3';
 export class FlashCardRepository {
   constructor() {}
   async findFlashCardById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<FlashCard> {
@@ -123,12 +124,16 @@ export class FlashCardRepository {
     return await FlashCardModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as FlashCard;
   }
 
-  async hardDeleteById(id: string): Promise<FlashCard> {
-    return (await FlashCardModel.destroy({
+  async hardDeleteById(id: string, transaction?: Transaction): Promise<FlashCard> {
+    const options: any = {
       where: {
         id: id,
       },
-    })) as unknown as FlashCard;
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return (await FlashCardModel.destroy(options)) as unknown as FlashCard;
   }
 
   async getAllFlashCardsWithOptions(select: string[]|null = null): Promise<FlashCard[]> {

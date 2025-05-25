@@ -8,9 +8,9 @@ import {
 
 const sequelize = UserClient.getInstance();
 
-class UserOTPModel extends Model<
-  InferAttributes<UserOTPModel>,
-  InferCreationAttributes<UserOTPModel>
+class AppUserOTPModel extends Model<
+  InferAttributes<AppUserOTPModel>,
+  InferCreationAttributes<AppUserOTPModel>
 > {
   declare id: string
   declare phoneNumber: string
@@ -19,7 +19,7 @@ class UserOTPModel extends Model<
   declare verified: boolean
 }
 
-UserOTPModel.init(
+AppUserOTPModel.init(
   {
     id: {
       type: DataTypes.STRING,
@@ -36,13 +36,14 @@ UserOTPModel.init(
     },
     verified: {
       type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
   },
   {
-    tableName: 'user_otps',
+    tableName: 'app_user_otps',
     sequelize,
     timestamps: true,
   },
 );
 
-export { UserOTPModel };
+export { AppUserOTPModel };

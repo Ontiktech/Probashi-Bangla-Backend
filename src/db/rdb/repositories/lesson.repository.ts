@@ -124,12 +124,16 @@ export class LessonRepository {
     return await LessonModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as Lesson;
   }
 
-  async hardDeleteById(id: string): Promise<Lesson> {
-    return (await LessonModel.destroy({
+  async hardDeleteById(id: string, transaction?: Transaction): Promise<Lesson> {
+    const options: any = {
       where: {
         id: id,
       },
-    })) as unknown as Lesson;
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return (await LessonModel.destroy(options)) as unknown as Lesson;
   }
 
   async getAllLessonsWithOptions(select: string[]|null = null): Promise<Lesson[]> {

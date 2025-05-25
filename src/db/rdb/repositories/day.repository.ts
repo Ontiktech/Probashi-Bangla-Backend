@@ -123,12 +123,16 @@ export class DayRepository {
     return await DayModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as Day;
   }
 
-  async hardDeleteById(id: string): Promise<Day> {
-    return (await DayModel.destroy({
+  async hardDeleteById(id: string, transaction?: Transaction): Promise<Day> {
+    const options: any = {
       where: {
         id: id,
       },
-    })) as unknown as Day;
+    };
+
+    if(transaction) options.transaction = transaction;
+
+    return (await DayModel.destroy(options)) as unknown as Day;
   }
 
   async getAllDaysWithOptions(select: string[]|null = null): Promise<Day[]> {
