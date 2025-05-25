@@ -63,9 +63,9 @@ export async function login(req: Request, res: Response) {
 
 export async function verifyOTP(req: AppAuthenticatedRequest, res: Response) {
   try {
-    const { otp } = req.body // NOTE: using phoneNo instead of phoneNumber because of some obscure error
+    const { otp } = req.body
 
-    const appUser = await appUserervice.findUserByPhone(req.user!.phoneNumber, null, ['id', 'phoneNumber', 'firstName', 'lastName', 'email']);
+    const appUser = await appUserervice.findUserByPhone(req.user!.phoneNumber, null, ['id','phoneNumber','firstName','lastName','email', 'isNewUser', 'lastLoginAt']);
     if(!appUser)
       throw new BadRequestException('Something went wrong. Please logout and try again.')
 

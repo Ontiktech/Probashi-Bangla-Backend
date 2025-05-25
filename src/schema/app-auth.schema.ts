@@ -22,7 +22,9 @@ export const phoneNoSchema = z.object({
   }
 });
 
-export const otpVerifySchema = z.object({
+export type PhoneNoSchema = z.infer<typeof phoneNoSchema>;
+
+export const appVerifyOtpSchema = z.object({
   otp: z
     .string({ required_error: 'OTP is required' })
     .trim()
@@ -30,22 +32,10 @@ export const otpVerifySchema = z.object({
     .max(6, { message: 'OTP has to be 6 characters long.' }),
 });
 
-export type PhoneNoSchema = z.infer<typeof phoneNoSchema>;
-
-export const appVerifyOtpSchema = z.object({
-  otp: z
-    .string()
-    .min(6, { message: 'OTP has to be exactly 6 characters long.' })
-    .max(6, { message: 'OTP has to be exactly 6 characters long.' })
-    .regex(new RegExp(/^[0-9]*$/), {
-      message: 'OTP can only contain numbers.',
-    }),
-  channel: z.string().optional().nullable()
-});
-
 export type AppVerifyOtpSchema = z.infer<typeof appVerifyOtpSchema>;
 
-export const nameSchema = z.object({
+
+export const editProfileSchema = z.object({
   firstName: z
     .string({ required_error: 'First name is required' })
     .trim()
@@ -58,20 +48,10 @@ export const nameSchema = z.object({
     .max(255, { message: 'Last name cannot exceed 255 characters.' }),
 });
 
-export type nameSchema = z.infer<typeof nameSchema>;
+export type nameSchema = z.infer<typeof editProfileSchema>;
 
-export const emailSchema = z.object({
-  email: z
-    .string({ required_error: 'Email is required.' })
-    .email({ message: 'Invalid email format. Please provide a valid email.' })
-    .min(1, { message: 'Email is required.' })
-    .max(255, { message: 'Email cannot exceed 255 characters.' }),
+export const updateAvtatarUrlSchama = z.object({
+  avatarUrl: z.array(imageValidationRule, { required_error: 'Avatar image is required.' }),
 });
 
-export type EmailSchema = z.infer<typeof emailSchema>;
-
-export const avtatarUrlSchama = z.object({
-  avatar_url: z.array(imageValidationRule).optional().nullable(),
-});
-
-export type avtatarUrlSchama = z.infer<typeof avtatarUrlSchama>;
+export type avtatarUrlSchama = z.infer<typeof updateAvtatarUrlSchama>;

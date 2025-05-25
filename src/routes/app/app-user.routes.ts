@@ -1,0 +1,27 @@
+import express from 'express';
+import { validateRequestBody } from '../../utils/validatiion.utils';
+import { JwtMiddleware } from '../../middleware/jwt.middleware';
+import { editProfileSchema, updateAvtatarUrlSchama } from '../../schema/app-auth.schema';
+import { editAvatar, editProfile, getProfile } from '../../controllers/app/app-user.controller';
+import { appUserFileUploaderMiddleware } from '../../fileUploaders/app-user.fileUploaders';
+
+const appUserProfileRouter = express.Router();
+const jwtMiddleware = new JwtMiddleware();
+
+// Define Routes
+appUserProfileRouter.get('/getProfile', jwtMiddleware.verifyAppUserToken, getProfile);
+appUserProfileRouter.patch(
+  '/editProfile',
+  jwtMiddleware.verifyAppUserToken,
+  validateRequestBody(editProfileSchema),
+  editProfile,
+);
+appUserProfileRouter.patch(
+  '/editAvatar',
+  jwtMiddleware.verifyAppUserToken,
+  appUserFileUploaderMiddleware,
+  validateRequestBody(updateAvtatarUrlSchama),
+  editAvatar,
+);
+
+export { appUserProfileRouter };

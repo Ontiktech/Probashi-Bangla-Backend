@@ -40,4 +40,10 @@ appUserRouter.get(
   appUserEnrolled,
 );
 
+appUserRouter.get(
+  '/enrolled_courses/:id',
+  jwtMiddleware.verifyToken,
+  appUserEnrolled,
+);
+
 export { appUserRouter };
