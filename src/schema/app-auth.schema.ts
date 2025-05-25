@@ -1,5 +1,8 @@
 import { z } from 'zod';
 import { imageValidationRule } from './common.schema';
+import { AppUserService } from '../services/admin/app-user.services';
+
+const appUserService = new AppUserService()
 
 export const phoneNoSchema = z.object({
   phoneNo: z
@@ -7,6 +10,16 @@ export const phoneNoSchema = z.object({
     .trim()
     .min(3, { message: 'Phone number has to be at least 3 characters long.' })
     .max(255, { message: 'Phone number cannot exceed 255 characters.' }),
+}).superRefine(async (data, ctx) => {
+  const { phoneNo } = data;
+  const appUserExists = await appUserService.userExistsByPhone(phoneNo)
+  if (!appUserExists) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['phoneNo'],
+      message: 'User with this phone number doesn\'t exist.',
+    });
+  }
 });
 
 export type PhoneNoSchema = z.infer<typeof phoneNoSchema>;

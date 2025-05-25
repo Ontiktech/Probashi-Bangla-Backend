@@ -79,6 +79,14 @@ export class AppUserCourseRepository {
     return (await AppUserCourseModel.findAll(options));
   }
 
+  async bulkStoreAppUserCourse(data: StoreAppUserCourse[], fields?: ("id" | "appUserId" | "courseId" | "updatedBy" | "deletedAt" | "deletedBy")[], transaction?: Transaction): Promise<AppUserCourse> {
+    const options: any = { fields: fields };
+
+    if(transaction) options.transaction = transaction;
+
+    return await AppUserCourseModel.bulkCreate(data, options) as unknown as AppUserCourse;
+  }
+
   async storeAppUserCourse(data: StoreAppUserCourse, transaction?: Transaction): Promise<AppUserCourse> {
     const options: any = {};
 

@@ -8,7 +8,7 @@ export class AdminUserRepository {
       where: {
         email: email,
       },
-      attributes: ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'createdAt', 'updatedAt']
+      attributes: ['id', 'firstName', 'lastName', 'email', 'password', 'phoneNumber', 'createdAt', 'updatedAt']
     };
 
     return (await AdminUserModel.findOne(options,)) as unknown as AdminUser;

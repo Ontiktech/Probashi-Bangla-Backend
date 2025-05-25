@@ -209,13 +209,18 @@ export async function updateAdmin(req: AdminAuthenticatedRequest, res: Response)
 
 export async function enrollAppUserToCourse(req: AdminAuthenticatedRequest, res: Response) {
   try {
-    const { appUserId, courseId } = req.body
-    const enrolled = await appUserCourseService.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseId);
-    if(enrolled)
-      throw new BadRequestException('This app user is already enrolled in this course.')
+    const { appUserId, courseIds } = req.body
 
-    const data = { ...req.body, updatedBy: req.user!.id }
-    const response = await appUserCourseService.storeAppUserCourse(data);
+    const data = []
+    for (let i = 0; i < courseIds.length; i++) {
+      const enrolled = await appUserCourseService.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseIds);
+      if(enrolled)
+        throw new BadRequestException('This app user is already enrolled in this course.')
+
+      data.push({ appUserId: req.body.appUserId, courseId: courseIds[i], updatedBy: req.user!.id, deletedAt: null, deletedBy: null })
+    }
+
+    const response = await appUserCourseService.bulkStoreAppUserCourse(data);
 
     if(response){
       return res.json({

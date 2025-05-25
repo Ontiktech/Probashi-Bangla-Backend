@@ -59,7 +59,7 @@ export enum ProficiencyLevel {
 }
 
 export const PROFICIENCY_LEVELS = [
-  Difficulty.BEGINNER,
-  Difficulty.INTERMEDIATE,
-  Difficulty.ADVANCED,
+  ProficiencyLevel.BEGINNER,
+  ProficiencyLevel.INTERMEDIATE,
+  ProficiencyLevel.ADVANCED,
 ] as const;

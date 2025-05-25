@@ -47,3 +47,13 @@ export const getMimeTypeValidationMsg = (validTypes: string[]) => {
   }
   return validExtensions.join(', ');
 };
+
+export const isEmptyObject = (obj: any) => {
+  for (const prop in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+      return false;
+    }
+  }
+
+  return true
+}

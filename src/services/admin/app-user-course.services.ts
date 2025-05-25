@@ -1,6 +1,6 @@
 import { Transaction } from 'sequelize';
 import { generateId } from '../../utils/id.utils';
-import { StoreAppUserCourseData, UpdateAppUserCourseData } from '../../types/app-user-course.type';
+import { BulkStoreAppUserCourseData, StoreAppUserCourse, StoreAppUserCourseData, UpdateAppUserCourseData } from '../../types/app-user-course.type';
 import { AppUserCourseRepository } from '../../db/rdb/repositories/app-user-course.repository';
 
 export class AppUserCourseService {
@@ -24,6 +24,14 @@ export class AppUserCourseService {
 
   async getAllAppUserCoursesWithOptions(select: string[]|null = null) {
     return await this.appUserCourseRepo.getAllAppUserCoursesWithOptions(select);
+  }
+
+  async bulkStoreAppUserCourse(data: BulkStoreAppUserCourseData[], fields?: ("id" | "appUserId" | "courseId" | "updatedBy" | "deletedAt" | "deletedBy")[], transaction?: Transaction) {
+    for (let i = 0; i < data.length; i++) {
+      const id = generateId()
+      data[i].id = id
+    }
+    return await this.appUserCourseRepo.bulkStoreAppUserCourse(data as StoreAppUserCourse[], fields, transaction);
   }
 
   async storeAppUserCourse(data: StoreAppUserCourseData, transaction?: Transaction) {

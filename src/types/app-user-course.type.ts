@@ -14,4 +14,8 @@ export type StoreAppUserCourse = InferCreationAttributes<AppUserCourseModel> & {
 
 export type StoreAppUserCourseData = Omit<StoreAppUserCourse, 'id'>;
 
+export type BulkStoreAppUserCourseData = Omit<StoreAppUserCourse, "id"> & {
+  id?: string
+};
+
 export type UpdateAppUserCourseData = Partial<StoreAppUserCourseData>;

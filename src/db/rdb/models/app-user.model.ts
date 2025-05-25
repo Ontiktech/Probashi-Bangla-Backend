@@ -58,7 +58,7 @@ AppUserModel.init(
     },
     lastLoginAt: {
       type: DataTypes.DATE,
-      defaultValue: () => new Date(),
+      defaultValue: null,
     },
     deletedAt: {
       type: DataTypes.DATE,

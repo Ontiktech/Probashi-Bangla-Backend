@@ -1,27 +1,23 @@
-// import { AppUserPayload } from '../../schema/token-payload.schema';
+import { AppUserPayload } from '../../schema/token-payload.schema';
 // import { generateToken } from '../../utils/jwt.utils';
 import { Request, Response } from 'express';
 import { CustomException } from '../../errors/CustomException.error';
 import { AppUserAuthService } from '../../services/app/auth.service';
-import { UserClient } from '../../db/clients/postgres.client';
 import { generateToken } from '../../utils/jwt.utils';
 
 const appUserAuthService = new AppUserAuthService();
 
-const sequelize = UserClient.getInstance();
-
 export async function login(req: Request, res: Response) {
   try {
-    console.log('body', req.body);
-    const { phoneNo } = req.body // NOTE: using phoneNo instead of phoneNumber
+    const { phoneNo } = req.body // NOTE: using phoneNo instead of phoneNumber because of some obscure error
     const response = await appUserAuthService.appUserLogin(phoneNo);
 
     const user = {
       id: response.id,
+      phoneNumber: response.phoneNumber,
       firstName: response.firstName,
       lastName: response.lastName,
       email: response.email,
-      phoneNumber: response.phoneNumber,
     } as AppUserPayload
 
     const token = generateToken(user);
