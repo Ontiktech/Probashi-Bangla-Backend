@@ -49,8 +49,16 @@ CourseModel.init(
     language: {
       type: DataTypes.ENUM(
         Languages.ENGLISH,
+        Languages.SPANISH,
         Languages.FRENCH,
-        Languages.SPANISH
+        Languages.GERMAN,
+        Languages.ITALIAN,
+        Languages.PORTUGUESE,
+        Languages.RUSSIAN,
+        Languages.MANDARIN,
+        Languages.JAPANESE,
+        Languages.KOREAN,
+        Languages.ARABIC,
       ),
       allowNull: false,
       defaultValue: Languages.ENGLISH,

@@ -1,8 +1,10 @@
 import { Op, Transaction } from 'sequelize';
 import { AppUserCourseModel, AppUserModel, CourseModel } from '../models';
-import { AppUserCourse, UpdateAppUserCourseData, StoreAppUserCourse } from '../../../types/app-user-course.type';
+import { AppUserCourse, UpdateAppUserCourseData, StoreAppUserCourse, AppUserCourseWithCourseAndTimestamps } from '../../../types/app-user-course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { AppUser } from '../../../types/app-user.type';
+import { FilterLanguage } from '../../../constants/enums';
+import { Course } from '../../../types/course.type';
 export class AppUserCourseRepository {
   constructor() {}
   async findAppUserCourseById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<AppUserCourse> {
@@ -204,5 +206,68 @@ export class AppUserCourseRepository {
       options.attributes = select
 
     return (await AppUserModel.findOne(options)) as unknown as AppUser;
+  }
+
+  async viewEnrolledCourses(appUserId: string, limit: number, offset: number, language?: string, searchText?: string): Promise<{next: number, data: AppUserCourseWithCourseAndTimestamps[]}> {
+    const options: any = {
+      where: {
+        appUserId: appUserId,
+        deletedAt: {
+          [Op.eq]: null,
+        },
+      },
+      order: [
+        ['createdAt', 'DESC']
+      ],
+      limit: limit,
+      offset: offset,
+      include: [
+        {
+          as: 'course',
+          model: CourseModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+        },
+      ],
+    };
+    
+    const courseWhereConditions: any[] = [];
+    
+    if (language && language !== FilterLanguage.ALL && language !== FilterLanguage.EMPTY) {
+      courseWhereConditions.push({
+        [Op.or]: [
+          { language: language },
+          { targetLanguage: language },
+        ],
+      });
+    }
+    
+    if (searchText && searchText !== "") {
+      courseWhereConditions.push({
+        [Op.or]: [
+          { title: { [Op.like]: `%${searchText}%` } },
+          { description: { [Op.like]: `%${searchText}%` } },
+        ],
+      });
+    }
+
+    if (courseWhereConditions.length > 0) {
+      options.include[0].where = {
+        ...options.include[0].where,
+        [Op.and]: courseWhereConditions,
+      };
+    }
+
+    const data = await AppUserCourseModel.findAll(options) as unknown as AppUserCourseWithCourseAndTimestamps[]
+
+    const count = await AppUserCourseModel.count(options) as unknown as number
+    const next = (count - offset - limit) > 0 ? (count - offset - limit) : 0
+
+    console.log('limit', limit, 'offset', offset, 'count', count, 'next', next);
+
+    return { next, data }
   }
 }

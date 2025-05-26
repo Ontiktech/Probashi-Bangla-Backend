@@ -38,6 +38,38 @@ export const LANGUAGES = [
   Languages.ARABIC,
 ] as const;
 
+export enum FilterLanguage {
+  EMPTY = '',
+  ALL = 'ALL',
+  ENGLISH = 'ENGLISH',
+  SPANISH = 'SPANISH',
+  FRENCH = 'FRENCH',
+  GERMAN = 'GERMAN',
+  ITALIAN = 'ITALIAN',
+  PORTUGUESE = 'PORTUGUESE',
+  RUSSIAN = 'RUSSIAN',
+  MANDARIN = 'MANDARIN',
+  JAPANESE = 'JAPANESE',
+  KOREAN = 'KOREAN',
+  ARABIC = 'ARABIC',
+}
+
+export const FILTER_LANGUAGE = [
+  FilterLanguage.EMPTY,
+  FilterLanguage.ALL,
+  FilterLanguage.ENGLISH,
+  FilterLanguage.SPANISH,
+  FilterLanguage.FRENCH,
+  FilterLanguage.GERMAN,
+  FilterLanguage.ITALIAN,
+  FilterLanguage.PORTUGUESE,
+  FilterLanguage.RUSSIAN,
+  FilterLanguage.MANDARIN,
+  FilterLanguage.JAPANESE,
+  FilterLanguage.KOREAN,
+  FilterLanguage.ARABIC,
+] as const;
+
 export enum Difficulty {
   BEGINNER = 'BEGINNER',
   ELEMENTARY = 'ELEMENTARY',
