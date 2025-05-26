@@ -9,7 +9,7 @@ const jwtMiddleware = new JwtMiddleware();
 
 // Define Routes
 AppAuthRouter.post('/login', validateRequestBody(phoneNoSchema), login);
-AppAuthRouter.post('/verifyOTP', jwtMiddleware.verifyAppUserTokenWithoutOTPVerification, validateRequestBody(appVerifyOtpSchema), verifyOTP);
-AppAuthRouter.get('/resendOTP', jwtMiddleware.verifyAppUserTokenWithoutOTPVerification, resendOTP);
+AppAuthRouter.post('/verify-otp', jwtMiddleware.verifyAppUserTokenWithoutOTPVerification, validateRequestBody(appVerifyOtpSchema), verifyOTP);
+AppAuthRouter.get('/resend-otp', jwtMiddleware.verifyAppUserTokenWithoutOTPVerification, resendOTP);
 
 export { AppAuthRouter };

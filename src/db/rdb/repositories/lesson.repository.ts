@@ -156,4 +156,28 @@ export class LessonRepository {
       },
     });
   }
+
+  async viewFlashCards(lessonId: string): Promise<Lesson> {
+    return await LessonModel.findOne({
+      where: {
+        id: lessonId,
+        deletedAt:{
+          [Op.eq]: null
+        },
+      },
+      include: [
+        {
+          as: 'flash_cards',
+          model: FlashCardModel,
+          required: false,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'dayId', 'lessonOrder', 'title', 'description', 'estimatedMinutes', 'difficulty'],
+        },
+      ],
+    }) as unknown as Lesson;
+  }
 }

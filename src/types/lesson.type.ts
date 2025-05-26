@@ -22,3 +22,20 @@ export type LessonWithTimestamps = Lesson & {
   createdAt: string
   updatedAt: string
 };
+
+
+export type LessonWithFlashCards = Omit<LessonWithTimestamps, 'id'|''|'updatedBy'|'deletedAt'|'deletedBy'>
+
+
+  // declare id: string
+  // declare dayId: string
+  // declare lessonOrder: number
+  // declare title: string
+  // declare description: CreationOptional<string | null>
+  // declare estimatedMinutes: number
+  // declare difficulty: CreationOptional<string>
+  // declare audioIntro: CreationOptional<string | null>
+  // // declare xpReward: CreationOptional<number>
+  // declare updatedBy: string
+  // declare deletedAt: CreationOptional<string | null>
+  // declare deletedBy: CreationOptional<string | null>

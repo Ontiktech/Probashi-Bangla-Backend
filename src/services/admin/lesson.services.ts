@@ -49,4 +49,8 @@ export class LessonService {
   async dayWithLessonOrderExists(dayId: string, lessonOrder : number) {
     return await this.lessonRepo.dayWithLessonOrderExists(dayId, lessonOrder);
   }
+
+  async viewFlashCards(lessonId: string) {
+    return await this.lessonRepo.viewFlashCards(lessonId);
+  }
 }

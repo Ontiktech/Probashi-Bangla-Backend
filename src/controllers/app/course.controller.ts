@@ -82,37 +82,3 @@ export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, re
     });
   }
 }
-
-export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response) {
-  try {
-    const { lessonId } = req.params
-    // const response = await appUserCourseService.viewEnrolledCourseDetails(lessonId, req.user!.id)
-    // if(!response)
-    //   throw new NotFoundException('You are not enrolled to this course.')
-  
-    return res.json({
-      data: {
-        message: 'App user\'s enrolled course details.',
-        // course: response,
-      },
-      statusCode: 200,
-    });
-  } catch (error) {
-    console.log('viewEnrolledCourses', error);
-    if (error instanceof CustomException) {
-      return res.status(error.statusCode).json({
-        error: {
-          message: error.message,
-        },
-        code: error.statusCode,
-      });
-    }
-
-    return res.status(500).json({
-      error: {
-        message: 'Something went wrong! Please try again.',
-      },
-      statusCode: 500,
-    });
-  }
-}
