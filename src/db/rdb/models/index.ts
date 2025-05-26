@@ -7,6 +7,9 @@ import { DayModel } from './days.model';
 import { LessonModel } from './lesson.model';
 import { FlashCardModel } from './flash-card.model';
 import { AppUserCourseModel } from './app-user-course.model';
+import { FlashCardViewedModel } from './flash-card-viewed.model';
+import { LessonCompletedModel } from './lesson-completed.model';
+import { DayCompletedModel } from './day-completed.model';
 
 // ADMIN USER ASSOCIATIONS
 AdminUserModel.hasMany(AppUserModel, {
@@ -104,7 +107,7 @@ LessonModel.belongsTo(DayModel, {
 });
 
 
-// DAy ASSOCIATIONS
+// DAY ASSOCIATIONS
 LessonModel.hasMany(FlashCardModel, {
   as: 'flash_cards',
   foreignKey: 'lessonId',
@@ -143,4 +146,7 @@ export {
   DayModel,
   LessonModel,
   AppUserCourseModel,
+  FlashCardViewedModel,
+  LessonCompletedModel,
+  DayCompletedModel
 };

@@ -9,18 +9,18 @@ import {
 
 const sequelize = UserClient.getInstance();
 
-class AppUserCourseModel extends Model<
-  InferAttributes<AppUserCourseModel>,
-  InferCreationAttributes<AppUserCourseModel>
+class FlashCardViewedModel extends Model<
+  InferAttributes<FlashCardViewedModel>,
+  InferCreationAttributes<FlashCardViewedModel>
 > {
   declare id: string
   declare appUserId: string
-  declare courseId: string
+  declare flashCardId: string
   declare deletedAt: CreationOptional<string | null>
   declare deletedBy: CreationOptional<string | null>
 }
 
-AppUserCourseModel.init(
+FlashCardViewedModel.init(
   {
     id: {
       type: DataTypes.STRING,
@@ -30,7 +30,7 @@ AppUserCourseModel.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    courseId: {
+    flashCardId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -44,10 +44,10 @@ AppUserCourseModel.init(
     },
   },
   {
-    tableName: 'user_courses',
+    tableName: 'flash_card_viewed',
     sequelize,
     timestamps: true,
   },
 );
 
-export { AppUserCourseModel };
+export { FlashCardViewedModel };

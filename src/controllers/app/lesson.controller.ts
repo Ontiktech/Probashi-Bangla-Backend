@@ -3,24 +3,26 @@ import { CustomException } from '../../errors/CustomException.error';
 import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { LessonService } from '../../services/admin/lesson.services';
 import { NotFoundException } from '../../errors/NotFoundException.error';
+import { BadRequestException } from '../../errors/BadRequestException.error';
 
 const lessonService = new LessonService();
 
 export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response) {
   try {
     const { lessonId } = req.params
-    const response = await lessonService.viewFlashCards(lessonId)
+    const response = await lessonService.viewFlashCards(lessonId, req.user!.id)
     if(!response)
       throw new NotFoundException('Lesson not found.')
+    if(response.day.course.user_courses.length === 0)
+      throw new BadRequestException('You are not part of this lesson\'s course.')
 
-    // # enrolled in course check
-
-    // # 
+    // # Sort Flash Cards by cardOrder
+    // # Entry for if 1) flash-card is viewed 2) Lesson is completed 3) Day is completed
   
     return res.json({
       data: {
         message: 'App user\'s enrolled course details.',
-        // course: response,
+        flashCards: response,
       },
       statusCode: 200,
     });

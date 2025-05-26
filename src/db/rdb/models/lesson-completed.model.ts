@@ -9,18 +9,19 @@ import {
 
 const sequelize = UserClient.getInstance();
 
-class AppUserCourseModel extends Model<
-  InferAttributes<AppUserCourseModel>,
-  InferCreationAttributes<AppUserCourseModel>
+class LessonCompletedModel extends Model<
+  InferAttributes<LessonCompletedModel>,
+  InferCreationAttributes<LessonCompletedModel>
 > {
   declare id: string
   declare appUserId: string
-  declare courseId: string
+  declare lessonId: string
+  declare timeSpent: CreationOptional<number | null>
   declare deletedAt: CreationOptional<string | null>
   declare deletedBy: CreationOptional<string | null>
 }
 
-AppUserCourseModel.init(
+LessonCompletedModel.init(
   {
     id: {
       type: DataTypes.STRING,
@@ -30,9 +31,14 @@ AppUserCourseModel.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    courseId: {
+    lessonId: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    timeSpent: {
+      type: DataTypes.NUMBER,
+      allowNull: false,
+      defaultValue: 0
     },
     deletedAt: {
       type: DataTypes.DATE,
@@ -44,10 +50,10 @@ AppUserCourseModel.init(
     },
   },
   {
-    tableName: 'user_courses',
+    tableName: 'lesson_completed',
     sequelize,
     timestamps: true,
   },
 );
 
-export { AppUserCourseModel };
+export { LessonCompletedModel };

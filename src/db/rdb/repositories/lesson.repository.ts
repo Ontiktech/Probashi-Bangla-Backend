@@ -1,6 +1,6 @@
 import { Op, Transaction } from 'sequelize';
-import { CourseModel, LessonModel } from '../models';
-import { Lesson, UpdateLessonData, StoreLesson } from '../../../types/lesson.type';
+import { AppUserCourseModel, CourseModel, DayModel, LessonModel } from '../models';
+import { Lesson, UpdateLessonData, StoreLesson, LessonWithFlashCards } from '../../../types/lesson.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { FlashCardModel } from '../models/flash-card.model';
 export class LessonRepository {
@@ -157,7 +157,7 @@ export class LessonRepository {
     });
   }
 
-  async viewFlashCards(lessonId: string): Promise<Lesson> {
+  async viewFlashCards(lessonId: string, appUserId: string): Promise<LessonWithFlashCards> {
     return await LessonModel.findOne({
       where: {
         id: lessonId,
@@ -167,6 +167,43 @@ export class LessonRepository {
       },
       attributes: ['id', 'dayId', 'title', 'description', 'estimatedMinutes', 'difficulty', 'audioIntro'],
       include: [
+        {
+          as: 'day',
+          model: DayModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'courseId'],
+          include: [
+            {
+              as: 'course',
+              model: CourseModel,
+              where: {
+                deletedAt: {
+                  [Op.eq]: null,
+                },
+              },
+              required: false,
+              attributes: ['id'],
+              include: [
+                {
+                  as: 'user_courses',
+                  model: AppUserCourseModel,
+                  where: {
+                    appUserId: appUserId,
+                    deletedAt: {
+                      [Op.eq]: null,
+                    },
+                  },
+                  required: false,
+                  attributes: ['id', 'appUserId', 'courseId'],
+                },
+              ],
+            },
+          ],
+        },
         {
           as: 'flash_cards',
           model: FlashCardModel,
@@ -179,6 +216,6 @@ export class LessonRepository {
           attributes: ['id', 'lessonId', 'cardOrder', 'frontText', 'frontSubtext', 'backText', 'backSubtext', 'example', 'exampleTranslation', 'usageNotes', 'imageUrl', 'audioUrl'],
         },
       ],
-    }) as unknown as Lesson;
+    }) as unknown as LessonWithFlashCards;
   }
 }

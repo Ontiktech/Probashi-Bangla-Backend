@@ -25,5 +25,13 @@ export type LessonWithTimestamps = Lesson & {
 };
 
 export type LessonWithFlashCards = Omit<LessonWithTimestamps, 'lessonOrder'|'updatedBy'|'deletedAt'|'deletedBy'> & {
-  flash_cards: Omit<FlashCardWithTimestamps, 'updatedBy'|'deletedAt'|'deletedBy'>
+  day: {
+    id: string
+    courseId: string
+    course: {
+      id: string,
+      user_courses: { id: string }[]
+    }
+  }
+  flash_cards: Omit<FlashCardWithTimestamps, 'updatedBy'|'deletedAt'|'deletedBy'>[]
 }

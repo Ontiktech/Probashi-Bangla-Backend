@@ -50,7 +50,7 @@ export class LessonService {
     return await this.lessonRepo.dayWithLessonOrderExists(dayId, lessonOrder);
   }
 
-  async viewFlashCards(lessonId: string) {
-    return await this.lessonRepo.viewFlashCards(lessonId);
+  async viewFlashCards(lessonId: string, appUserId: string) {
+    return await this.lessonRepo.viewFlashCards(lessonId, appUserId);
   }
 }

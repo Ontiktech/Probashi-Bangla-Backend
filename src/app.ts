@@ -64,7 +64,7 @@ const server = () => {
     app.use('/api/v1/app/auth', AppAuthRouter);
     app.use('/api/v1/app/user', AppUserProfileRouter);
     app.use('/api/v1/app/course', AppCourseRouter);
-    app.use('/api/v1/app/lessons', AppLessonRouter);
+    app.use('/api/v1/app/lesson', AppLessonRouter);
 
     app.all('*', (req, res) => {
       res.status(404);
