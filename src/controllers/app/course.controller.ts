@@ -49,15 +49,51 @@ export async function viewEnrolledCourses(req: AppAuthenticatedRequest, res: Res
 
 export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, res: Response) {
   try {
-    const { id } = req.params
-    const response = await appUserCourseService.viewEnrolledCourseDetails(id, req.user!.id)
+    const { courseId } = req.params
+    const response = await appUserCourseService.viewEnrolledCourseDetails(courseId, req.user!.id)
     if(!response)
       throw new NotFoundException('You are not enrolled to this course.')
   
     return res.json({
       data: {
         message: 'App user\'s enrolled course details.',
+        daysComplete: 50, // # Need this after viewed/completed tables are in place
+        totalDays: 100, // # Need this after viewed/completed tables are in place
         course: response,
+      },
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log('viewEnrolledCourses', error);
+    if (error instanceof CustomException) {
+      return res.status(error.statusCode).json({
+        error: {
+          message: error.message,
+        },
+        code: error.statusCode,
+      });
+    }
+
+    return res.status(500).json({
+      error: {
+        message: 'Something went wrong! Please try again.',
+      },
+      statusCode: 500,
+    });
+  }
+}
+
+export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response) {
+  try {
+    const { lessonId } = req.params
+    // const response = await appUserCourseService.viewEnrolledCourseDetails(lessonId, req.user!.id)
+    // if(!response)
+    //   throw new NotFoundException('You are not enrolled to this course.')
+  
+    return res.json({
+      data: {
+        message: 'App user\'s enrolled course details.',
+        // course: response,
       },
       statusCode: 200,
     });
