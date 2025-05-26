@@ -8,5 +8,4 @@ const jwtMiddleware = new JwtMiddleware();
 // Define Routes
 AppLessonRouter.get('/view-flash-cards/:lessonId', jwtMiddleware.verifyAppUserToken, viewFlashCards);
 
-
 export { AppLessonRouter };

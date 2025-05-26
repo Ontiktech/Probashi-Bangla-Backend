@@ -320,6 +320,9 @@ export async function appUserEnrolled(req: AdminAuthenticatedRequest, res: Respo
     const { id } = req.params
 
     const appUserWithCourses = await appUserCourseService.findAppUserWithCoursesById(id) as AppUserWithAppUserCoursesWithCourse
+    if(!appUserWithCourses)
+      throw new NotFoundException('App user not found.')
+
     const formattedAppUserWithCourses = formatAppUserWithCourses(appUserWithCourses)
 
     if(appUserWithCourses){

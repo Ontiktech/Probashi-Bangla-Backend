@@ -21,8 +21,6 @@ export type BulkStoreAppUserCourseData = Omit<StoreAppUserCourse, "id"> & {
   id?: string
 };
 
-export type UpdateAppUserCourseData = Partial<StoreAppUserCourseData>;
-
 export type AppUserCourseWithCourseAndTimestamps = AppUserCourse & {
   createdAt: string;
   updatedAt: string;
@@ -35,6 +33,8 @@ export type AppUserCourseWithCourseAndTimestamps = AppUserCourse & {
     }[];
   };
 };
+
+export type UpdateAppUserCourseData = Partial<StoreAppUserCourseData>;
 
 export type AppUserEnrolledCourseDetails = Omit<AppUserCourse, 'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
   course: Omit<CourseWithTimestamps, 'language'|'targetLanguage'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {

@@ -1,5 +1,5 @@
 import { Op, Transaction } from 'sequelize';
-import { LessonModel } from '../models';
+import { CourseModel, LessonModel } from '../models';
 import { Lesson, UpdateLessonData, StoreLesson } from '../../../types/lesson.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { FlashCardModel } from '../models/flash-card.model';
@@ -165,6 +165,7 @@ export class LessonRepository {
           [Op.eq]: null
         },
       },
+      attributes: ['id', 'dayId', 'title', 'description', 'estimatedMinutes', 'difficulty', 'audioIntro'],
       include: [
         {
           as: 'flash_cards',
@@ -175,7 +176,7 @@ export class LessonRepository {
               [Op.eq]: null,
             },
           },
-          attributes: ['id', 'dayId', 'lessonOrder', 'title', 'description', 'estimatedMinutes', 'difficulty'],
+          attributes: ['id', 'lessonId', 'cardOrder', 'frontText', 'frontSubtext', 'backText', 'backSubtext', 'example', 'exampleTranslation', 'usageNotes', 'imageUrl', 'audioUrl'],
         },
       ],
     }) as unknown as Lesson;

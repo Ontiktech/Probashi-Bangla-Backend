@@ -17,3 +17,8 @@ export type StoreFlashCard = Partial<InferCreationAttributes<FlashCardModel>> & 
 export type StoreFlashCardData = Omit<StoreFlashCard, 'id'>;
 
 export type UpdateFlashCardData = Partial<StoreFlashCardData>;
+
+export type FlashCardWithTimestamps = FlashCard & {
+  createdAt: string
+  updatedAt: string
+};

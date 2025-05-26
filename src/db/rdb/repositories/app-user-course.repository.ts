@@ -1,6 +1,6 @@
 import { Op, Transaction } from 'sequelize';
 import { AppUserCourseModel, AppUserModel, CourseModel, DayModel, LessonModel } from '../models';
-import { AppUserCourse, UpdateAppUserCourseData, StoreAppUserCourse, AppUserCourseWithCourseAndTimestamps } from '../../../types/app-user-course.type';
+import { AppUserCourse, UpdateAppUserCourseData, StoreAppUserCourse, AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails } from '../../../types/app-user-course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { AppUser } from '../../../types/app-user.type';
 import { FilterLanguage } from '../../../constants/enums';
@@ -242,6 +242,7 @@ export class AppUserCourseRepository {
                   [Op.eq]: null,
                 },
               },
+              order: [['dayNumber', 'ASC']],
               attributes: ['id'],
               include: [
                 {
@@ -253,6 +254,7 @@ export class AppUserCourseRepository {
                       [Op.eq]: null,
                     },
                   },
+                  order: [['lessonOrder', 'ASC']],
                   attributes: ['id'],
                 },
               ],
@@ -297,7 +299,7 @@ export class AppUserCourseRepository {
     return { next, data }
   }
 
-  async viewEnrolledCourseDetails(courseId: string, appUserId: string): Promise<AppUserCourseWithCourseAndTimestamps> {
+  async viewEnrolledCourseDetails(courseId: string, appUserId: string): Promise<AppUserEnrolledCourseDetails> {
     const options: any = {
       where: {
         appUserId: appUserId,
@@ -327,6 +329,7 @@ export class AppUserCourseRepository {
                   [Op.eq]: null,
                 },
               },
+              order: [['dayNumber', 'ASC']],
               attributes: ['id', 'courseId', 'dayNumber', 'title', 'description'],
               include: [
                 {
@@ -338,6 +341,7 @@ export class AppUserCourseRepository {
                       [Op.eq]: null,
                     },
                   },
+                  order: [['lessonOrder', 'ASC']],
                   attributes: ['id', 'dayId', 'lessonOrder', 'title', 'description', 'estimatedMinutes', 'difficulty'],
                 },
               ],
@@ -347,6 +351,6 @@ export class AppUserCourseRepository {
       ],
     };
 
-    return await AppUserCourseModel.findAll(options) as unknown as AppUserCourseWithCourseAndTimestamps;
+    return await AppUserCourseModel.findOne(options) as unknown as AppUserEnrolledCourseDetails;
   }
 }

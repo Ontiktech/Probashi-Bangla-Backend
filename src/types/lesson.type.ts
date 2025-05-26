@@ -1,5 +1,6 @@
 import { InferAttributes, InferCreationAttributes } from 'sequelize';
 import { LessonModel } from '../db/rdb/models/lesson.model';
+import { FlashCardWithTimestamps } from './flash-card.type';
 
 export type Lesson = InferAttributes<LessonModel>;
 
@@ -23,19 +24,6 @@ export type LessonWithTimestamps = Lesson & {
   updatedAt: string
 };
 
-
-export type LessonWithFlashCards = Omit<LessonWithTimestamps, 'id'|''|'updatedBy'|'deletedAt'|'deletedBy'>
-
-
-  // declare id: string
-  // declare dayId: string
-  // declare lessonOrder: number
-  // declare title: string
-  // declare description: CreationOptional<string | null>
-  // declare estimatedMinutes: number
-  // declare difficulty: CreationOptional<string>
-  // declare audioIntro: CreationOptional<string | null>
-  // // declare xpReward: CreationOptional<number>
-  // declare updatedBy: string
-  // declare deletedAt: CreationOptional<string | null>
-  // declare deletedBy: CreationOptional<string | null>
+export type LessonWithFlashCards = Omit<LessonWithTimestamps, 'lessonOrder'|'updatedBy'|'deletedAt'|'deletedBy'> & {
+  flash_cards: Omit<FlashCardWithTimestamps, 'updatedBy'|'deletedAt'|'deletedBy'>
+}

@@ -2,15 +2,20 @@ import { Response } from 'express';
 import { CustomException } from '../../errors/CustomException.error';
 import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { LessonService } from '../../services/admin/lesson.services';
+import { NotFoundException } from '../../errors/NotFoundException.error';
 
 const lessonService = new LessonService();
 
 export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response) {
   try {
     const { lessonId } = req.params
-    // const response = await lessonService.viewFlashCards(lessonId, req.user!.id)
-    // if(!response)
-    //   throw new NotFoundException('You are not enrolled to this course.')
+    const response = await lessonService.viewFlashCards(lessonId)
+    if(!response)
+      throw new NotFoundException('Lesson not found.')
+
+    // # enrolled in course check
+
+    // # 
   
     return res.json({
       data: {
