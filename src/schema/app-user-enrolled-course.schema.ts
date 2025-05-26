@@ -16,14 +16,14 @@ export const viewEnrolledCoursesFilterSchema = z.object({
     .coerce
     .number({ required_error: 'Page is required.' })
     .min(1, { message: 'Page cannot be less than 1.' })
-    .max(10000000, { message: 'Page cannot exceed 10000000.' })
+    .max(1000000, { message: 'Page cannot exceed 1000000.' })
     .optional()
     .nullable(),
   number : z
     .coerce
     .number({ required_error: 'Number is required.' })
     .min(1, { message: 'Number cannot be less than 1.' })
-    .max(10000000, { message: 'Number cannot exceed 10000000.' })
+    .max(1000000, { message: 'Number cannot exceed 1000000.' })
     .optional()
     .nullable(),
 });

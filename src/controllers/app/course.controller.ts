@@ -4,6 +4,7 @@ import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { FilterLanguage } from '../../constants/enums';
 import { AppUserCourseService } from '../../services/admin/app-user-course.services';
 import { formatViewEnrolledCourses } from '../../formatter/app-user-course.formatter';
+import { NotFoundException } from '../../errors/NotFoundException.error';
 
 const appUserCourseService = new AppUserCourseService();
 
@@ -16,13 +17,47 @@ export async function viewEnrolledCourses(req: AppAuthenticatedRequest, res: Res
     const limit = number
     const offset = (page - 1) * number
 
-    const { next, data} = await appUserCourseService.viewEnrolledCourses(req.user!.id, limit, offset, language, searchText);
+    const { next, data } = await appUserCourseService.viewEnrolledCourses(req.user!.id, limit, offset, language, searchText);
   
     return res.json({
       data: {
         message: 'App user\'s enrolled course list.',
         next: next,
         courses: formatViewEnrolledCourses(data),
+      },
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log('viewEnrolledCourses', error);
+    if (error instanceof CustomException) {
+      return res.status(error.statusCode).json({
+        error: {
+          message: error.message,
+        },
+        code: error.statusCode,
+      });
+    }
+
+    return res.status(500).json({
+      error: {
+        message: 'Something went wrong! Please try again.',
+      },
+      statusCode: 500,
+    });
+  }
+}
+
+export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, res: Response) {
+  try {
+    const { id } = req.params
+    const response = await appUserCourseService.viewEnrolledCourseDetails(id, req.user!.id)
+    if(!response)
+      throw new NotFoundException('You are not enrolled to this course.')
+  
+    return res.json({
+      data: {
+        message: 'App user\'s enrolled course details.',
+        course: response,
       },
       statusCode: 200,
     });

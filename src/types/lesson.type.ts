@@ -17,3 +17,8 @@ export type StoreLesson = Partial<InferCreationAttributes<LessonModel>> & {
 export type StoreLessonData = Omit<StoreLesson, 'id'>;
 
 export type UpdateLessonData = Partial<StoreLessonData>;
+
+export type LessonWithTimestamps = Lesson & {
+  createdAt: string
+  updatedAt: string
+};

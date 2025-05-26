@@ -1,10 +1,13 @@
 import { AppUserCourseWithCourseAndTimestamps } from '../types/app-user-course.type';
-import { CourseWithTimestamps } from '../types/course.type';
+import { EnrolledCourses } from '../types/course.type';
 
-export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimestamps[]): CourseWithTimestamps[] {
-
+export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimestamps[]): EnrolledCourses[] {
   const formattedData =
     data.map((userCourse: AppUserCourseWithCourseAndTimestamps) => {
+      let lessonCount = 0
+      userCourse.course.days.map((day) => {
+        lessonCount += day.lessons.length
+      })
       return {
         id: userCourse.course.id,
         title: userCourse.course.title,
@@ -15,9 +18,7 @@ export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimest
         difficulty: userCourse.course.difficulty,
         imagePath: userCourse.course.imagePath,
         estimatedHours: userCourse.course.estimatedHours,
-        updatedBy: userCourse.course.updatedBy,
-        deletedAt: userCourse.course.deletedAt,
-        deletedBy: userCourse.course.deletedBy,
+        lessonCount: lessonCount,
         createdAt: userCourse.course.createdAt,
         updatedAt: userCourse.course.updatedAt,
       }

@@ -29,11 +29,11 @@ export const createLessonSchema = z.object({
     .max(1000000, { message: 'Estimated minutes cannot exceed 1000000.' }),
   difficulty: z
     .enum(DIFFICULTIES, { required_error: 'Difficulty is required.' }),
-  xpReward: z
-    .coerce
-    .number({ required_error: 'XP reward is required.' })
-    .min(1, { message: 'XP reward has to be at least 1.' })
-    .max(1000000, { message: 'XP reward cannot exceed 1000000.' }),
+  // xpReward: z
+  //   .coerce
+  //   .number({ required_error: 'XP reward is required.' })
+  //   .min(1, { message: 'XP reward has to be at least 1.' })
+  //   .max(1000000, { message: 'XP reward cannot exceed 1000000.' }),
   lessonOrder: z
     .coerce
     .number({ required_error: 'Lesson order is required.' })
@@ -105,13 +105,13 @@ export const updateLessonSchema = z.object({
     .enum(DIFFICULTIES, { required_error: 'Difficulty is required.' })
     .optional()
     .nullable(),
-  xpReward: z
-    .coerce
-    .number({ required_error: 'XP reward is required.' })
-    .min(1, { message: 'XP reward has to be at least 1.' })
-    .max(1000000, { message: 'XP reward cannot exceed 1000000.' })
-    .optional()
-    .nullable(),
+  // xpReward: z
+  //   .coerce
+  //   .number({ required_error: 'XP reward is required.' })
+  //   .min(1, { message: 'XP reward has to be at least 1.' })
+  //   .max(1000000, { message: 'XP reward cannot exceed 1000000.' })
+  //   .optional()
+  //   .nullable(),
   lessonOrder: z
     .coerce
     .number({ required_error: 'Lesson order is required.' })

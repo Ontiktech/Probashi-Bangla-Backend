@@ -16,3 +16,8 @@ export type StoreDay = Partial<InferCreationAttributes<DayModel>> & {
 export type StoreDayData = Omit<StoreDay, 'id'>;
 
 export type UpdateDayData = Partial<StoreDayData>;
+
+export type DayWithTimestamps = Day & {
+  createdAt: string
+  updatedAt: string
+};

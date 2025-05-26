@@ -17,7 +17,14 @@ export type StoreCourseData = Omit<StoreCourse, 'id'>;
 
 export type UpdateCourseData = Partial<StoreCourseData>;
 
-export type CourseWithTimestamps = InferAttributes<CourseModel> & {
+export type CourseWithTimestamps = Course & {
+  createdAt: string
+  updatedAt: string
+};
+
+
+export type EnrolledCourses = Omit<Course, 'updatedBy'|'deletedAt'|'deletedBy'> & {
+  lessonCount: number
   createdAt: string
   updatedAt: string
 };

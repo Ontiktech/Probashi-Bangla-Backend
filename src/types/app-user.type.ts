@@ -42,7 +42,7 @@ export type AppUserGenerateToken = {
   avatarUrl: string | null
 };
 
-export type AppUserWithTimestamps = InferAttributes<AppUserModel> & {
+export type AppUserWithTimestamps = AppUser & {
   createdAt: string
   updatedAt: string
 };

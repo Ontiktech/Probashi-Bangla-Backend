@@ -1,10 +1,11 @@
 import { Op, Transaction } from 'sequelize';
-import { AppUserCourseModel, AppUserModel, CourseModel } from '../models';
+import { AppUserCourseModel, AppUserModel, CourseModel, DayModel, LessonModel } from '../models';
 import { AppUserCourse, UpdateAppUserCourseData, StoreAppUserCourse, AppUserCourseWithCourseAndTimestamps } from '../../../types/app-user-course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { AppUser } from '../../../types/app-user.type';
 import { FilterLanguage } from '../../../constants/enums';
 import { Course } from '../../../types/course.type';
+import { FlashCardModel } from '../models/flash-card.model';
 export class AppUserCourseRepository {
   constructor() {}
   async findAppUserCourseById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<AppUserCourse> {
@@ -230,6 +231,33 @@ export class AppUserCourseRepository {
               [Op.eq]: null,
             },
           },
+          attributes: ['id', 'title', 'description', 'totalDays', 'language', 'targetLanguage', 'difficulty', 'imagePath', 'estimatedHours', 'createdAt', 'updatedAt'],
+          include: [
+            {
+              as: 'days',
+              model: DayModel,
+              required: false,
+              where: {
+                deletedAt: {
+                  [Op.eq]: null,
+                },
+              },
+              attributes: ['id'],
+              include: [
+                {
+                  as: 'lessons',
+                  model: LessonModel,
+                  required: false,
+                  where: {
+                    deletedAt: {
+                      [Op.eq]: null,
+                    },
+                  },
+                  attributes: ['id'],
+                },
+              ],
+            },
+          ],
         },
       ],
     };
@@ -266,8 +294,59 @@ export class AppUserCourseRepository {
     const count = await AppUserCourseModel.count(options) as unknown as number
     const next = (count - offset - limit) > 0 ? (count - offset - limit) : 0
 
-    console.log('limit', limit, 'offset', offset, 'count', count, 'next', next);
-
     return { next, data }
+  }
+
+  async viewEnrolledCourseDetails(courseId: string, appUserId: string): Promise<AppUserCourseWithCourseAndTimestamps> {
+    const options: any = {
+      where: {
+        appUserId: appUserId,
+        courseId: courseId,
+        deletedAt: {
+          [Op.eq]: null,
+        },
+      },
+      attributes: ['id', 'appUserId', 'courseId'],
+      include: [
+        {
+          as: 'course',
+          model: CourseModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'title', 'description', 'totalDays', 'difficulty', 'imagePath', 'estimatedHours'],
+          include: [
+            {
+              as: 'days',
+              model: DayModel,
+              required: false,
+              where: {
+                deletedAt: {
+                  [Op.eq]: null,
+                },
+              },
+              attributes: ['id', 'courseId', 'dayNumber', 'title', 'description'],
+              include: [
+                {
+                  as: 'lessons',
+                  model: LessonModel,
+                  required: false,
+                  where: {
+                    deletedAt: {
+                      [Op.eq]: null,
+                    },
+                  },
+                  attributes: ['id', 'dayId', 'lessonOrder', 'title', 'description', 'estimatedMinutes', 'difficulty'],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    return await AppUserCourseModel.findAll(options) as unknown as AppUserCourseWithCourseAndTimestamps;
   }
 }
