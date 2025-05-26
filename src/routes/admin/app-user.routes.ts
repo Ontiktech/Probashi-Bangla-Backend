@@ -35,13 +35,7 @@ AppUserRouter.post(
 );
 
 AppUserRouter.get(
-  '/enrolled_courses/:id',
-  jwtMiddleware.verifyToken,
-  appUserEnrolled,
-);
-
-AppUserRouter.get(
-  '/enrolled_courses/:id',
+  '/enrolled-courses/:id',
   jwtMiddleware.verifyToken,
   appUserEnrolled,
 );
