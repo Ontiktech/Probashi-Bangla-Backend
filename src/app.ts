@@ -7,16 +7,16 @@ import path from 'path';
 import { corsOptions } from './config/cors.config';
 import { globalLimiterOptions } from './config/globalRateLimiter.config';
 import { JwtMiddleware } from './middleware/jwt.middleware';
-import { appUserRouter } from './routes/admin/app-user.routes';
+import { AppUserRouter } from './routes/admin/app-user.routes';
 import { testRouter } from './routes/test.routes';
-import { adminAuthRouter } from './routes/admin/auth.routes';
+import { AdminAuthRouter } from './routes/admin/auth.routes';
 import { CourseRouter } from './routes/admin/course.routes';
 import { DayRouter } from './routes/admin/day.routes';
 import { LessonRouter } from './routes/admin/lesson.routes';
 import { FlashCardRouter } from './routes/admin/flash-card.routes';
-import { adminUserRouter } from './routes/admin/admin-user.routes';
-import { appAuthRouter } from './routes/app/auth.routes';
-import { appUserProfileRouter } from './routes/app/app-user.routes';
+import { AdminUserRouter } from './routes/admin/admin-user.routes';
+import { AppAuthRouter } from './routes/app/auth.routes';
+import { AppUserProfileRouter } from './routes/app/app-user.routes';
 
 // const numCPUs = os.cpus().length
 
@@ -50,17 +50,17 @@ const server = () => {
     // test router. for development purposes only
     app.use('/api/v1/test', testRouter);
     // admin routes
-    app.use('/api/v1/admin/auth', adminAuthRouter);
-    app.use('/api/v1/admin/admin-users', adminUserRouter);
-    app.use('/api/v1/admin/app-users', jwtMiddleware.verifyToken, appUserRouter);
+    app.use('/api/v1/admin/auth', AdminAuthRouter);
+    app.use('/api/v1/admin/admin-users', AdminUserRouter);
+    app.use('/api/v1/admin/app-users', jwtMiddleware.verifyToken, AppUserRouter);
     app.use('/api/v1/admin/courses', jwtMiddleware.verifyToken, CourseRouter);
     app.use('/api/v1/admin/days', jwtMiddleware.verifyToken, DayRouter);
     app.use('/api/v1/admin/lessons', jwtMiddleware.verifyToken, LessonRouter);
     app.use('/api/v1/admin/flash-cards', jwtMiddleware.verifyToken, FlashCardRouter);
 
     // // app routes
-    app.use('/api/v1/app/auth', appAuthRouter);
-    app.use('/api/v1/app/user', appUserProfileRouter);
+    app.use('/api/v1/app/auth', AppAuthRouter);
+    app.use('/api/v1/app/user', AppUserProfileRouter);
 
     app.all('*', (req, res) => {
       res.status(404);

@@ -48,7 +48,7 @@ export class JwtMiddleware {
 
       throw new UnauthorizedException('Token Expired');
     } catch (e: any) {
-      console.log('verifyToken', e);
+      // console.log('verifyToken', e);
       if (e instanceof CustomException){
         return res.status(e.statusCode).json({
           error:{
@@ -149,7 +149,6 @@ export class JwtMiddleware {
 
       if (payload) {
         req.user = payload as AppUserPayload;
-        console.log('req.user', req.user);
         if(!req.user.verified)
           return res.json({
             error: {

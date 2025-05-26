@@ -4,16 +4,16 @@ import { getAllAdminUsers, getSingleAdminUser, updateAdmin } from '../../control
 import { updateAdminUserSchema } from '../../schema/admin-user.schema';
 import { validateRequestBody } from '../../utils/validatiion.utils';
 
-const adminUserRouter = express.Router();
+const AdminUserRouter = express.Router();
 const jwtMiddleware = new JwtMiddleware();
 
-adminUserRouter.get('/', jwtMiddleware.verifyToken, getAllAdminUsers);
-adminUserRouter.get('/:id', jwtMiddleware.verifyToken, getSingleAdminUser);
-adminUserRouter.patch(
+AdminUserRouter.get('/', jwtMiddleware.verifyToken, getAllAdminUsers);
+AdminUserRouter.get('/:id', jwtMiddleware.verifyToken, getSingleAdminUser);
+AdminUserRouter.patch(
   '/:id',
   jwtMiddleware.verifyToken,
   validateRequestBody(updateAdminUserSchema),
   updateAdmin,
 );
 
-export { adminUserRouter };
+export { AdminUserRouter };

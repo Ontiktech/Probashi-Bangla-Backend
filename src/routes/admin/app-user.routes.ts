@@ -6,44 +6,44 @@ import { createAppUserSchema, updateAppUserSchema } from '../../schema/app-user.
 import { appUserFileUploaderMiddleware } from '../../fileUploaders/app-user.fileUploaders';
 import { enrollAppUserToCourseSchema } from '../../schema/enroll-app-user-to-course.schema';
 
-const appUserRouter = express.Router();
+const AppUserRouter = express.Router();
 const jwtMiddleware = new JwtMiddleware();
 
-appUserRouter.get('/', jwtMiddleware.verifyToken, getAllAppUsers);
-appUserRouter.get('/:id', jwtMiddleware.verifyToken, getSingleAppUser);
-appUserRouter.post(
+AppUserRouter.get('/', jwtMiddleware.verifyToken, getAllAppUsers);
+AppUserRouter.get('/:id', jwtMiddleware.verifyToken, getSingleAppUser);
+AppUserRouter.post(
   '/',
   jwtMiddleware.verifyToken,
   appUserFileUploaderMiddleware,
   validateRequestBody(createAppUserSchema),
   createAppUser,
 );
-appUserRouter.patch(
+AppUserRouter.patch(
   '/:id',
   jwtMiddleware.verifyToken,
   appUserFileUploaderMiddleware,
   validateRequestBody(updateAppUserSchema),
   updateAppUser,
 );
-appUserRouter.delete('/:id', jwtMiddleware.verifyToken, deleteAppUser);
+AppUserRouter.delete('/:id', jwtMiddleware.verifyToken, deleteAppUser);
 
-appUserRouter.post(
+AppUserRouter.post(
   '/enroll',
   jwtMiddleware.verifyToken,
   validateRequestBody(enrollAppUserToCourseSchema),
   enrollAppUserToCourse,
 );
 
-appUserRouter.get(
+AppUserRouter.get(
   '/enrolled_courses/:id',
   jwtMiddleware.verifyToken,
   appUserEnrolled,
 );
 
-appUserRouter.get(
+AppUserRouter.get(
   '/enrolled_courses/:id',
   jwtMiddleware.verifyToken,
   appUserEnrolled,
 );
 
-export { appUserRouter };
+export { AppUserRouter };

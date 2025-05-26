@@ -139,6 +139,9 @@ export class AppUserOTPRepository {
     const options: any = {
       where: {
         phoneNumber: phoneNumber,
+        deletedAt: {
+          [Op.eq]: null,
+        },
       },
     };
 

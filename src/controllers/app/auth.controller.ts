@@ -117,3 +117,40 @@ export async function verifyOTP(req: AppAuthenticatedRequest, res: Response) {
     });
   }
 }
+
+export async function resendOTP(req: AppAuthenticatedRequest, res: Response) {
+  try {
+    const appUser = await appUserervice.findUserByPhone(req.user!.phoneNumber, null, ['id','phoneNumber','firstName','lastName','email', 'isNewUser', 'lastLoginAt']);
+    if(!appUser)
+      throw new BadRequestException('Something went wrong. Please logout and try again.')
+
+    const response = await appUserAuthService.resendOTP(req.user!);
+  
+    if(!response)
+      throw new CustomException('Something went wrong! Please try again.', 500)
+  
+    return res.json({
+      data: {
+        message: 'OTP resent.'
+      },
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log('resendOTP', error);
+    if (error instanceof CustomException) {
+      return res.status(error.statusCode).json({
+        error: {
+          message: error.message,
+        },
+        code: error.statusCode,
+      });
+    }
+
+    return res.status(500).json({
+      error: {
+        message: 'Something went wrong! Please try again.',
+      },
+      statusCode: 500,
+    });
+  }
+}

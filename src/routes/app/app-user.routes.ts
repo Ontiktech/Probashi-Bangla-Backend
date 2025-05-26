@@ -5,18 +5,18 @@ import { editProfileSchema, updateAvtatarUrlSchama } from '../../schema/app-auth
 import { editAvatar, editProfile, getProfile } from '../../controllers/app/app-user.controller';
 import { appUserFileUploaderMiddleware } from '../../fileUploaders/app-user.fileUploaders';
 
-const appUserProfileRouter = express.Router();
+const AppUserProfileRouter = express.Router();
 const jwtMiddleware = new JwtMiddleware();
 
 // Define Routes
-appUserProfileRouter.get('/getProfile', jwtMiddleware.verifyAppUserToken, getProfile);
-appUserProfileRouter.patch(
+AppUserProfileRouter.get('/getProfile', jwtMiddleware.verifyAppUserToken, getProfile);
+AppUserProfileRouter.patch(
   '/editProfile',
   jwtMiddleware.verifyAppUserToken,
   validateRequestBody(editProfileSchema),
   editProfile,
 );
-appUserProfileRouter.patch(
+AppUserProfileRouter.patch(
   '/editAvatar',
   jwtMiddleware.verifyAppUserToken,
   appUserFileUploaderMiddleware,
@@ -24,4 +24,4 @@ appUserProfileRouter.patch(
   editAvatar,
 );
 
-export { appUserProfileRouter };
+export { AppUserProfileRouter };

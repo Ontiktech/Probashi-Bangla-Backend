@@ -1,14 +1,15 @@
 import express from 'express';
 import { validateRequestBody } from '../../utils/validatiion.utils';
 import { appVerifyOtpSchema, phoneNoSchema } from '../../schema/app-auth.schema';
-import { login, verifyOTP } from '../../controllers/app/auth.controller';
+import { login, resendOTP, verifyOTP } from '../../controllers/app/auth.controller';
 import { JwtMiddleware } from '../../middleware/jwt.middleware';
 
-const appAuthRouter = express.Router();
+const AppAuthRouter = express.Router();
 const jwtMiddleware = new JwtMiddleware();
 
 // Define Routes
-appAuthRouter.post('/login', validateRequestBody(phoneNoSchema), login);
-appAuthRouter.post('/verifyOTP', jwtMiddleware.verifyAppUserTokenWithoutOTPVerification, validateRequestBody(appVerifyOtpSchema), verifyOTP);
+AppAuthRouter.post('/login', validateRequestBody(phoneNoSchema), login);
+AppAuthRouter.post('/verifyOTP', jwtMiddleware.verifyAppUserTokenWithoutOTPVerification, validateRequestBody(appVerifyOtpSchema), verifyOTP);
+AppAuthRouter.get('/resendOTP', jwtMiddleware.verifyAppUserTokenWithoutOTPVerification, resendOTP);
 
-export { appAuthRouter };
+export { AppAuthRouter };

@@ -6,6 +6,8 @@ import { AppUserOTPRepository } from '../../db/rdb/repositories/app-user-otp.rep
 import { generateId, generateOtp } from '../../utils/id.utils';
 import { getOTPExpiry } from '../../utils/common.utils';
 import { BadRequestException } from '../../errors/BadRequestException.error';
+import { AppUser } from '../../types/app-user.type';
+import { AppUserPayload } from '../../schema/token-payload.schema';
 
 export class AppUserAuthService {
   private appUserRepo: AppUserRepository;
@@ -47,5 +49,26 @@ export class AppUserAuthService {
       throw new BadRequestException('Something went wrong. Please logout and try again.')
 
     return verified
+  }
+
+  async resendOTP(appUser: AppUserPayload, transaction?: Transaction) {
+    const otp_validity = getOTPExpiry();
+    await this.appUserOTPRepo.deleteAppUserOTPByPhoneNo(appUser.phoneNumber, appUser.id, transaction); // Delete previous OTP if any exist
+
+    const storeOTP = await this.appUserOTPRepo.storeAppUserOTP(
+      {
+        id: generateId(),
+        phoneNumber: appUser.phoneNumber,
+        otp: generateOtp(),
+        otp_expires_at: datetimeYMDHis(new Date(), 'mins', otp_validity)
+      },
+      transaction,
+    );
+    if (!storeOTP)
+      throw new NotFoundException('Failed to store OTP.')
+
+    await this.appUserRepo.updateAppUser({ lastLoginAt: datetimeYMDHis() }, appUser.id, transaction); // update user
+
+    return appUser
   }
 }
