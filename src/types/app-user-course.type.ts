@@ -36,10 +36,14 @@ export type AppUserCourseWithCourseAndTimestamps = AppUserCourse & {
 
 export type UpdateAppUserCourseData = Partial<StoreAppUserCourseData>;
 
+// FOR ENROLLED COURSE DETAILS
+type LessonsForEnrollCourseDetails = Omit<LessonWithTimestamps, 'audioIntro'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'>
+type DaysForEnrollCourseDetails = Omit<DayWithTimestamps, 'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
+  lessons: LessonsForEnrollCourseDetails[]
+}
+
 export type AppUserEnrolledCourseDetails = Omit<AppUserCourse, 'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
   course: Omit<CourseWithTimestamps, 'language'|'targetLanguage'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
-    days: Omit<DayWithTimestamps, 'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
-      lesson: Omit<LessonWithTimestamps, 'audioIntro'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'>
-    }
+    days: DaysForEnrollCourseDetails[]
   }
 };
