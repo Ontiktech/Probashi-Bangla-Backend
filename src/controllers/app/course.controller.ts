@@ -3,7 +3,7 @@ import { CustomException } from '../../errors/CustomException.error';
 import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { FilterLanguage } from '../../constants/enums';
 import { AppUserCourseService } from '../../services/admin/app-user-course.services';
-import { formatViewEnrolledCourses } from '../../formatter/app-user-course.formatter';
+import { formatViewEnrolledCourseDetails, formatViewEnrolledCourses } from '../../formatter/app-user-course.formatter';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 
 const appUserCourseService = new AppUserCourseService();
@@ -55,42 +55,54 @@ export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, re
     if(!response)
       throw new NotFoundException('You are not enrolled to this course.')
 
-    if(response.course && response.course.days.length > 0)
-      response.course.days = response.course.days
-        .sort((a, b) => a.dayNumber - b.dayNumber)
-        .map((day) => {
-          // let dayCompleted = false
-          const sortedLessons = day.lessons
-            .sort((a, b) => a.lessonOrder - b.lessonOrder)
-            .map((lesson) => {
-              let lessonCompleted = true
-              const sortedFlashCards = lesson.flash_cards.sort((a, b) => a.cardOrder - b.cardOrder);
-
-              console.log('sortedFlashCards', sortedFlashCards);
-
-              for(let i = 0; i < sortedFlashCards.length; i++){
-                if(sortedFlashCards[i].flash_cards_viewed.length === 0)
-                  lessonCompleted = false
+    response.course.days = response.course.days
+    .sort((a, b) => a.dayNumber - b.dayNumber)
+    .map((day) => {
+      let dayCompleted = true;
+  
+      const sortedLessons = day.lessons
+        .sort((a, b) => a.lessonOrder - b.lessonOrder)
+        .map((lesson) => {
+          let lessonCompleted = true;
+  
+          const sortedFlashCards = lesson.flash_cards
+            .sort((a, b) => a.cardOrder - b.cardOrder)
+            .map((flashCard) => {
+              if (flashCard.flash_cards_viewed.length === 0) {
+                lessonCompleted = false;
               }
-              return {
-                ...lesson,
-                completed: lessonCompleted,
-                flash_cards: sortedFlashCards,
-              };
+              return flashCard;
             });
-      
+  
+          if (!lessonCompleted) {
+            dayCompleted = false;
+          }
+  
           return {
-            ...day,
-            lessons: sortedLessons,
+            ...lesson,
+            completed: lessonCompleted,
+            flash_cards: sortedFlashCards,
           };
         });
+  
+      return {
+        ...day,
+        completed: dayCompleted,
+        lessons: sortedLessons,
+      };
+    });
+
+    // CONVERTING TO PLAIN JS OBJ ELSE THIS DOESN"T WORK
+    const plain = response as any
+    const plainResponse = plain.get({ plain: true });
 
     return res.json({
       data: {
         message: 'App user\'s enrolled course details.',
         daysComplete: 50, // # Need this after viewed/completed tables are in place
         totalDays: 100, // # Need this after viewed/completed tables are in place
-        course: response,
+        course: formatViewEnrolledCourseDetails(plainResponse),
+        plain: plainResponse
       },
       statusCode: 200,
     });

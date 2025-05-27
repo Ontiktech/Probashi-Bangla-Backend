@@ -1,4 +1,5 @@
-import { AppUserCourseWithCourseAndTimestamps } from '../types/app-user-course.type';
+import { AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails, DaysForEnrollCourseDetails } from '../types/app-user-course.type';
+import { AnyStringKeyValuePair } from '../types/common.type';
 import { EnrolledCourses } from '../types/course.type';
 
 export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimestamps[]): EnrolledCourses[] {
@@ -23,6 +24,68 @@ export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimest
         updatedAt: userCourse.course.updatedAt,
       }
     });
+
+  return formattedData;
+}
+
+export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetails): any {
+  const completedLessons: AnyStringKeyValuePair = {}
+  const completedDays: AnyStringKeyValuePair = {}
+  const formattedData = {
+    id: data.id,
+    appUserId: data.appUserId,
+    courseId: data.courseId,
+    course: {
+      id: data.course.id,
+      title: data.course.title,
+      description: data.course.description,
+      totalDays: data.course.totalDays,
+      difficulty: data.course.difficulty,
+      imagePath: data.course.imagePath,
+      estimatedHours: data.course.estimatedHours,
+      days: data.course.days.map((day) => {
+        
+        return {
+          id: day.id,
+          courseId: day.courseId,
+          dayNumber: day.dayNumber,
+          title: day.title,
+          description: day.description,
+          lessons: day.lessons.map((lesson) => {
+            const totalFlashCardCount = lesson.flash_cards.length
+            let flashCardsCompleted = 0
+
+            let lessonData = {
+              id: lesson.id,
+              dayId: lesson.dayId,
+              lessonOrder: lesson.lessonOrder,
+              title: lesson.title,
+              description: lesson.description,
+              estimatedMinutes: lesson.estimatedMinutes,
+              difficulty: lesson.difficulty,
+              completed: false,
+              flash_cards: lesson.flash_cards.map((flashCard) => {
+                if(flashCard.flash_cards_viewed.length > 0)
+                  flashCardsCompleted++
+
+                const flashCardData = {
+                  id: flashCard.id,
+                  cardOrder: flashCard.cardOrder,
+                  flashCardViewed: flashCard.flash_cards_viewed.length > 0 ? true : false,
+                }
+
+                return flashCardData
+              })
+            }
+
+            lessonData = {...lessonData, completed: totalFlashCardCount === flashCardsCompleted ? true : false }
+
+            return lessonData
+          })
+        }
+      })
+    }
+  }
 
   return formattedData;
 }

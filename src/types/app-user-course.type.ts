@@ -47,7 +47,7 @@ export type AppUserCoursesWithCourseForAdminViewSingleAppUser = {
 export type UpdateAppUserCourseData = Partial<StoreAppUserCourseData>
 
 // FOR ENROLLED COURSE DETAILS
-type LessonsForEnrollCourseDetails = Omit<LessonWithTimestamps, 'audioIntro'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
+export type LessonsForEnrollCourseDetails = Omit<LessonWithTimestamps, 'audioIntro'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
   completed? : boolean
   flash_cards: 
     {
@@ -60,7 +60,7 @@ type LessonsForEnrollCourseDetails = Omit<LessonWithTimestamps, 'audioIntro'|'up
       }[]
     }[],
 }
-type DaysForEnrollCourseDetails = Omit<DayWithTimestamps, 'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
+export type DaysForEnrollCourseDetails = Omit<DayWithTimestamps, 'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
   completed? : boolean
   lessons: LessonsForEnrollCourseDetails[]
 }

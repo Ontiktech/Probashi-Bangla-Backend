@@ -58,7 +58,13 @@ export async function storeFlashCardViewed(req: AppAuthenticatedRequest, res: Re
 
     const flashCardViewed = await flashCardViewedService.findFlashCardViewedByFlashCardIdAndAppUserId(flashCardId, req.user!.id)
     if(flashCardViewed)
-      throw new BadRequestException('Flash card viewed foer this app user and flash card already exists.')
+      return res.json({
+        data: {
+          message: 'Flash card viewed already stored.',
+          flashCardViewed: flashCardViewed
+        },
+        statusCode: 200,
+      });
 
     const storeData = {
       appUserId: req.user!.id,
@@ -70,7 +76,7 @@ export async function storeFlashCardViewed(req: AppAuthenticatedRequest, res: Re
 
     return res.json({
       data: {
-        message: 'Stored flash card viewed.',
+        message: 'Stored new flash card viewed.',
         flashCardViewed: storeflashCard
       },
       statusCode: 200,
