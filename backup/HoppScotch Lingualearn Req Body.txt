@@ -67,9 +67,17 @@ audioUrl: FILE | full
 App-User - 01971096-1a41-747b-9219-14c0260fcd83
 Course - 019710c7-16b2-7509-8eb1-beddf7f50d06
 Day - 019710c7-66f5-7634-a82e-bf5ada434690
+
+      01971187-f64a-72cd-a39e-b55ac116beaf
 Lesson - 019710c7-f3a6-764f-925f-9b348af5b265
+
+          01971189-4243-7479-9d13-d9968f3855d9
+          0197118d-a790-73da-b5ca-0dec43075ecd
 FlashCard - 019710ca-6fa6-7198-8fbf-c3919dd358ec
             019710ca-3386-76f2-ad01-5d735da0a47b
+
+            0197118a-237a-7440-bf3a-cf28b9212797
+            0197118a-a7dc-755a-be02-ede7c8f421ba
 
 
 Probashi bangla things to do:

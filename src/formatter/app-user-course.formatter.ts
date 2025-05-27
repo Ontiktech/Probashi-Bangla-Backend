@@ -29,8 +29,6 @@ export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimest
 }
 
 export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetails): any {
-  const completedLessons: AnyStringKeyValuePair = {}
-  const completedDays: AnyStringKeyValuePair = {}
   const formattedData = {
     id: data.id,
     appUserId: data.appUserId,
@@ -44,13 +42,16 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
       imagePath: data.course.imagePath,
       estimatedHours: data.course.estimatedHours,
       days: data.course.days.map((day) => {
-        
-        return {
+        const totalLessonsCount = day.lessons.length
+        let lessonsCompleted = 0
+
+        let dayData = {
           id: day.id,
           courseId: day.courseId,
           dayNumber: day.dayNumber,
           title: day.title,
           description: day.description,
+          completed: false,
           lessons: day.lessons.map((lesson) => {
             const totalFlashCardCount = lesson.flash_cards.length
             let flashCardsCompleted = 0
@@ -78,11 +79,19 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
               })
             }
 
-            lessonData = {...lessonData, completed: totalFlashCardCount === flashCardsCompleted ? true : false }
+            if(totalFlashCardCount === flashCardsCompleted){
+              lessonData = {...lessonData, completed: true }
+              lessonsCompleted++
+            }
 
             return lessonData
           })
         }
+
+        if(totalLessonsCount === lessonsCompleted)
+          dayData = {...dayData, completed: true }
+
+        return dayData
       })
     }
   }

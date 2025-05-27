@@ -5,6 +5,7 @@ import { FilterLanguage } from '../../constants/enums';
 import { AppUserCourseService } from '../../services/admin/app-user-course.services';
 import { formatViewEnrolledCourseDetails, formatViewEnrolledCourses } from '../../formatter/app-user-course.formatter';
 import { NotFoundException } from '../../errors/NotFoundException.error';
+import { AppUserEnrolledCourseDetails } from '../../types/app-user-course.type';
 
 const appUserCourseService = new AppUserCourseService();
 
@@ -92,17 +93,16 @@ export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, re
       };
     });
 
-    // CONVERTING TO PLAIN JS OBJ ELSE THIS DOESN"T WORK
+    // CONVERTING TO PLAIN JS OBJ ELSE THIS DOESN"T WORK AS IT REFUSES MUTATION
     const plain = response as any
-    const plainResponse = plain.get({ plain: true });
+    const plainResponse = plain.get({ plain: true }) as unknown as AppUserEnrolledCourseDetails;
 
     return res.json({
       data: {
         message: 'App user\'s enrolled course details.',
         daysComplete: 50, // # Need this after viewed/completed tables are in place
         totalDays: 100, // # Need this after viewed/completed tables are in place
-        course: formatViewEnrolledCourseDetails(plainResponse),
-        plain: plainResponse
+        course: formatViewEnrolledCourseDetails(plainResponse)
       },
       statusCode: 200,
     });
