@@ -26,8 +26,12 @@ export class FlashCardViewedService {
     return await this.flashCardViewedRepo.getAllFlashCardViewed();
   }
 
-  async getAllFlashCardViewedsCount() {
-    return await this.flashCardViewedRepo.getAllFlashCardViewedsCount();
+  async getAllFlashCardViewedCount() {
+    return await this.flashCardViewedRepo.getAllFlashCardViewedCount();
+  }
+
+  async getAllFlashCardViewedByAppUserCount(appUserId: string) {
+    return await this.flashCardViewedRepo.getAllFlashCardViewedByAppUserCount(appUserId);
   }
 
   async storeFlashCardViewed(data: StoreFlashCardViewedData, transaction?: Transaction) {

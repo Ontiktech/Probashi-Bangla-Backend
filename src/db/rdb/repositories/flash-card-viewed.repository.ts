@@ -72,7 +72,7 @@ export class FlashCardViewedRepository {
     })) as unknown as FlashCardViewed[];
   }
 
-  async getAllFlashCardViewedsCount(): Promise<number> {
+  async getAllFlashCardViewedCount(): Promise<number> {
     return await FlashCardViewedModel.count({
       where: {
         deletedAt: {
@@ -80,6 +80,45 @@ export class FlashCardViewedRepository {
         }
       },
     });
+  }
+
+  async getAllFlashCardViewedByAppUserCount(appUserId: string): Promise<number> {
+    return await FlashCardViewedModel.count({
+      where: {
+        appUserId: appUserId,
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+    });
+  }
+
+  async getFlashCardViewedByAppUser(appUserId: string, afterDate?: string): Promise<FlashCardViewed> {
+    let options: any = {
+      where: {
+        appUserId: appUserId,
+        deletedAt: {
+          [Op.eq]: null
+        },
+      },
+      attributes: ['id', 'createdAt'],
+    }
+
+    if(afterDate)
+      options.where = { ...options.where, createdAt: { [Op.gt]: afterDate } }
+
+    return await FlashCardViewedModel.findAll(options) as unknown as FlashCardViewed;
+  }
+
+  async getFlashCardCountByAppUser(appUserId: string): Promise<number> {
+    return await FlashCardViewedModel.findAll({
+      where: {
+        appUserId: appUserId,
+        deletedAt: {
+          [Op.eq]: null
+        },
+      },
+    }) as unknown as number;
   }
 
   async storeFlashCardViewed(data: StoreFlashCardViewed, transaction?: Transaction): Promise<FlashCardViewed> {
