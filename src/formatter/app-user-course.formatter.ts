@@ -28,10 +28,15 @@ export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimest
 }
 
 export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetails): FormattedAppUserEnrolledCourseDetails {
+
+  let totalFlashCards = 0
+  let totalFlashCardsCompleted = 0
+
   const formattedData = {
     id: data.id,
     appUserId: data.appUserId,
     courseId: data.courseId,
+    progress: 0,
     course: {
       id: data.course.id,
       title: data.course.title,
@@ -53,6 +58,7 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
           completed: false,
           lessons: day.lessons.map((lesson) => {
             const totalFlashCardCount = lesson.flash_cards.length
+            totalFlashCards += lesson.flash_cards.length
             let flashCardsCompleted = 0
 
             let lessonData = {
@@ -65,8 +71,10 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
               difficulty: lesson.difficulty,
               completed: false,
               flash_cards: lesson.flash_cards.map((flashCard) => {
-                if(flashCard.flash_cards_viewed.length > 0)
+                if(flashCard.flash_cards_viewed.length > 0){
                   flashCardsCompleted++
+                  totalFlashCardsCompleted++
+                }
 
                 const flashCardData = {
                   id: flashCard.id,
@@ -94,6 +102,9 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
       })
     }
   }
+
+  const progress = totalFlashCardsCompleted/totalFlashCards * 100
+  formattedData.progress = Math.round(progress)
 
   return formattedData;
 }

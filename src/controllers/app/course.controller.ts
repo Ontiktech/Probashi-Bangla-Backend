@@ -100,9 +100,7 @@ export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, re
     return res.json({
       data: {
         message: 'App user\'s enrolled course details.',
-        daysComplete: 50, // # Need this after viewed/completed tables are in place
-        totalDays: 100, // # Need this after viewed/completed tables are in place
-        course: formatViewEnrolledCourseDetails(plainResponse)
+        course: formatViewEnrolledCourseDetails(plainResponse),
       },
       statusCode: 200,
     });

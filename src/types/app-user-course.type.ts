@@ -73,6 +73,7 @@ export type FormattedAppUserEnrolledCourseDetails = {
   id: string,
   appUserId: string,
   courseId: string,
+  progress?: number,
   course: {
     id: string,
     title: string,
