@@ -6,8 +6,8 @@ import { deleteMultipleFileLocal, multipleFileLocalFullPathResolver, rollbackMul
 import { BadRequestException } from '../../errors/BadRequestException.error';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { AppUserCourseService } from '../../services/admin/app-user-course.services';
-import { formatAppUserWithCourses } from '../../formatter/app-user.formatter';
-import { AppUserWithAppUserCoursesWithCourse } from '../../types/app-user.type';
+import { formatAdminViewSingleAppUserWithCourses, formatAppUserWithCourses } from '../../formatter/app-user.formatter';
+import { AdminViewSingleAppUserWithAppUserCoursesWithCourse, AppUserWithAppUserCoursesWithCourse } from '../../types/app-user.type';
 
 const appUserService = new AppUserService();
 const appUserCourseService = new AppUserCourseService();
@@ -78,7 +78,7 @@ export async function getPaginatedAppUsers(req: AdminAuthenticatedRequest, res: 
 export async function getSingleAppUser(req: AdminAuthenticatedRequest, res: Response) {
   try {
     const appUserId = req.params.id
-    const user = await appUserService.findUserById(appUserId);
+    const user = await appUserService.findUserById(appUserId, null, true);
 
     if(!user)
       throw new NotFoundException('User not found.')
@@ -88,7 +88,7 @@ export async function getSingleAppUser(req: AdminAuthenticatedRequest, res: Resp
     return res.status(200).json({
       data: {
         message: 'User fetched successfully!',
-        user: user,
+        user: formatAdminViewSingleAppUserWithCourses(user as AdminViewSingleAppUserWithAppUserCoursesWithCourse),
       },
       statusCode: 200,
     });

@@ -27,12 +27,22 @@ export type AppUserCourseWithCourseAndTimestamps = AppUserCourse & {
   course: CourseWithTimestamps & {
     days: { 
       id: string; 
-      lessons: { 
+      lessons: {
         id: string 
       }[]
     }[];
   };
 };
+
+export type AppUserCoursesWithCourseForAdminViewSingleAppUser = {
+  id: string
+  appUserId: string
+  courseId: string 
+  course: {
+    id: string
+    title: string
+  }
+}
 
 export type UpdateAppUserCourseData = Partial<StoreAppUserCourseData>;
 

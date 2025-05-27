@@ -1,6 +1,6 @@
 import { AppUserModel } from '../db/rdb/models/app-user.model';
 import { InferAttributes, InferCreationAttributes } from 'sequelize';
-import { AppUserCourseWithCourseAndTimestamps } from './app-user-course.type';
+import { AppUserCoursesWithCourseForAdminViewSingleAppUser, AppUserCourseWithCourseAndTimestamps } from './app-user-course.type';
 import { CourseWithTimestamps } from './course.type';
 
 export type AppUser = InferAttributes<AppUserModel>;
@@ -53,4 +53,12 @@ export type AppUserWithAppUserCoursesWithCourse = AppUserWithTimestamps & {
 
 export type AppUserWithCourses = AppUserWithTimestamps & {
   courses: CourseWithTimestamps[]
+};
+
+export type AdminViewSingleAppUserWithAppUserCoursesWithCourse = AppUserWithTimestamps & {
+  user_courses: AppUserCoursesWithCourseForAdminViewSingleAppUser[]
+};
+
+export type AppUserWithCoursesForAdminViewSingleAppUser = AppUserWithTimestamps & {
+  courses: Omit<CourseWithTimestamps, 'description'|'totalDays'|'language'|'targetLanguage'|'difficulty'|'imagePath'|'estimatedHours'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'>[]
 };

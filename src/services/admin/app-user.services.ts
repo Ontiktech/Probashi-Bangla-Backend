@@ -10,8 +10,8 @@ export class AppUserService {
     this.appUserRepo = new AppUserRepository();
   }
 
-  async findUserById(id: string, select: string[]|null = null) {
-    return await this.appUserRepo.findUserById(id, select);
+  async findUserById(id: string, select: string[]|null = null, withEnrolledCourses: boolean = false) {
+    return await this.appUserRepo.findUserById(id, select, withEnrolledCourses);
   }
 
   async userExistsById(id: string) {

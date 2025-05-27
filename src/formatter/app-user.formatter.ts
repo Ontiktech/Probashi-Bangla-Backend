@@ -1,5 +1,32 @@
-import { AppUserCourseWithCourseAndTimestamps } from '../types/app-user-course.type';
-import { AppUserWithAppUserCoursesWithCourse, AppUserWithCourses } from '../types/app-user.type';
+import { AppUserCoursesWithCourseForAdminViewSingleAppUser, AppUserCourseWithCourseAndTimestamps } from '../types/app-user-course.type';
+import { AdminViewSingleAppUserWithAppUserCoursesWithCourse, AppUserWithAppUserCoursesWithCourse, AppUserWithCourses, AppUserWithCoursesForAdminViewSingleAppUser } from '../types/app-user.type';
+
+export function formatAdminViewSingleAppUserWithCourses(data: AdminViewSingleAppUserWithAppUserCoursesWithCourse): AppUserWithCoursesForAdminViewSingleAppUser {
+
+  const formattedData = {
+    id: data.id,
+    phoneNumber: data.phoneNumber,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    email: data.email,
+    streak: data.streak,
+    avatarUrl: data.avatarUrl,
+    isNewUser: data.isNewUser,
+    lastLoginAt: data.lastLoginAt,
+    deletedAt: data.deletedAt,
+    deletedBy: data.deletedBy,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+    courses: data.user_courses.map((userCourse: AppUserCoursesWithCourseForAdminViewSingleAppUser) => {
+      return {
+        id: userCourse.course.id,
+        title: userCourse.course.title,
+      }
+    })
+  };
+
+  return formattedData;
+}
 
 export function formatAppUserWithCourses(data: AppUserWithAppUserCoursesWithCourse): AppUserWithCourses {
 

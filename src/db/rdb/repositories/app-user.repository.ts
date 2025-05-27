@@ -1,9 +1,10 @@
 import { Op, Transaction } from 'sequelize';
-import { AppUserModel } from '../models';
+import { AppUserCourseModel, AppUserModel, CourseModel } from '../models';
 import {
   AppUser,
   UpdateAppUserData,
   StoreAppUser,
+  AdminViewSingleAppUserWithAppUserCoursesWithCourse,
 } from '../../../types/app-user.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 export class AppUserRepository {
@@ -15,7 +16,7 @@ export class AppUserRepository {
       return createdUser;
   }
 
-  async findUserById(id: string, select: string[]|null = null): Promise<AppUser> {
+  async findUserById(id: string, select: string[]|null = null, withEnrolledCourses: boolean = false): Promise<AppUser|AdminViewSingleAppUserWithAppUserCoursesWithCourse> {
     const options: any = {
       where: {
         id: id,
@@ -25,10 +26,37 @@ export class AppUserRepository {
       },
     }
 
+    if(withEnrolledCourses)
+      options.include = [
+        {
+          as: 'user_courses',
+          model: AppUserCourseModel,
+          required: false,
+          where: {
+            deletedAt: {
+              [Op.eq]: null
+            }
+          },
+          attributes: ['id', 'appUserId', 'courseId'],
+          include: [
+            {
+              as: 'course',
+              model: CourseModel,
+              where: {
+                deletedAt: {
+                  [Op.eq]: null
+                }
+              },
+              attributes: ['id','title']
+            },
+          ]
+        },
+      ]
+
     if(select && select.length > 0)
       options.attributes = select
 
-    return (await AppUserModel.findOne(options)) as unknown as AppUser;
+    return (await AppUserModel.findOne(options)) as unknown as AppUser|AdminViewSingleAppUserWithAppUserCoursesWithCourse;
   }
 
   async findUserByIds(ids: string[]): Promise<AppUser[]> {
