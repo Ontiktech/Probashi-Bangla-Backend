@@ -24,7 +24,7 @@ export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response
 
     return res.json({
       data: {
-        message: 'App user\'s enrolled course details.',
+        message: 'Lesson flash cards list.',
         flashCards: response.flash_cards,
       },
       statusCode: 200,
@@ -57,20 +57,21 @@ export async function storeFlashCardViewed(req: AppAuthenticatedRequest, res: Re
       throw new NotFoundException('Flash card not found.')
 
     const flashCardViewed = await flashCardViewedService.findFlashCardViewedByFlashCardIdAndAppUserId(flashCardId, req.user!.id)
-    let storeflashCard = null
-    if(!flashCardViewed){
-      const storeData = {
-        appUserId: req.user!.id,
-        flashCardId: flashCardId
-      }
-      storeflashCard = await flashCardViewedService.storeFlashCardViewed(storeData)
-      if(!storeflashCard)
-        throw new CustomException('Failed to store flash card viewed.', 500)
+    if(flashCardViewed)
+      throw new BadRequestException('Flash card viewed foer this app user and flash card already exists.')
+
+    const storeData = {
+      appUserId: req.user!.id,
+      flashCardId: flashCardId
     }
+    const storeflashCard = await flashCardViewedService.storeFlashCardViewed(storeData)
+    if(!storeflashCard)
+      throw new CustomException('Failed to store flash card viewed.', 500)
 
     return res.json({
       data: {
         message: 'Stored flash card viewed.',
+        flashCardViewed: storeflashCard
       },
       statusCode: 200,
     });

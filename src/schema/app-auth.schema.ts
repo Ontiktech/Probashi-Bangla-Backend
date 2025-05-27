@@ -34,7 +34,6 @@ export const appVerifyOtpSchema = z.object({
 
 export type AppVerifyOtpSchema = z.infer<typeof appVerifyOtpSchema>;
 
-
 export const editProfileSchema = z.object({
   firstName: z
     .string({ required_error: 'First name is required' })
@@ -46,6 +45,11 @@ export const editProfileSchema = z.object({
     .trim()
     .min(3, { message: 'Last name has to be at least 3 characters long.' })
     .max(255, { message: 'Last name cannot exceed 255 characters.' }),
+  email: z
+    .string({ required_error: 'Email is required' })
+    .trim()
+    .email({ message: 'Invalid email format. Please provide a valid email.' })
+    .max(255, { message: 'Email cannot exceed 255 characters.' }),
 });
 
 export type nameSchema = z.infer<typeof editProfileSchema>;
@@ -55,3 +59,13 @@ export const updateAvtatarUrlSchama = z.object({
 });
 
 export type avtatarUrlSchama = z.infer<typeof updateAvtatarUrlSchama>;
+
+export const saveTimeSpentDataSchema = z.object({
+  timeSpent: z
+    .coerce
+    .number({ required_error: 'Time spent is required.' })
+    .min(1, { message: 'Number cannot be less than 1.' })
+    .max(1000000, { message: 'Number cannot exceed 1000000.' }),
+});
+
+export type saveTimeSpentDataSchema = z.infer<typeof saveTimeSpentDataSchema>;

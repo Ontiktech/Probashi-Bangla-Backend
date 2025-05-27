@@ -10,6 +10,7 @@ import { AppUserCourseModel } from './app-user-course.model';
 // import { DayCompletedModel } from './day-completed.model';
 // import { LessonCompletedModel } from './lesson-completed.model';
 import { FlashCardViewedModel } from './flash-card-viewed.model';
+import { TimeSpentModel } from './time-spent.model';
 
 // ADMIN USER ASSOCIATIONS
 AdminUserModel.hasMany(AppUserModel, {
@@ -148,6 +149,8 @@ FlashCardViewedModel.belongsTo(FlashCardModel, {
   foreignKey: 'flashCardId',
 });
 
+
+// FLASH CARD VIEWED ASSOCIATIONS
 AppUserModel.hasMany(FlashCardViewedModel, {
   as: 'app_user_falsh_cards_viewed',
   foreignKey: 'appUserId',
@@ -157,6 +160,16 @@ FlashCardViewedModel.belongsTo(AppUserModel, {
   foreignKey: 'appUserId',
 });
 
+
+// TIME SPENT ASSOCIATIONS
+AppUserModel.hasOne(TimeSpentModel, {
+  as: 'time_spent',
+  foreignKey: 'appUserId',
+});
+TimeSpentModel.belongsTo(AppUserModel, {
+  as: 'app_user',
+  foreignKey: 'appUserId',
+});
 
 export {
   AppUserModel,
@@ -169,4 +182,5 @@ export {
   // DayCompletedModel,
   // LessonCompletedModel,
   FlashCardViewedModel,
+  TimeSpentModel,
 };

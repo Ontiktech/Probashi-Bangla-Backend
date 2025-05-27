@@ -73,7 +73,7 @@ FlashCard - 01971007-ce6e-75d3-befe-17ff070d861e
 
 
 Probashi bangla things to do:
-1. Add deletedAt, deletedBy, updatedBy to admin user
+1. Add deletedAt, deletedBy, updatedBy to admin user(??)
 2. Pagination
 3. next count is wrong in enrolled-courses. See what went wrong.
 4. Make languages table & make a CRUD for it. Then use it in Course create/update and other places.

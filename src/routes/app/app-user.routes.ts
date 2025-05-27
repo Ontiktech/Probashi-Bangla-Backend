@@ -1,9 +1,10 @@
 import express from 'express';
 import { validateRequestBody } from '../../utils/validatiion.utils';
 import { JwtMiddleware } from '../../middleware/jwt.middleware';
-import { editProfileSchema, updateAvtatarUrlSchama } from '../../schema/app-auth.schema';
+import { editProfileSchema, saveTimeSpentDataSchema, updateAvtatarUrlSchama } from '../../schema/app-auth.schema';
 import { editAvatar, editProfile, getProfile } from '../../controllers/app/app-user.controller';
 import { appUserFileUploaderMiddleware } from '../../fileUploaders/app-user.fileUploaders';
+import { saveTimeSpentData } from '../../controllers/app/time-spent.controller';
 
 const AppUserProfileRouter = express.Router();
 const jwtMiddleware = new JwtMiddleware();
@@ -22,6 +23,12 @@ AppUserProfileRouter.patch(
   appUserFileUploaderMiddleware,
   validateRequestBody(updateAvtatarUrlSchama),
   editAvatar,
+);
+AppUserProfileRouter.post(
+  '/save-time-spent-data',
+  jwtMiddleware.verifyAppUserToken,
+  validateRequestBody(saveTimeSpentDataSchema),
+  saveTimeSpentData,
 );
 
 export { AppUserProfileRouter };
