@@ -1,5 +1,4 @@
-import { AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails, DaysForEnrollCourseDetails } from '../types/app-user-course.type';
-import { AnyStringKeyValuePair } from '../types/common.type';
+import { AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails } from '../types/app-user-course.type';
 import { EnrolledCourses } from '../types/course.type';
 
 export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimestamps[]): EnrolledCourses[] {
