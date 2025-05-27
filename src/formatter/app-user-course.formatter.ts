@@ -1,4 +1,4 @@
-import { AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails } from '../types/app-user-course.type';
+import { AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails, FormattedAppUserEnrolledCourseDetails } from '../types/app-user-course.type';
 import { EnrolledCourses } from '../types/course.type';
 
 export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimestamps[]): EnrolledCourses[] {
@@ -27,7 +27,7 @@ export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimest
   return formattedData;
 }
 
-export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetails): any {
+export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetails): FormattedAppUserEnrolledCourseDetails {
   const formattedData = {
     id: data.id,
     appUserId: data.appUserId,

@@ -365,7 +365,7 @@ export class AppUserCourseRepository {
                             },
                           },
                           order: [['cardOrder', 'ASC']],
-                          attributes: ['id', 'appUserId', 'flashCardId'],
+                          attributes: ['id'],
                         },
                       ],
                     },
