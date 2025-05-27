@@ -64,16 +64,19 @@ audioUrl: FILE | full
 
 -------------------------------------
 
-App-User - 01971004-fe13-72bb-a820-e03e5169a789
-Course - 01971005-6948-724f-ab65-5487fc4c88df
-Day - 01971005-ed9d-75da-95d0-194d5623be2f
-Lesson - 01971006-cf7a-756e-9eff-5f2204141ab5
-FlashCard - 01971007-ce6e-75d3-befe-17ff070d861e
-            01971007-9c19-742a-8465-c914db787c24
+App-User - 01971096-1a41-747b-9219-14c0260fcd83
+Course - 019710c7-16b2-7509-8eb1-beddf7f50d06
+Day - 019710c7-66f5-7634-a82e-bf5ada434690
+Lesson - 019710c7-f3a6-764f-925f-9b348af5b265
+FlashCard - 019710ca-6fa6-7198-8fbf-c3919dd358ec
+            019710ca-3386-76f2-ad01-5d735da0a47b
 
 
 Probashi bangla things to do:
 1. Add deletedAt, deletedBy, updatedBy to admin user(??)
 2. Pagination
-3. next count is wrong in enrolled-courses. See what went wrong.
-4. Make languages table & make a CRUD for it. Then use it in Course create/update and other places.
+3. next count is wrong in enrolled-courses. See what went wrong
+4. Make languages table & make a CRUD for it. Then use it in Course create/update and other places
+
+Probashi bangla ask:
+1. What if there are no lessons in a course ? Will the user be able to open those ?

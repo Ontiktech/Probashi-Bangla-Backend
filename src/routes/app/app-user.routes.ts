@@ -13,7 +13,7 @@ const jwtMiddleware = new JwtMiddleware();
 AppUserProfileRouter.get('/get-profile', jwtMiddleware.verifyAppUserToken, getProfile);
 AppUserProfileRouter.patch(
   '/edit-profile',
-  jwtMiddleware.verifyAppUserToken,
+  jwtMiddleware.verifyAppUserTokenWithoutOTPVerification,
   validateRequestBody(editProfileSchema),
   editProfile,
 );

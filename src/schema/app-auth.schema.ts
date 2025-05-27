@@ -49,7 +49,9 @@ export const editProfileSchema = z.object({
     .string({ required_error: 'Email is required' })
     .trim()
     .email({ message: 'Invalid email format. Please provide a valid email.' })
-    .max(255, { message: 'Email cannot exceed 255 characters.' }),
+    .max(255, { message: 'Email cannot exceed 255 characters.' })
+    .optional()
+    .nullable(),
 });
 
 export type nameSchema = z.infer<typeof editProfileSchema>;

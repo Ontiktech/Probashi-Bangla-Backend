@@ -167,6 +167,15 @@ export class JwtMiddleware {
         if (checkUser.deletedAt)
           throw new UnauthorizedException('This user has been deleted!')
 
+        if(checkUser.isNewUser)
+          return res.json({
+            error: {
+              message: 'First name and last name missing. Please update them to proceed.',
+              isNewUser: checkUser.isNewUser,
+            },
+            statusCode: 403
+          })
+
         return next();
       }
 

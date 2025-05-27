@@ -272,7 +272,9 @@ export async function deleteAppUser(req: AdminAuthenticatedRequest, res: Respons
 
 export async function enrollAppUserToCourse(req: AdminAuthenticatedRequest, res: Response) {
   try {
-    const { appUserId, courseIds } = req.body
+    const appUserId = req.body.appUserId
+    let courseIds = req.body.courseIds
+    courseIds = [...new Set(courseIds)] as string[];
 
     const data = []
     for (let i = 0; i < courseIds.length; i++) {
