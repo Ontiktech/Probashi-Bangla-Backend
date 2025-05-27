@@ -70,34 +70,36 @@ export type AppUserEnrolledCourseDetails = Omit<AppUserCourse, 'updatedBy'|'dele
 
 
 export type FormattedAppUserEnrolledCourseDetails = {
-  id: string,
-  appUserId: string,
-  courseId: string,
-  progress?: number,
+  id: string
+  appUserId: string
+  courseId: string
+  progress?: number
+  totalDays: number
+  daysCompleted: number
   course: {
-    id: string,
-    title: string,
-    description: string | null,
-    totalDays: number,
-    difficulty: string | null,
-    imagePath: string,
-    estimatedHours: number | null,
+    id: string
+    title: string
+    description: string | null
+    totalDays: number
+    difficulty: string | null
+    imagePath: string
+    estimatedHours: number | null
     days: {
-      id: string,
-      courseId: string,
-      dayNumber: number,
-      title: string,
-      description: string | null,
-      completed: boolean,
+      id: string
+      courseId: string
+      dayNumber: number
+      title: string
+      description: string | null
+      completed: boolean
       lessons: {
-        id: string,
-        dayId: string,
-        lessonOrder: number,
-        title: string,
-        description: string | null,
-        estimatedMinutes: number,
-        difficulty: string,
-        completed: boolean,
+        id: string
+        dayId: string
+        lessonOrder: number
+        title: string
+        description: string | null
+        estimatedMinutes: number
+        difficulty: string
+        completed: boolean
         flash_cards: {
           id: string
           cardOrder: number
