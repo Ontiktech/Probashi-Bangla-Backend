@@ -64,6 +64,13 @@ audioUrl: FILE | full
 
 -------------------------------------
 
+App-User - 01971004-fe13-72bb-a820-e03e5169a789
+Course - 01971005-6948-724f-ab65-5487fc4c88df
+Day - 01971005-ed9d-75da-95d0-194d5623be2f
+Lesson - 01971006-cf7a-756e-9eff-5f2204141ab5
+FlashCard - 01971007-ce6e-75d3-befe-17ff070d861e
+            01971007-9c19-742a-8465-c914db787c24
+
 
 Probashi bangla things to do:
 1. Add deletedAt, deletedBy, updatedBy to admin user

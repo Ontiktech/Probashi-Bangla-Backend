@@ -9,15 +9,15 @@ const AppUserProfileRouter = express.Router();
 const jwtMiddleware = new JwtMiddleware();
 
 // Define Routes
-AppUserProfileRouter.get('/getProfile', jwtMiddleware.verifyAppUserToken, getProfile);
+AppUserProfileRouter.get('/get-profile', jwtMiddleware.verifyAppUserToken, getProfile);
 AppUserProfileRouter.patch(
-  '/editProfile',
+  '/edit-profile',
   jwtMiddleware.verifyAppUserToken,
   validateRequestBody(editProfileSchema),
   editProfile,
 );
 AppUserProfileRouter.patch(
-  '/editAvatar',
+  '/edit-avatar',
   jwtMiddleware.verifyAppUserToken,
   appUserFileUploaderMiddleware,
   validateRequestBody(updateAvtatarUrlSchama),

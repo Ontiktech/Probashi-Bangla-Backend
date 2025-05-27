@@ -14,17 +14,11 @@ export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response
     if(!response)
       throw new NotFoundException('Lesson not found.')
     if(response.day.course.user_courses.length === 0)
-      throw new BadRequestException('You are not part of this lesson\'s course.')
+      throw new BadRequestException('You are not part of this course.')
 
-    // response.day.course = response.day.course
-    //   .sort((a, b) => a.dayNumber - b.dayNumber)
-    //   .map((day) => ({
-    //     ...day,
-    //     lessons: day.lessons.sort((a, b) => a.lessonOrder - b.lessonOrder),
-    //   }))
-
-    // # Sort Flash Cards by cardOrder
+    response.flash_cards = response.flash_cards.sort((a, b) => a.cardOrder - b.cardOrder)
     // # If closed mid-session, resume(Not sure if needed)
+
     // # Entry for if 1) flash-card is viewed 2) Lesson is completed 3) Day is completed
   
     return res.json({

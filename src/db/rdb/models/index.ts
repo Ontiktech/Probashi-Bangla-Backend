@@ -7,9 +7,9 @@ import { DayModel } from './days.model';
 import { LessonModel } from './lesson.model';
 import { FlashCardModel } from './flash-card.model';
 import { AppUserCourseModel } from './app-user-course.model';
+// import { DayCompletedModel } from './day-completed.model';
+// import { LessonCompletedModel } from './lesson-completed.model';
 import { FlashCardViewedModel } from './flash-card-viewed.model';
-import { LessonCompletedModel } from './lesson-completed.model';
-import { DayCompletedModel } from './day-completed.model';
 
 // ADMIN USER ASSOCIATIONS
 AdminUserModel.hasMany(AppUserModel, {
@@ -138,6 +138,26 @@ AppUserCourseModel.belongsTo(AppUserModel, {
 });
 
 
+// APP USER COURSE ASSOCIATIONS
+FlashCardModel.hasMany(FlashCardViewedModel, {
+  as: 'falsh_cards_viewed',
+  foreignKey: 'flashCardId',
+});
+FlashCardViewedModel.belongsTo(FlashCardModel, {
+  as: 'flash_card',
+  foreignKey: 'flashCardId',
+});
+
+AppUserModel.hasMany(FlashCardViewedModel, {
+  as: 'app_user_falsh_cards_viewed',
+  foreignKey: 'appUserId',
+});
+FlashCardViewedModel.belongsTo(AppUserModel, {
+  as: 'app_user',
+  foreignKey: 'appUserId',
+});
+
+
 export {
   AppUserModel,
   AdminUserModel,
@@ -146,7 +166,7 @@ export {
   DayModel,
   LessonModel,
   AppUserCourseModel,
+  // DayCompletedModel,
+  // LessonCompletedModel,
   FlashCardViewedModel,
-  LessonCompletedModel,
-  DayCompletedModel
 };

@@ -1,5 +1,5 @@
 import { Op, Transaction } from 'sequelize';
-import { AppUserCourseModel, CourseModel, DayModel, LessonModel } from '../models';
+import { AppUserCourseModel, CourseModel, DayModel, FlashCardViewedModel, LessonModel } from '../models';
 import { Lesson, UpdateLessonData, StoreLesson, LessonWithFlashCards } from '../../../types/lesson.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { FlashCardModel } from '../models/flash-card.model';
@@ -214,6 +214,19 @@ export class LessonRepository {
             },
           },
           attributes: ['id', 'lessonId', 'cardOrder', 'frontText', 'frontSubtext', 'backText', 'backSubtext', 'example', 'exampleTranslation', 'usageNotes', 'imageUrl', 'audioUrl'],
+          include: [
+            {
+              as: 'falsh_cards_viewed',
+              model: FlashCardViewedModel,
+              where: {
+                deletedAt: {
+                  [Op.eq]: null,
+                },
+              },
+              required: false,
+              attributes: ['id', 'appUserId', 'flashCardIdId'],
+            },
+          ],
         },
       ],
     }) as unknown as LessonWithFlashCards;
