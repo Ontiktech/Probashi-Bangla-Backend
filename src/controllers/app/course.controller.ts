@@ -52,16 +52,17 @@ export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, re
     const { courseId } = req.params
     const response = await appUserCourseService.viewEnrolledCourseDetails(courseId, req.user!.id)
 
-    response.course.days = response.course.days
-      .sort((a, b) => a.dayNumber - b.dayNumber)
-      .map((day) => ({
-        ...day,
-        lessons: day.lessons.sort((a, b) => a.lessonOrder - b.lessonOrder),
-      }))
-
     if(!response)
       throw new NotFoundException('You are not enrolled to this course.')
-  
+
+    if(response.course && response.course.days.length > 0)
+      response.course.days = response.course.days
+        .sort((a, b) => a.dayNumber - b.dayNumber)
+        .map((day) => ({
+          ...day,
+          lessons: day.lessons.sort((a, b) => a.lessonOrder - b.lessonOrder),
+        }))
+
     return res.json({
       data: {
         message: 'App user\'s enrolled course details.',

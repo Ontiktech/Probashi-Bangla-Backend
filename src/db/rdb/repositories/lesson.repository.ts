@@ -224,7 +224,7 @@ export class LessonRepository {
                 },
               },
               required: false,
-              attributes: ['id', 'appUserId', 'flashCardIdId'],
+              attributes: ['id', 'appUserId', 'flashCardId'],
             },
           ],
         },

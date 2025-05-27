@@ -1,10 +1,10 @@
 import { Op, Transaction } from 'sequelize';
-import { DayModel, LessonModel } from '../models';
-import { Day, UpdateDayData, StoreDay } from '../../../types/day.type';
+import { FlashCardViewedModel } from '../models';
+import { FlashCardViewed, UpdateFlashCardViewedData, StoreFlashCardViewed } from '../../../types/flash-card-viewed.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
-export class DayRepository {
+export class FlashCardViewedRepository {
   constructor() {}
-  async findDayById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<Day> {
+  async findFlashCardViewedById(id: string, select: string[]|null = null): Promise<FlashCardViewed> {
     const options: any = {
       where: {
         id: id,
@@ -17,26 +17,28 @@ export class DayRepository {
     if(select && select.length > 0)
       options.attributes = select
 
-    if(withRelations){
-      options.include = [
-        {
-          as: 'lessons',
-          model: LessonModel,
-          required: false,
-          where: {
-            deletedAt: {
-              [Op.eq]: null
-            }
-          }
-        },
-      ];
-    }
-
-    return (await DayModel.findOne(options)) as unknown as Day;
+    return (await FlashCardViewedModel.findOne(options)) as unknown as FlashCardViewed;
   }
 
-  async findDayByIds(ids: string[]): Promise<Day[]> {
-    return (await DayModel.findAll({
+  async findFlashCardViewedByFlashCardIdAndAppUserId(flashCardId: string, appUserId: string, select: string[]|null = null): Promise<FlashCardViewed> {
+    const options: any = {
+      where: {
+        flashCardId: flashCardId,
+        appUserId: appUserId,
+        deletedAt:{
+          [Op.eq]: null
+        } 
+      },
+    }
+
+    if(select && select.length > 0)
+      options.attributes = select
+
+    return (await FlashCardViewedModel.findOne(options)) as unknown as FlashCardViewed;
+  }
+
+  async findFlashCardViewedByIds(ids: string[]): Promise<FlashCardViewed[]> {
+    return (await FlashCardViewedModel.findAll({
       where: {
         id: {
           [Op.in]: ids,
@@ -45,11 +47,11 @@ export class DayRepository {
           } 
         },
       },
-    })) as unknown as Day[];
+    })) as unknown as FlashCardViewed[];
   }
 
-  async dayExistsById(id: string): Promise<number> {
-    return await DayModel.count({
+  async flashCardViewedExistsById(id: string): Promise<number> {
+    return await FlashCardViewedModel.count({
       where: {
         id: id,
         deletedAt:{
@@ -59,19 +61,19 @@ export class DayRepository {
     });
   }
 
-  async getAllDays(): Promise<Day[]> {
-    return (await DayModel.findAll({
+  async getAllFlashCardViewed(): Promise<FlashCardViewed[]> {
+    return (await FlashCardViewedModel.findAll({
       where: {
         deletedAt: {
           [Op.eq]: null
         }
       },
       order: [['createdAt', 'DESC']],
-    })) as unknown as Day[];
+    })) as unknown as FlashCardViewed[];
   }
 
-  async getAllDaysCount(): Promise<number> {
-    return await DayModel.count({
+  async getAllFlashCardViewedsCount(): Promise<number> {
+    return await FlashCardViewedModel.count({
       where: {
         deletedAt: {
           [Op.eq]: null
@@ -80,26 +82,15 @@ export class DayRepository {
     });
   }
 
-  async getAllAssociatedDaysCount(courseId: string): Promise<number> {
-    return await DayModel.count({
-      where: {
-        courseId: courseId,
-        deletedAt: {
-          [Op.eq]: null
-        }
-      },
-    });
-  }
-
-  async storeDay(data: StoreDay, transaction?: Transaction): Promise<Day> {
+  async storeFlashCardViewed(data: StoreFlashCardViewed, transaction?: Transaction): Promise<FlashCardViewed> {
     const options: any = {};
 
     if(transaction) options.transaction = transaction;
 
-    return await DayModel.create(data, options) as unknown as Day;
+    return await FlashCardViewedModel.create(data, options) as unknown as FlashCardViewed;
   }
 
-  async updateDay(data: UpdateDayData, id: string, transaction?: Transaction): Promise<Day> {
+  async updateFlashCardViewed(data: UpdateFlashCardViewedData, id: string, transaction?: Transaction): Promise<FlashCardViewed> {
     const options: any = {
       where: {
         id: id,
@@ -108,10 +99,10 @@ export class DayRepository {
 
     if(transaction) options.transaction = transaction;
 
-    return (await DayModel.update(data, options)) as unknown as Day;
+    return (await FlashCardViewedModel.update(data, options)) as unknown as FlashCardViewed;
   }
 
-  async deleteDay(id: string, deletedBy: string, transaction?: Transaction): Promise<Day> {
+  async deleteFlashCardViewed(id: string, deletedBy: string, transaction?: Transaction): Promise<FlashCardViewed> {
     const options: any = {
       where: {
         id: id,
@@ -120,10 +111,10 @@ export class DayRepository {
 
     if(transaction) options.transaction = transaction;
 
-    return await DayModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as Day;
+    return await FlashCardViewedModel.update({ deletedAt: datetimeYMDHis(), deletedBy: deletedBy }, options) as unknown as FlashCardViewed;
   }
 
-  async hardDeleteById(id: string, transaction?: Transaction): Promise<Day> {
+  async hardDeleteById(id: string, transaction?: Transaction): Promise<FlashCardViewed> {
     const options: any = {
       where: {
         id: id,
@@ -132,6 +123,6 @@ export class DayRepository {
 
     if(transaction) options.transaction = transaction;
 
-    return (await DayModel.destroy(options)) as unknown as Day;
+    return (await FlashCardViewedModel.destroy(options)) as unknown as FlashCardViewed;
   }
 }
