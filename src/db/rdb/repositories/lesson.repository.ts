@@ -216,7 +216,7 @@ export class LessonRepository {
           attributes: ['id', 'lessonId', 'cardOrder', 'frontText', 'frontSubtext', 'backText', 'backSubtext', 'example', 'exampleTranslation', 'usageNotes', 'imageUrl', 'audioUrl'],
           include: [
             {
-              as: 'falsh_cards_viewed',
+              as: 'flash_cards_viewed',
               model: FlashCardViewedModel,
               where: {
                 deletedAt: {

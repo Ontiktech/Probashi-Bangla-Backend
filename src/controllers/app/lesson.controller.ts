@@ -25,7 +25,7 @@ export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response
     return res.json({
       data: {
         message: 'Lesson flash cards list.',
-        flashCards: response.flash_cards,
+        lesson: response,
       },
       statusCode: 200,
     });

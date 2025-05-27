@@ -58,10 +58,32 @@ export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, re
     if(response.course && response.course.days.length > 0)
       response.course.days = response.course.days
         .sort((a, b) => a.dayNumber - b.dayNumber)
-        .map((day) => ({
-          ...day,
-          lessons: day.lessons.sort((a, b) => a.lessonOrder - b.lessonOrder),
-        }))
+        .map((day) => {
+          // let dayCompleted = false
+          const sortedLessons = day.lessons
+            .sort((a, b) => a.lessonOrder - b.lessonOrder)
+            .map((lesson) => {
+              let lessonCompleted = true
+              const sortedFlashCards = lesson.flash_cards.sort((a, b) => a.cardOrder - b.cardOrder);
+
+              console.log('sortedFlashCards', sortedFlashCards);
+
+              for(let i = 0; i < sortedFlashCards.length; i++){
+                if(sortedFlashCards[i].flash_cards_viewed.length === 0)
+                  lessonCompleted = false
+              }
+              return {
+                ...lesson,
+                completed: lessonCompleted,
+                flash_cards: sortedFlashCards,
+              };
+            });
+      
+          return {
+            ...day,
+            lessons: sortedLessons,
+          };
+        });
 
     return res.json({
       data: {

@@ -141,7 +141,7 @@ AppUserCourseModel.belongsTo(AppUserModel, {
 
 // APP USER COURSE ASSOCIATIONS
 FlashCardModel.hasMany(FlashCardViewedModel, {
-  as: 'falsh_cards_viewed',
+  as: 'flash_cards_viewed',
   foreignKey: 'flashCardId',
 });
 FlashCardViewedModel.belongsTo(FlashCardModel, {
@@ -152,7 +152,7 @@ FlashCardViewedModel.belongsTo(FlashCardModel, {
 
 // FLASH CARD VIEWED ASSOCIATIONS
 AppUserModel.hasMany(FlashCardViewedModel, {
-  as: 'app_user_falsh_cards_viewed',
+  as: 'app_user_flash_cards_viewed',
   foreignKey: 'appUserId',
 });
 FlashCardViewedModel.belongsTo(AppUserModel, {

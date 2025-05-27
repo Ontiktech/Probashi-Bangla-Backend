@@ -1,10 +1,9 @@
 import { Op, Transaction } from 'sequelize';
-import { AppUserCourseModel, AppUserModel, CourseModel, DayModel, LessonModel } from '../models';
+import { AppUserCourseModel, AppUserModel, CourseModel, DayModel, FlashCardViewedModel, LessonModel } from '../models';
 import { AppUserCourse, UpdateAppUserCourseData, StoreAppUserCourse, AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails } from '../../../types/app-user-course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { AppUser } from '../../../types/app-user.type';
 import { FilterLanguage } from '../../../constants/enums';
-import { Course } from '../../../types/course.type';
 import { FlashCardModel } from '../models/flash-card.model';
 export class AppUserCourseRepository {
   constructor() {}
@@ -343,6 +342,34 @@ export class AppUserCourseRepository {
                   },
                   order: [['lessonOrder', 'ASC']],
                   attributes: ['id', 'dayId', 'lessonOrder', 'title', 'description', 'estimatedMinutes', 'difficulty'],
+                  include: [
+                    {
+                      as: 'flash_cards',
+                      model: FlashCardModel,
+                      required: false,
+                      where: {
+                        deletedAt: {
+                          [Op.eq]: null,
+                        },
+                      },
+                      order: [['cardOrder', 'ASC']],
+                      attributes: ['id', 'cardOrder'],
+                      include: [
+                        {
+                          as: 'flash_cards_viewed',
+                          model: FlashCardViewedModel,
+                          required: false,
+                          where: {
+                            deletedAt: {
+                              [Op.eq]: null,
+                            },
+                          },
+                          order: [['cardOrder', 'ASC']],
+                          attributes: ['id', 'appUserId', 'flashCardId'],
+                        },
+                      ],
+                    },
+                  ],
                 },
               ],
             },

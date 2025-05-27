@@ -1,10 +1,10 @@
-import { InferAttributes, InferCreationAttributes } from 'sequelize';
-import { AppUserCourseModel } from '../db/rdb/models';
-import { CourseWithTimestamps } from './course.type';
-import { DayWithTimestamps } from './day.type';
-import { LessonWithTimestamps } from './lesson.type';
+import { InferAttributes, InferCreationAttributes } from 'sequelize'
+import { AppUserCourseModel } from '../db/rdb/models'
+import { CourseWithTimestamps } from './course.type'
+import { DayWithTimestamps } from './day.type'
+import { LessonWithTimestamps } from './lesson.type'
 
-export type AppUserCourse = InferAttributes<AppUserCourseModel>;
+export type AppUserCourse = InferAttributes<AppUserCourseModel>
 
 export type StoreAppUserCourse = InferCreationAttributes<AppUserCourseModel> & {
   id: string
@@ -13,26 +13,26 @@ export type StoreAppUserCourse = InferCreationAttributes<AppUserCourseModel> & {
   updatedBy: string
   createdAt?: string | null
   updatedAt?: string | null
-};
+}
 
-export type StoreAppUserCourseData = Omit<StoreAppUserCourse, 'id'>;
+export type StoreAppUserCourseData = Omit<StoreAppUserCourse, 'id'>
 
 export type BulkStoreAppUserCourseData = Omit<StoreAppUserCourse, "id"> & {
   id?: string
-};
+}
 
 export type AppUserCourseWithCourseAndTimestamps = AppUserCourse & {
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string
+  updatedAt: string
   course: CourseWithTimestamps & {
     days: { 
-      id: string; 
+      id: string 
       lessons: {
         id: string 
       }[]
-    }[];
-  };
-};
+    }[]
+  }
+}
 
 export type AppUserCoursesWithCourseForAdminViewSingleAppUser = {
   id: string
@@ -44,11 +44,24 @@ export type AppUserCoursesWithCourseForAdminViewSingleAppUser = {
   }
 }
 
-export type UpdateAppUserCourseData = Partial<StoreAppUserCourseData>;
+export type UpdateAppUserCourseData = Partial<StoreAppUserCourseData>
 
 // FOR ENROLLED COURSE DETAILS
-type LessonsForEnrollCourseDetails = Omit<LessonWithTimestamps, 'audioIntro'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'>
+type LessonsForEnrollCourseDetails = Omit<LessonWithTimestamps, 'audioIntro'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
+  completed? : boolean
+  flash_cards: 
+    {
+      id: string
+      cardOrder: number
+      flash_cards_viewed: {
+        id: string
+        appUserId: string
+        flashCardId: string
+      }[]
+    }[],
+}
 type DaysForEnrollCourseDetails = Omit<DayWithTimestamps, 'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
+  completed? : boolean
   lessons: LessonsForEnrollCourseDetails[]
 }
 
@@ -56,4 +69,4 @@ export type AppUserEnrolledCourseDetails = Omit<AppUserCourse, 'updatedBy'|'dele
   course: Omit<CourseWithTimestamps, 'language'|'targetLanguage'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
     days: DaysForEnrollCourseDetails[]
   }
-};
+}
