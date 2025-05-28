@@ -278,12 +278,12 @@ export async function enrollAppUserToCourse(req: AdminAuthenticatedRequest, res:
 
     const data = []
     for (let i = 0; i < courseIds.length; i++) {
-      const enrolled = await appUserCourseService.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseIds);
-      if(enrolled)
-        throw new BadRequestException('This app user is already enrolled in this course.')
-
-      data.push({ appUserId: req.body.appUserId, courseId: courseIds[i], updatedBy: req.user!.id, deletedAt: null, deletedBy: null })
+      const enrolled = await appUserCourseService.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseIds[i]);
+      if(!enrolled)
+        data.push({ appUserId: req.body.appUserId, courseId: courseIds[i], updatedBy: req.user!.id, deletedAt: null, deletedBy: null })
     }
+
+    console.log('data', data);
 
     const response = await appUserCourseService.bulkStoreAppUserCourse(data);
 

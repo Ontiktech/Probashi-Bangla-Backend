@@ -1,11 +1,9 @@
 import { z } from 'zod';
-import { AppUserCourseService } from '../services/admin/app-user-course.services';
 import { AppUserService } from '../services/admin/app-user.services';
 import { CourseService } from '../services/admin/course.services';
 
 const appUserService = new AppUserService()
 const courseService = new CourseService()
-const appUserCourseService = new AppUserCourseService()
 
 const courseIdRule = z.string({ required_error: 'Course is required' })
                         .trim()
@@ -16,8 +14,7 @@ export const enrollAppUserToCourseSchema = z.object({
     .string({ required_error: 'App user is required' })
     .trim()
     .max(255, { message: 'App user id cannot exceed 255 characters.' }),
-  courseIds: z.array(courseIdRule, {required_error: 'Courses is required.'})
-    ,
+  courseIds: z.array(courseIdRule, {required_error: 'Courses is required.'}),
 }).superRefine(async (data, ctx) => {
   const { appUserId, courseIds } = data;
 
@@ -31,7 +28,7 @@ export const enrollAppUserToCourseSchema = z.object({
   }
 
   let courseNotFound = false
-  let alreadyEnrolled = false
+  // let alreadyEnrolled = false
   for (let i = 0; i < courseIds.length; i++) {
     const courseId = courseIds[i];
     const courseExists = await courseService.courseExistsById(courseId)
@@ -44,20 +41,20 @@ export const enrollAppUserToCourseSchema = z.object({
       courseNotFound = true
     }
 
-    const appUserCourseExists = await appUserCourseService.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseId)
-    if (appUserCourseExists && !alreadyEnrolled) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['appUserIds'],
-        message: 'User is already enrolled to one or more courses.',
-      });
+    // const appUserCourseExists = await appUserCourseService.appUserCourseExistsByAppUserIdAndCourseId(appUserId, courseId)
+    // if (appUserCourseExists && !alreadyEnrolled) {
+    //   ctx.addIssue({
+    //     code: 'custom',
+    //     path: ['appUserIds'],
+    //     message: 'User is already enrolled to one or more courses.',
+    //   });
   
-      ctx.addIssue({
-        code: 'custom',
-        path: ['courseIds'],
-        message: 'User is already enrolled to one or more courses.',
-      });
-      alreadyEnrolled = true
-    }
+    //   ctx.addIssue({
+    //     code: 'custom',
+    //     path: ['courseIds'],
+    //     message: 'User is already enrolled to one or more courses.',
+    //   });
+    //   alreadyEnrolled = true
+    // }
   }
 });

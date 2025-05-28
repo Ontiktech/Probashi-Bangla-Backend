@@ -66,9 +66,11 @@ audioUrl: FILE | full
 
 App-User - 01971096-1a41-747b-9219-14c0260fcd83
 Course - 019710c7-16b2-7509-8eb1-beddf7f50d06
-Day - 019710c7-66f5-7634-a82e-bf5ada434690
+        01971525-8f3e-758e-a984-383fdef4ff58
 
+Day - 019710c7-66f5-7634-a82e-bf5ada434690
       01971187-f64a-72cd-a39e-b55ac116beaf
+
 Lesson - 019710c7-f3a6-764f-925f-9b348af5b265
 
           01971189-4243-7479-9d13-d9968f3855d9
@@ -90,3 +92,6 @@ Probashi bangla things to do:
 
 Probashi bangla ask:
 1. What if there are no lessons in a course ? Will the user be able to open those ?
+
+1. Continue to next lesson -> provide next lesson ID
+2. courseIds-> don't throw validation error when courseId exists
