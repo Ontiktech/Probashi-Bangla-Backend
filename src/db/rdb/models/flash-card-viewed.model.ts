@@ -1,3 +1,4 @@
+import { Familiarity } from '../../../constants/enums';
 import { UserClient } from '../../clients/postgres.client';
 import {
   Model,
@@ -16,6 +17,7 @@ class FlashCardViewedModel extends Model<
   declare id: string
   declare appUserId: string
   declare flashCardId: string
+  declare familiarity: CreationOptional<string | null>
   declare deletedAt: CreationOptional<string | null>
   declare deletedBy: CreationOptional<string | null>
 }
@@ -33,6 +35,15 @@ FlashCardViewedModel.init(
     flashCardId: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    familiarity: {
+      type: DataTypes.ENUM(
+        Familiarity.KNOWIT,
+        Familiarity.FAMILIAR,
+        Familiarity.DONTKNOW,
+      ),
+      allowNull: true,
+      defaultValue: null,
     },
     deletedAt: {
       type: DataTypes.DATE,

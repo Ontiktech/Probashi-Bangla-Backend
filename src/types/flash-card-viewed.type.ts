@@ -7,11 +7,12 @@ export type StoreFlashCardViewed = Partial<InferCreationAttributes<FlashCardView
   id: string
   appUserId: string
   flashCardId: string
+  familiarity?: string | null
   createdAt?: string | null
   updatedAt?: string | null
 };
 
-export type StoreFlashCardViewedData = Omit<StoreFlashCardViewed, 'id'>;
+export type StoreFlashCardViewedData = Omit<StoreFlashCardViewed, 'id'|'familiarity'>;
 
 export type UpdateFlashCardViewedData = Partial<StoreFlashCardViewedData>;
 
