@@ -13,6 +13,7 @@ const allowedOrigins = [
   'https://probashi-bangla-frontend.vercel.app',
   'https://probashi-bangla-frontend.vercel.app/',
   'https://probashi-kollan-app.vercel.app/',
+  'https://probashi-kollan-app.vercel.app',
 ];
 
 export const corsOptions = {
