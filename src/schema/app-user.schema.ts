@@ -23,7 +23,6 @@ export const createAppUserSchema = z.object({
   email: z
     .string({ required_error: 'Email is required' })
     .trim()
-    .min(3, { message: 'Email has to be at least 3 characters long.' })
     .max(255, { message: 'Email cannot exceed 255 characters.' })
     .optional()
     .nullable(),
