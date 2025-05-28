@@ -157,15 +157,15 @@ export class LessonRepository {
     });
   }
 
-  async viewFlashCards(lessonId: string, appUserId: string): Promise<LessonWithFlashCards> {
-    return await LessonModel.findOne({
+  async viewFlashCards(lessonId: string, appUserId: string): Promise<{ nextLesson: { id: string, dayId: string, lessonOrder: number } | null, lesson: LessonWithFlashCards }> {
+    const lesson =  await LessonModel.findOne({
       where: {
         id: lessonId,
         deletedAt:{
           [Op.eq]: null
         },
       },
-      attributes: ['id', 'dayId', 'title', 'description', 'estimatedMinutes', 'difficulty', 'audioIntro'],
+      attributes: ['id', 'dayId', 'lessonOrder', 'title', 'description', 'estimatedMinutes', 'difficulty', 'audioIntro'],
       include: [
         {
           as: 'day',
@@ -230,5 +230,20 @@ export class LessonRepository {
         },
       ],
     }) as unknown as LessonWithFlashCards;
+
+    const nextLesson =  await LessonModel.findOne({
+      where: {
+        dayId: lesson.dayId,
+        lessonOrder: {
+          [Op.gt]: lesson.lessonOrder
+        },
+        deletedAt:{
+          [Op.eq]: null
+        },
+      },
+      attributes: ['id', 'dayId', 'lessonOrder'],
+    })
+
+    return { nextLesson, lesson }
   }
 }

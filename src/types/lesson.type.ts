@@ -24,7 +24,7 @@ export type LessonWithTimestamps = Lesson & {
   updatedAt: string
 };
 
-export type LessonWithFlashCards = Omit<LessonWithTimestamps, 'lessonOrder'|'updatedBy'|'deletedAt'|'deletedBy'> & {
+export type LessonWithFlashCards = Omit<LessonWithTimestamps, 'updatedBy'|'deletedAt'|'deletedBy'> & {
   day: {
     id: string
     courseId: string

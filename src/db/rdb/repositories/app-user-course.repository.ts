@@ -293,6 +293,9 @@ export class AppUserCourseRepository {
     const data = await AppUserCourseModel.findAll(options) as unknown as AppUserCourseWithCourseAndTimestamps[]
 
     const count = await AppUserCourseModel.count(options) as unknown as number
+
+    console.log('next numbers', count, offset, limit);
+
     const next = (count - offset - limit) > 0 ? (count - offset - limit) : 0
 
     return { next, data }
