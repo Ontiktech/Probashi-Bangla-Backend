@@ -4,11 +4,11 @@ import { FlashCardViewedRepository } from "../../db/rdb/repositories/flash-card-
 export class HomepageService {
   private appUserRepo: AppUserRepository;
   private flashCardViewedRepo: FlashCardViewedRepository;
-  
-    constructor() {
-      this.appUserRepo = new AppUserRepository();
-      this.flashCardViewedRepo = new FlashCardViewedRepository();
-    }
+
+  constructor() {
+    this.appUserRepo = new AppUserRepository();
+    this.flashCardViewedRepo = new FlashCardViewedRepository();
+  }
 
   async viewAppUserHomepage(appUserId: string) {
     const appUser =  await this.appUserRepo.findUserById(appUserId, ['id', 'streak'])

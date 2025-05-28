@@ -1,4 +1,3 @@
-// import {TestModel} from "./test.model"
 import { AdminUserModel } from './admin-users.model';
 import { AppUserModel } from './app-user.model';
 import { AppUserOTPModel } from './app-user-otp.model';
@@ -7,8 +6,6 @@ import { DayModel } from './days.model';
 import { LessonModel } from './lesson.model';
 import { FlashCardModel } from './flash-card.model';
 import { AppUserCourseModel } from './app-user-course.model';
-// import { DayCompletedModel } from './day-completed.model';
-// import { LessonCompletedModel } from './lesson-completed.model';
 import { FlashCardViewedModel } from './flash-card-viewed.model';
 import { TimeSpentModel } from './time-spent.model';
 import { LoginHistoryModel } from './login-history.model';

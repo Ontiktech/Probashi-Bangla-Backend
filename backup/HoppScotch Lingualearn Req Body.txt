@@ -82,13 +82,16 @@ FlashCard - 019715ef-21d4-7657-b475-9700e0acd577
 Probashi bangla things to do:
 1. Add deletedAt, deletedBy, updatedBy to admin user(??)
 2. Pagination
-3. next count is wrong in enrolled-courses. See what went wrong
+3. next count is wrong in enrolled-courses. See what went wrong(DONE)
 4. Make languages table & make a CRUD for it. Then use it in Course create/update and other places
-5. Streak
-6. Statistics
+5. Streak(DONE)
+6. Statistics(DONE)
+
+
+1. Make languages table & make a CRUD for it. Then use it in Course create/update and other places
+2. How well did you know this ?
+3. Day and Lesson unlock logic
+
 
 Probashi bangla ask:
 1. What if there are no lessons in a course ? Will the user be able to open those ?
-
-1. Continue to next lesson -> provide next lesson ID
-2. courseIds-> don't throw validation error when courseId exists
