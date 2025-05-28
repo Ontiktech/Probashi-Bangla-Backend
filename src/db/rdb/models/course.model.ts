@@ -18,8 +18,8 @@ class CourseModel extends Model<
   declare title: string
   declare description: CreationOptional<string | null>
   declare totalDays: number
-  declare language: CreationOptional<string>
-  declare targetLanguage: CreationOptional<string>
+  declare language: string
+  declare targetLanguage: string
   declare difficulty: CreationOptional<string | null>
   declare imagePath: string
   declare estimatedHours: CreationOptional<number | null>
@@ -46,39 +46,13 @@ CourseModel.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    language: {
-      type: DataTypes.ENUM(
-        Languages.ENGLISH,
-        Languages.SPANISH,
-        Languages.FRENCH,
-        Languages.GERMAN,
-        Languages.ITALIAN,
-        Languages.PORTUGUESE,
-        Languages.RUSSIAN,
-        Languages.MANDARIN,
-        Languages.JAPANESE,
-        Languages.KOREAN,
-        Languages.ARABIC,
-      ),
+    language:{
+      type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: Languages.ENGLISH,
     },
-    targetLanguage: {
-      type: DataTypes.ENUM(
-        Languages.ENGLISH,
-        Languages.SPANISH,
-        Languages.FRENCH,
-        Languages.GERMAN,
-        Languages.ITALIAN,
-        Languages.PORTUGUESE,
-        Languages.RUSSIAN,
-        Languages.MANDARIN,
-        Languages.JAPANESE,
-        Languages.KOREAN,
-        Languages.ARABIC,
-      ),
+    targetLanguage: { 
+      type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: Languages.ENGLISH,
     },
     difficulty: {
       type: DataTypes.ENUM(

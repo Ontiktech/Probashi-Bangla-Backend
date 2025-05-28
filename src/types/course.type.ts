@@ -7,6 +7,8 @@ export type StoreCourse = Partial<InferCreationAttributes<CourseModel>> & {
   id: string
   title: string
   totalDays: number
+  language: string
+  targetLanguage: string
   imagePath: string
   updatedBy: string
   createdAt?: string | null

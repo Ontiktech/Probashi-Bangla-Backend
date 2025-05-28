@@ -21,6 +21,7 @@ import { AppCourseRouter } from './routes/app/course.routes';
 import { AppLessonRouter } from './routes/app/lesson.routes';
 import { AppUserStatisticsRouter } from './routes/app/statistics.routes';
 import { AppUserHomePage } from './routes/app/homepage.routes';
+import { LanguageRouter } from './routes/admin/language.routes';
 
 // const numCPUs = os.cpus().length
 
@@ -55,6 +56,7 @@ const server = () => {
     app.use('/api/v1/test', testRouter);
     // admin routes
     app.use('/api/v1/admin/auth', AdminAuthRouter);
+    app.use('/api/v1/admin/languages', jwtMiddleware.verifyToken, LanguageRouter);
     app.use('/api/v1/admin/admin-users', AdminUserRouter);
     app.use('/api/v1/admin/app-users', jwtMiddleware.verifyToken, AppUserRouter);
     app.use('/api/v1/admin/courses', jwtMiddleware.verifyToken, CourseRouter);

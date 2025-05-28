@@ -9,6 +9,7 @@ import { AppUserCourseModel } from './app-user-course.model';
 import { FlashCardViewedModel } from './flash-card-viewed.model';
 import { TimeSpentModel } from './time-spent.model';
 import { LoginHistoryModel } from './login-history.model';
+import { LanguageModel } from './language.model';
 
 // ADMIN USER ASSOCIATIONS
 AdminUserModel.hasMany(AppUserModel, {
@@ -192,4 +193,5 @@ export {
   FlashCardViewedModel,
   TimeSpentModel,
   LoginHistoryModel,
+  LanguageModel,
 };

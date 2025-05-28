@@ -20,9 +20,13 @@ export const createCourseSchema = z.object({
     .min(1, { message: 'Total days has to be at least 1.' })
     .max(1000000, { message: 'Total days cannot exceed 1000000.' }),
   language: z
-    .enum(LANGUAGES, { required_error: 'Language is required.' }),
+    .string({ required_error: 'Language is required.' })
+    .trim()
+    .max(255, { message: 'Language cannot exceed 255 characters.' }),
   targetLanguage: z
-    .enum(LANGUAGES, { required_error: 'Target language is required.' }),
+    .string({ required_error: 'Target language is required.' })
+    .trim()
+    .max(255, { message: 'Target language cannot exceed 255 characters.' }),
   difficulty: z
     .enum(DIFFICULTIES, { required_error: 'Difficulty is required.' }),
   estimatedHours: z
