@@ -11,6 +11,7 @@ import { AppUserCourseModel } from './app-user-course.model';
 // import { LessonCompletedModel } from './lesson-completed.model';
 import { FlashCardViewedModel } from './flash-card-viewed.model';
 import { TimeSpentModel } from './time-spent.model';
+import { LoginHistoryModel } from './login-history.model';
 
 // ADMIN USER ASSOCIATIONS
 AdminUserModel.hasMany(AppUserModel, {
@@ -171,6 +172,16 @@ TimeSpentModel.belongsTo(AppUserModel, {
   foreignKey: 'appUserId',
 });
 
+// LOGIN HISTORY ASSOCIATIONS
+AppUserModel.hasMany(LoginHistoryModel, {
+  as: 'login_histories',
+  foreignKey: 'appUserId',
+});
+LoginHistoryModel.belongsTo(AppUserModel, {
+  as: 'app_user',
+  foreignKey: 'appUserId',
+});
+
 export {
   AppUserModel,
   AdminUserModel,
@@ -183,4 +194,5 @@ export {
   // LessonCompletedModel,
   FlashCardViewedModel,
   TimeSpentModel,
+  LoginHistoryModel,
 };

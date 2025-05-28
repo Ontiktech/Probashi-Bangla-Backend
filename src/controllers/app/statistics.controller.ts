@@ -2,22 +2,26 @@ import { Response } from 'express';
 import { CustomException } from '../../errors/CustomException.error';
 import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { AppUserStatisticsService } from '../../services/app/statistics.services';
-import { groupByDay } from '../../utils/datetime.utils';
+import { groupByDayCount } from '../../utils/datetime.utils';
 
 const appUserStatisticsService = new AppUserStatisticsService();
 
 export async function viewAppUserStatistics(req: AppAuthenticatedRequest, res: Response) {
   try {
-    const { wordsLearnedCount, wordsLearned } = await appUserStatisticsService.getStatistics(req.user!.id)
+    const { wordsLearnedCount, wordsLearned, loginHistories } = await appUserStatisticsService.getStatistics(req.user!.id)
 
-    const wordsLearnedGroupedByday = groupByDay(wordsLearned, 'createdAt')
+    const wordsLearnedGroupedBydayCount = groupByDayCount(wordsLearned, 'createdAt')
+    const loginHistoriesGroupedBydayCount = groupByDayCount(loginHistories, 'createdAt')
+
+    console.log('loginHistories', loginHistories);
 
     return res.json({
       data: {
         message: 'App user\'s statistics list.',
         statistics: {
           wordsLearnedCount: wordsLearnedCount,
-          wordsLearned: wordsLearnedGroupedByday
+          wordsLearned: wordsLearnedGroupedBydayCount,
+          loginHistories: loginHistoriesGroupedBydayCount
         },
       },
       statusCode: 200,

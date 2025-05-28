@@ -5,9 +5,6 @@ import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { AppUser } from '../../../types/app-user.type';
 import { FilterLanguage } from '../../../constants/enums';
 import { FlashCardModel } from '../models/flash-card.model';
-import { UserClient } from '../../clients/postgres.client';
-
-const sequelize = UserClient.getInstance();
 export class AppUserCourseRepository {
   constructor() {}
   async findAppUserCourseById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<AppUserCourse> {

@@ -28,7 +28,6 @@ export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimest
 }
 
 export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetails): FormattedAppUserEnrolledCourseDetails {
-
   let totalDays = 0
   let daysCompleted = 0
 
@@ -86,7 +85,7 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
               })
             }
 
-            if(totalFlashCardCount === flashCardsCompleted){
+            if(totalFlashCardCount !== 0 && totalFlashCardCount === flashCardsCompleted){
               lessonData = {...lessonData, completed: true }
               lessonsCompleted++
             }
@@ -95,7 +94,7 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
           })
         }
 
-        if(totalLessonsCount === lessonsCompleted){
+        if(totalLessonsCount !== 0 && totalLessonsCount === lessonsCompleted){
           dayData = {...dayData, completed: true }
           daysCompleted++
         }
@@ -112,3 +111,90 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
 
   return formattedData;
 }
+
+// PREVIOUS VERSION OF formatViewEnrolledCourseDetails FORMATTER. KEEPING THIS HERE FOR SAFEKEEPING.
+// export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetails): FormattedAppUserEnrolledCourseDetails {
+
+//   let totalDays = 0
+//   let daysCompleted = 0
+
+//   const formattedData = {
+//     id: data.id,
+//     appUserId: data.appUserId,
+//     courseId: data.courseId,
+//     progress: 0,
+//     totalDays: 0,
+//     daysCompleted: 0,
+//     course: {
+//       id: data.course.id,
+//       title: data.course.title,
+//       description: data.course.description,
+//       totalDays: data.course.totalDays,
+//       difficulty: data.course.difficulty,
+//       imagePath: data.course.imagePath,
+//       estimatedHours: data.course.estimatedHours,
+//       days: data.course.days.map((day) => {
+//         const totalLessonsCount = day.lessons.length
+//         let lessonsCompleted = 0
+//         totalDays++
+
+//         let dayData = {
+//           id: day.id,
+//           courseId: day.courseId,
+//           dayNumber: day.dayNumber,
+//           title: day.title,
+//           description: day.description,
+//           completed: false,
+//           lessons: day.lessons.map((lesson) => {
+//             const totalFlashCardCount = lesson.flash_cards.length
+//             let flashCardsCompleted = 0
+
+//             let lessonData = {
+//               id: lesson.id,
+//               dayId: lesson.dayId,
+//               lessonOrder: lesson.lessonOrder,
+//               title: lesson.title,
+//               description: lesson.description,
+//               estimatedMinutes: lesson.estimatedMinutes,
+//               difficulty: lesson.difficulty,
+//               completed: false,
+//               flash_cards: lesson.flash_cards.map((flashCard) => {
+//                 if(flashCard.flash_cards_viewed.length > 0)
+//                   flashCardsCompleted++
+
+//                 const flashCardData = {
+//                   id: flashCard.id,
+//                   cardOrder: flashCard.cardOrder,
+//                   flashCardViewed: flashCard.flash_cards_viewed.length > 0 ? true : false,
+//                 }
+
+//                 return flashCardData
+//               })
+//             }
+
+//             if(totalFlashCardCount === flashCardsCompleted){
+//               lessonData = {...lessonData, completed: true }
+//               lessonsCompleted++
+//             }
+
+//             return lessonData
+//           })
+//         }
+
+//         if(totalLessonsCount === lessonsCompleted){
+//           dayData = {...dayData, completed: true }
+//           daysCompleted++
+//         }
+
+//         return dayData
+//       })
+//     }
+//   }
+
+//   const progress = daysCompleted/totalDays * 100
+//   formattedData.progress = Math.round(progress)
+//   formattedData.totalDays = totalDays
+//   formattedData.daysCompleted = daysCompleted
+
+//   return formattedData;
+// }

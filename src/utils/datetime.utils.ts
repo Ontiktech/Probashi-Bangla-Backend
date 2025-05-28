@@ -47,3 +47,18 @@ export function groupByDay(data: any, dateField: string) {
     return groups;
   }, {});
 }
+
+export function groupByDayCount(data: any, dateField: string) {
+  return data.reduce((groups: any, item: any) => {
+    const date = new Date(item[dateField]);
+    const dayKey = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+    if (!groups[dayKey]) {
+      groups[dayKey] = 0;
+    }
+
+    groups[dayKey]++;
+
+    return groups;
+  }, {});
+}

@@ -59,13 +59,10 @@ export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, re
     response.course.days = response.course.days
     .sort((a, b) => a.dayNumber - b.dayNumber)
     .map((day) => {
-      let dayCompleted = true;
-  
       const sortedLessons = day.lessons
         .sort((a, b) => a.lessonOrder - b.lessonOrder)
         .map((lesson) => {
           let lessonCompleted = true;
-  
           const sortedFlashCards = lesson.flash_cards
             .sort((a, b) => a.cardOrder - b.cardOrder)
             .map((flashCard) => {
@@ -74,21 +71,16 @@ export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, re
               }
               return flashCard;
             });
-  
-          if (!lessonCompleted) {
-            dayCompleted = false;
-          }
-  
+
           return {
             ...lesson,
             completed: lessonCompleted,
             flash_cards: sortedFlashCards,
           };
         });
-  
+
       return {
         ...day,
-        completed: dayCompleted,
         lessons: sortedLessons,
       };
     });

@@ -8,9 +8,11 @@ import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { AppUserService } from '../../services/admin/app-user.services';
 import { BadRequestException } from '../../errors/BadRequestException.error';
 import { getEnvVar } from '../../utils/common.utils';
+import { LoginHistoryService } from '../../services/app/login-history.services';
 
 const appUserAuthService = new AppUserAuthService();
 const appUserervice = new AppUserService();
+const loginHistoryervice = new LoginHistoryService();
 
 const sequelize = UserClient.getInstance();
 
@@ -19,6 +21,8 @@ export async function login(req: Request, res: Response) {
   try {
     const { phoneNo } = req.body // NOTE: using phoneNo instead of phoneNumber because of some obscure error
     const response = await appUserAuthService.appUserLogin(phoneNo, transaction);
+
+    await loginHistoryervice.storeDailyLoginHistory({ appUserId: response.id }, transaction)
 
     await transaction.commit()
 
