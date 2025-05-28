@@ -29,7 +29,6 @@ export class HomepageService {
           estimatedMinutes: data.flash_card.lesson.estimatedMinutes,
         },
       }
-    console.log(data);
 
     return { streak: appUser.streak, wordsLearned: wordsLearned, continueLearningData: formattedContinueLearningData  }
   }

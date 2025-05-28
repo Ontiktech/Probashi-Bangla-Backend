@@ -27,10 +27,15 @@ export function datetimeYMDHis(
       newDate = new Date(newDate.getTime() + offset * 60000);
   }
 
+  // if(mod && mod === 'startOfDay')
+  //   newDate = new Date(newDate.setUTCHours(0,0,0,0))
+  // if(mod && mod === 'endOfDay')
+  //   newDate = new Date(newDate.setUTCHours(23,59,59,999))
+
   if(mod && mod === 'startOfDay')
-    newDate = new Date(newDate.setUTCHours(0,0,0,0))
+    newDate = new Date(newDate.setHours(0,0,0,0))
   if(mod && mod === 'endOfDay')
-    newDate = new Date(newDate.setUTCHours(23,59,59,999))
+    newDate = new Date(newDate.setHours(23,59,59,999))
 
   return `${pad(newDate.getFullYear())}-${pad(newDate.getMonth() + 1)}-${pad(newDate.getDate())} ${pad(newDate.getHours())}:${pad(newDate.getMinutes())}:${pad(newDate.getSeconds())}`;
 }
