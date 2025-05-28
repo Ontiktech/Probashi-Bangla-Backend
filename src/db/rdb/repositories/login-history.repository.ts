@@ -2,6 +2,9 @@ import { Op, Transaction } from 'sequelize';
 import { LoginHistoryModel } from '../models';
 import { LoginHistory, UpdateLoginHistoryData, StoreLoginHistory } from '../../../types/login-history.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
+import { UserClient } from '../../clients/postgres.client';
+
+const sequelize = UserClient.getInstance();
 export class LoginHistoryRepository {
   constructor() {}
   async findLoginHistoryById(id: string, select: string[]|null = null): Promise<LoginHistory> {
@@ -119,10 +122,22 @@ export class LoginHistoryRepository {
   }
 
   async storeDailyLoginHistory(data: StoreLoginHistory, transaction?: Transaction): Promise<boolean> {
+    const yesterdaysStartDatetime = datetimeYMDHis(null, 'days', 1, 'before', 'startOfDay');
+    const yesterdaysEndDatetime = datetimeYMDHis(null, 'days', 1, 'before', 'endOfDay');
+
+    const yesterdaysEntryexists = await LoginHistoryModel.findOne({
+      where: {
+        createdAt: {
+          [Op.gte] : yesterdaysStartDatetime,
+          [Op.lte] : yesterdaysEndDatetime,
+        }
+      }
+    } as any);
+
     const startDatetime = datetimeYMDHis(null, 'days', 0, 'before', 'startOfDay');
     const endDatetime = datetimeYMDHis(null, 'days', 0, 'before', 'endOfDay');
 
-    const exists = await LoginHistoryModel.findOne({
+    const todaysEntryexists = await LoginHistoryModel.findOne({
       where: {
         createdAt: {
           [Op.gte] : startDatetime,
@@ -131,7 +146,21 @@ export class LoginHistoryRepository {
       }
     } as any);
 
-    if(exists) return true
+    if(!todaysEntryexists){
+      const streakOptions: any = {}
+      if(transaction) streakOptions.transaction = transaction;
+
+      if(yesterdaysEntryexists){
+        const query = `UPDATE "app_users" SET "streak" = "streak" + 1 WHERE "id" = '${data.appUserId}';`;
+        await sequelize.query(query, streakOptions);
+      }
+      else{
+        const query = `UPDATE "app_users" SET "streak" = 0 WHERE "id" = '${data.appUserId}';`;
+        await sequelize.query(query, streakOptions);
+      }
+    }
+
+    if(todaysEntryexists) return true
 
     const options: any = {};
 

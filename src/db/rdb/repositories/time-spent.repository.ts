@@ -99,6 +99,6 @@ export class TimeSpentRepository {
     }
 
     const query = `UPDATE "time_spent" SET "timeSpent" = "timeSpent" + ${time} WHERE "appUserId" = '${appUserId}';`;
-    return sequelize.query(query, options);
+    return await sequelize.query(query, options);
   }
 }

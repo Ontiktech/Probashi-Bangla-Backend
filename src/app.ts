@@ -19,7 +19,8 @@ import { AppAuthRouter } from './routes/app/auth.routes';
 import { AppUserProfileRouter } from './routes/app/app-user.routes';
 import { AppCourseRouter } from './routes/app/course.routes';
 import { AppLessonRouter } from './routes/app/lesson.routes';
-import { AppuserStatisticsRouter } from './routes/app/statistics.routes';
+import { AppUserStatisticsRouter } from './routes/app/statistics.routes';
+import { AppUserHomePage } from './routes/app/homepage.routes';
 
 // const numCPUs = os.cpus().length
 
@@ -63,10 +64,11 @@ const server = () => {
 
     // // app routes
     app.use('/api/v1/app/auth', AppAuthRouter);
+    app.use('/api/v1/app/homepage', AppUserHomePage);
     app.use('/api/v1/app/user', AppUserProfileRouter);
     app.use('/api/v1/app/course', AppCourseRouter);
     app.use('/api/v1/app/lesson', AppLessonRouter);
-    app.use('/api/v1/app/statistics', AppuserStatisticsRouter);
+    app.use('/api/v1/app/statistics', AppUserStatisticsRouter);
 
     app.all('*', (req, res) => {
       res.status(404);

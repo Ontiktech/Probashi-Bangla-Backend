@@ -1,7 +1,8 @@
 import { Op, Transaction } from 'sequelize';
-import { FlashCardViewedModel } from '../models';
+import { CourseModel, DayModel, FlashCardViewedModel, LessonModel } from '../models';
 import { FlashCardViewed, UpdateFlashCardViewedData, StoreFlashCardViewed } from '../../../types/flash-card-viewed.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
+import { FlashCardModel } from '../models/flash-card.model';
 export class FlashCardViewedRepository {
   constructor() {}
   async findFlashCardViewedById(id: string, select: string[]|null = null): Promise<FlashCardViewed> {
@@ -163,5 +164,68 @@ export class FlashCardViewedRepository {
     if(transaction) options.transaction = transaction;
 
     return (await FlashCardViewedModel.destroy(options)) as unknown as FlashCardViewed;
+  }
+
+  async findFlashCardViewedByAppUserIdWithFlashCardLessonDayAndCourse(appUserId: string): Promise<FlashCardViewed> {
+    const options: any = {
+      where: {
+        appUserId: appUserId,
+        deletedAt:{
+          [Op.eq]: null
+        },
+      },
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          as: 'flash_card',
+          model: FlashCardModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id'],
+          include: [
+            {
+              as: 'lesson',
+              model: LessonModel,
+              where: {
+                deletedAt: {
+                  [Op.eq]: null,
+                },
+              },
+              attributes: ['id', 'title', 'description', 'estimatedMinutes'],
+              include: [
+                {
+                  as: 'day',
+                  model: DayModel,
+                  where: {
+                    deletedAt: {
+                      [Op.eq]: null,
+                    },
+                  },
+                  attributes: ['id'],
+                  include: [
+                    {
+                      as: 'course',
+                      model: CourseModel,
+                      where: {
+                        deletedAt: {
+                          [Op.eq]: null,
+                        },
+                      },
+                      attributes: ['id', 'title'],
+                    },
+                  ],
+                },
+                
+              ],
+            },
+          ],
+        },
+      ],
+    }
+
+    return (await FlashCardViewedModel.findOne(options)) as unknown as FlashCardViewed;
   }
 }

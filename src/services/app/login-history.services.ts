@@ -47,6 +47,6 @@ export class LoginHistoryService {
   }
 
   async getLoginHistoryForAppUser(appUserId: string, afterDate?: string) {
-    return await this.loginHistoryRepo.getLoginHistoryForAppUser(appUserId);
+    return await this.loginHistoryRepo.getLoginHistoryForAppUser(appUserId, afterDate);
   }
 }
