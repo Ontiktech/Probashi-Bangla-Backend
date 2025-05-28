@@ -53,4 +53,8 @@ export class LessonService {
   async viewFlashCards(lessonId: string, appUserId: string) {
     return await this.lessonRepo.viewFlashCards(lessonId, appUserId);
   }
+
+  async nextLesson(lessonId: string) {
+    return await this.lessonRepo.nextLesson(lessonId);
+  }
 }

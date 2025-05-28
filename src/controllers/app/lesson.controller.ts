@@ -14,13 +14,15 @@ const flashCardViewedService = new FlashCardViewedService();
 export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response) {
   try {
     const { lessonId } = req.params
-    const { nextLesson, lesson } = await lessonService.viewFlashCards(lessonId, req.user!.id)
+    const lesson = await lessonService.viewFlashCards(lessonId, req.user!.id)
     if(!lesson)
       throw new NotFoundException('Lesson not found.')
     if(lesson.day.course.user_courses.length === 0)
       throw new BadRequestException('You are not part of this course.')
 
     lesson.flash_cards = lesson.flash_cards.sort((a, b) => a.cardOrder - b.cardOrder)
+
+    const nextLesson = await lessonService.nextLesson(lessonId)
 
     return res.json({
       data: {

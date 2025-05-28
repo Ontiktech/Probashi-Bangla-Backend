@@ -3,6 +3,7 @@ import { AppUserCourseModel, CourseModel, DayModel, FlashCardViewedModel, Lesson
 import { Lesson, UpdateLessonData, StoreLesson, LessonWithFlashCards } from '../../../types/lesson.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { FlashCardModel } from '../models/flash-card.model';
+import { NotFoundException } from '../../../errors/NotFoundException.error';
 export class LessonRepository {
   constructor() {}
   async findLessonById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<Lesson> {
@@ -157,7 +158,7 @@ export class LessonRepository {
     });
   }
 
-  async viewFlashCards(lessonId: string, appUserId: string): Promise<{ nextLesson: { id: string, dayId: string, lessonOrder: number } | null, lesson: LessonWithFlashCards }> {
+  async viewFlashCards(lessonId: string, appUserId: string): Promise<LessonWithFlashCards> {
     const lesson =  await LessonModel.findOne({
       where: {
         id: lessonId,
@@ -231,6 +232,23 @@ export class LessonRepository {
       ],
     }) as unknown as LessonWithFlashCards;
 
+    return lesson
+  }
+
+  async nextLesson(lessonId: string): Promise<{ id: string, dayId: string, lessonOrder: number } | null> {
+    const lesson =  await LessonModel.findOne({
+      where: {
+        id: lessonId,
+        deletedAt:{
+          [Op.eq]: null
+        },
+      },
+      attributes: ['id', 'dayId', 'lessonOrder'],
+    }) as unknown as LessonWithFlashCards;
+
+    if(!lesson)
+      throw new NotFoundException('Lesson not found.')
+
     const nextLesson =  await LessonModel.findOne({
       where: {
         dayId: lesson.dayId,
@@ -244,6 +262,6 @@ export class LessonRepository {
       attributes: ['id', 'dayId', 'lessonOrder'],
     })
 
-    return { nextLesson, lesson }
+    return nextLesson
   }
 }

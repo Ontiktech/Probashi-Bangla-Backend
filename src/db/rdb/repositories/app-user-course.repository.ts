@@ -5,6 +5,9 @@ import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { AppUser } from '../../../types/app-user.type';
 import { FilterLanguage } from '../../../constants/enums';
 import { FlashCardModel } from '../models/flash-card.model';
+import { UserClient } from '../../clients/postgres.client';
+
+const sequelize = UserClient.getInstance();
 export class AppUserCourseRepository {
   constructor() {}
   async findAppUserCourseById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<AppUserCourse> {
@@ -216,9 +219,7 @@ export class AppUserCourseRepository {
           [Op.eq]: null,
         },
       },
-      order: [
-        ['createdAt', 'DESC']
-      ],
+      order: [['createdAt', 'ASC']],
       limit: limit,
       offset: offset,
       include: [
@@ -262,6 +263,26 @@ export class AppUserCourseRepository {
         },
       ],
     };
+
+    const countOptions: any = {
+      where: {
+        appUserId: appUserId,
+        deletedAt: {
+          [Op.eq]: null,
+        },
+      },
+      include: [
+        {
+          as: 'course',
+          model: CourseModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+        },
+      ],
+    };
     
     const courseWhereConditions: any[] = [];
     
@@ -288,14 +309,16 @@ export class AppUserCourseRepository {
         ...options.include[0].where,
         [Op.and]: courseWhereConditions,
       };
+
+      countOptions.include[0].where = {
+        ...countOptions.include[0].where,
+        [Op.and]: courseWhereConditions,
+      };
     }
 
     const data = await AppUserCourseModel.findAll(options) as unknown as AppUserCourseWithCourseAndTimestamps[]
 
-    const count = await AppUserCourseModel.count(options) as unknown as number
-
-    console.log('next numbers', count, offset, limit);
-
+    const count = await AppUserCourseModel.count(countOptions) as unknown as number
     const next = (count - offset - limit) > 0 ? (count - offset - limit) : 0
 
     return { next, data }
