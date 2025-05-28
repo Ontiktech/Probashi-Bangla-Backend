@@ -11,14 +11,12 @@ export const createAppUserSchema = z.object({
   firstName: z
     .string({ required_error: 'First name is required' })
     .trim()
-    .min(3, { message: 'First name has to be at least 3 characters long.' })
     .max(255, { message: 'First name cannot exceed 255 characters.' })
     .optional()
     .nullable(),
   lastName: z
     .string({ required_error: 'Last name is required' })
     .trim()
-    .min(3, { message: 'Last name has to be at least 3 characters long.' })
     .max(255, { message: 'Last name cannot exceed 255 characters.' })
     .optional()
     .nullable(),
@@ -43,21 +41,18 @@ export const updateAppUserSchema = z.object({
   firstName: z
     .string({ required_error: 'First name is required' })
     .trim()
-    .min(3, { message: 'First name has to be at least 3 characters long.' })
     .max(255, { message: 'First name cannot exceed 255 characters.' })
     .optional()
     .nullable(),
   lastName: z
     .string({ required_error: 'Last name is required' })
     .trim()
-    .min(3, { message: 'Last name has to be at least 3 characters long.' })
     .max(255, { message: 'Last name cannot exceed 255 characters.' })
     .optional()
     .nullable(),
   email: z
     .string({ required_error: 'Email is required' })
     .trim()
-    .min(3, { message: 'Email has to be at least 3 characters long.' })
     .max(255, { message: 'Email cannot exceed 255 characters.' })
     .optional()
     .nullable(),
