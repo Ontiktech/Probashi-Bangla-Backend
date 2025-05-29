@@ -1,31 +1,37 @@
 import { AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails, FormattedAppUserEnrolledCourseDetails } from '../types/app-user-course.type';
 import { EnrolledCourses } from '../types/course.type';
 
-// export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimestamps[]): EnrolledCourses[] {
-//   const formattedData =
-//     data.map((userCourse: AppUserCourseWithCourseAndTimestamps) => {
-//       let lessonCount = 0
-//       userCourse.course.days.map((day) => {
-//         lessonCount += day.lessons.length
-//       })
-//       return {
-//         id: userCourse.course.id,
-//         title: userCourse.course.title,
-//         description: userCourse.course.description,
-//         totalDays: userCourse.course.totalDays,
-//         language: userCourse.course.language,
-//         targetLanguage: userCourse.course.targetLanguage,
-//         difficulty: userCourse.course.difficulty,
-//         imagePath: userCourse.course.imagePath,
-//         estimatedHours: userCourse.course.estimatedHours,
-//         lessonCount: lessonCount,
-//         createdAt: userCourse.course.createdAt,
-//         updatedAt: userCourse.course.updatedAt,
-//       }
-//     });
+export function formatViewEnrolledCourses(data: AppUserCourseWithCourseAndTimestamps[]): EnrolledCourses[] {
+  const formattedData =
+    data.map((userCourse: AppUserCourseWithCourseAndTimestamps) => {
+      let lessonCount = 0
+      userCourse.course.days.map((day) => {
+        lessonCount += day.lessons.length
+      })
+      return {
+        id: userCourse.course.id,
+        title: userCourse.course.title,
+        description: userCourse.course.description,
+        totalDays: userCourse.course.totalDays,
+        language: {
+          id: userCourse.course.language.id,
+          name: userCourse.course.language.name,
+        },
+        targetLanguage: {
+          id: userCourse.course.target_language.id,
+          name: userCourse.course.target_language.name,
+        },
+        difficulty: userCourse.course.difficulty,
+        imagePath: userCourse.course.imagePath,
+        estimatedHours: userCourse.course.estimatedHours,
+        lessonCount: lessonCount,
+        createdAt: userCourse.course.createdAt,
+        updatedAt: userCourse.course.updatedAt,
+      }
+    });
 
-//   return formattedData;
-// }
+  return formattedData;
+}
 
 export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetails): FormattedAppUserEnrolledCourseDetails {
   let totalDays = 0

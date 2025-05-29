@@ -59,6 +59,16 @@ export class AppUserRepository {
                   },
                   attributes: ['id','name']
                 },
+                {
+                  as: 'target_language',
+                  model: LanguageModel,
+                  where: {
+                    deletedAt: {
+                      [Op.eq]: null,
+                    },
+                  },
+                  attributes: ['id', 'name']
+                },
               ]
             },
           ]

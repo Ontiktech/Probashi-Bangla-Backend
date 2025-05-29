@@ -3,7 +3,7 @@ import { CustomException } from '../../errors/CustomException.error';
 import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { FilterLanguage } from '../../constants/enums';
 import { AppUserCourseService } from '../../services/admin/app-user-course.services';
-import { formatViewEnrolledCourseDetails } from '../../formatter/app-user-course.formatter';
+import { formatViewEnrolledCourseDetails, formatViewEnrolledCourses } from '../../formatter/app-user-course.formatter';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { AppUserEnrolledCourseDetails } from '../../types/app-user-course.type';
 
@@ -11,21 +11,20 @@ const appUserCourseService = new AppUserCourseService();
 
 export async function viewEnrolledCourses(req: AppAuthenticatedRequest, res: Response) {
   try {
-    const language = (req.query.language || req.query.language === FilterLanguage.EMPTY) ? req.query.language.toString() : FilterLanguage.ALL
+    const languageId = (req.query.languageId || req.query.languageId === FilterLanguage.EMPTY) ? req.query.languageId.toString() : null
     const searchText = req.query.searchText ? req.query.searchText.toString() : undefined
     const page = req.query.page ? Number(req.query.page) : 1
     const number = req.query.number ? Number(req.query.number) : 10
     const limit = number
     const offset = (page - 1) * number
 
-    const { next, data } = await appUserCourseService.viewEnrolledCourses(req.user!.id, limit, offset, language, searchText);
+    const { next, data } = await appUserCourseService.viewEnrolledCourses(req.user!.id, limit, offset, languageId, searchText);
   
     return res.json({
       data: {
         message: 'App user\'s enrolled course list.',
         next: next,
-        // courses: formatViewEnrolledCourses(data),
-        courses: data
+        courses: formatViewEnrolledCourses(data)
       },
       statusCode: 200,
     });

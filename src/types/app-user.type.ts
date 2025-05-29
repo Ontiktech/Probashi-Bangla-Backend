@@ -51,14 +51,34 @@ export type AppUserWithAppUserCoursesWithCourse = AppUserWithTimestamps & {
   user_courses: AppUserCourseWithCourseAndTimestamps[]
 };
 
+export type AppUserWithCoursesWithLanguageAndTargetLanguage = Omit<CourseWithTimestamps, 'languageId'|'targetLanguageId'> & {
+  language: {
+    id: string
+    name: string
+  },
+  targetLanguage: {
+    id: string
+    name: string
+  },
+}
+
 export type AppUserWithCourses = AppUserWithTimestamps & {
-  courses: CourseWithTimestamps[]
+  courses: AppUserWithCoursesWithLanguageAndTargetLanguage[]
 };
+
+// export type AppUserWithCoursesWithLanguageAndTargetLanguage = Omit<CourseWithTimestamps, 'languageId'|'targetLanguageId'> & {
+//   language: string,
+//   targetLanguage: string,
+// }
+
+// export type AppUserWithCourses = AppUserWithTimestamps & {
+//   courses: AppUserWithCoursesWithLanguageAndTargetLanguage[]
+// };
 
 export type AdminViewSingleAppUserWithAppUserCoursesWithCourse = AppUserWithTimestamps & {
   user_courses: AppUserCoursesWithCourseForAdminViewSingleAppUser[]
 };
 
 export type AppUserWithCoursesForAdminViewSingleAppUser = AppUserWithTimestamps & {
-  courses: Omit<CourseWithTimestamps, 'description'|'totalDays'|'language'|'targetLanguage'|'difficulty'|'imagePath'|'estimatedHours'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'>[]
+  courses: Omit<CourseWithTimestamps, 'description'|'totalDays'|'languageId'|'targetLanguageId'|'difficulty'|'imagePath'|'estimatedHours'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'>[]
 };

@@ -1,5 +1,5 @@
 import { Op, Transaction } from 'sequelize';
-import { AppUserCourseModel, AppUserModel, CourseModel, DayModel, FlashCardViewedModel, LessonModel } from '../models';
+import { AppUserCourseModel, AppUserModel, CourseModel, DayModel, FlashCardViewedModel, LanguageModel, LessonModel } from '../models';
 import { AppUserCourse, UpdateAppUserCourseData, StoreAppUserCourse, AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails } from '../../../types/app-user-course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { AppUser } from '../../../types/app-user.type';
@@ -26,6 +26,7 @@ export class AppUserCourseRepository {
           as: 'course',
           model: CourseModel,
           required: false,
+
         },
         {
           as: 'app_user',
@@ -196,6 +197,28 @@ export class AppUserCourseRepository {
               as: 'course',
               model: CourseModel,
               required: false,
+              include: [
+                {
+                  as: 'language',
+                  model: LanguageModel,
+                  where: {
+                    deletedAt: {
+                      [Op.eq]: null,
+                    },
+                  },
+                  attributes: ['id', 'name']
+                },
+                {
+                  as: 'target_language',
+                  model: LanguageModel,
+                  where: {
+                    deletedAt: {
+                      [Op.eq]: null,
+                    },
+                  },
+                  attributes: ['id', 'name']
+                },
+              ],
             },
           ]
         },
@@ -208,7 +231,7 @@ export class AppUserCourseRepository {
     return (await AppUserModel.findOne(options)) as unknown as AppUser;
   }
 
-  async viewEnrolledCourses(appUserId: string, limit: number, offset: number, language?: string, searchText?: string): Promise<{next: number, data: AppUserCourseWithCourseAndTimestamps[]}> {
+  async viewEnrolledCourses(appUserId: string, limit: number, offset: number, languageId?: string|null, searchText?: string): Promise<{next: number, data: AppUserCourseWithCourseAndTimestamps[]}> {
     const options: any = {
       where: {
         appUserId: appUserId,
@@ -228,8 +251,28 @@ export class AppUserCourseRepository {
               [Op.eq]: null,
             },
           },
-          attributes: ['id', 'title', 'description', 'totalDays', 'language', 'targetLanguage', 'difficulty', 'imagePath', 'estimatedHours', 'createdAt', 'updatedAt'],
+          attributes: ['id', 'title', 'description', 'totalDays', 'difficulty', 'imagePath', 'estimatedHours', 'createdAt', 'updatedAt'],
           include: [
+            {
+              as: 'language',
+              model: LanguageModel,
+              where: {
+                deletedAt: {
+                  [Op.eq]: null,
+                },
+              },
+              attributes: ['id', 'name'],
+            },
+            {
+              as: 'target_language',
+              model: LanguageModel,
+              where: {
+                deletedAt: {
+                  [Op.eq]: null,
+                },
+              },
+              attributes: ['id', 'name'],
+            },
             {
               as: 'days',
               model: DayModel,
@@ -283,11 +326,11 @@ export class AppUserCourseRepository {
     
     const courseWhereConditions: any[] = [];
     
-    if (language && language !== FilterLanguage.ALL && language !== FilterLanguage.EMPTY) {
+    if (languageId && languageId !== null) {
       courseWhereConditions.push({
         [Op.or]: [
-          { language: language },
-          { targetLanguage: language },
+          { languageId: languageId },
+          { targetLanguageId: languageId },
         ],
       });
     }

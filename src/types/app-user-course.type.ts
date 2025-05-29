@@ -25,6 +25,14 @@ export type AppUserCourseWithCourseAndTimestamps = AppUserCourse & {
   createdAt: string
   updatedAt: string
   course: CourseWithTimestamps & {
+    language: {
+      id: string,
+      name: string,
+    },
+    target_language: {
+      id: string,
+      name: string,
+    },
     days: { 
       id: string 
       lessons: {
@@ -67,7 +75,15 @@ export type DaysForEnrollCourseDetails = Omit<DayWithTimestamps, 'updatedBy'|'de
 }
 
 export type AppUserEnrolledCourseDetails = Omit<AppUserCourse, 'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
-  course: Omit<CourseWithTimestamps, 'language'|'targetLanguage'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
+  course: Omit<CourseWithTimestamps, 'languageId'|'targetLanguageId'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
+    language: {
+      id: string
+      name: string
+    }
+    targetLanguage: {
+      id: string
+      name: string
+    }
     days: DaysForEnrollCourseDetails[]
   }
 }

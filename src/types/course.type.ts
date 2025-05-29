@@ -25,7 +25,15 @@ export type CourseWithTimestamps = Course & {
 };
 
 
-export type EnrolledCourses = Omit<Course, 'updatedBy'|'deletedAt'|'deletedBy'> & {
+export type EnrolledCourses = Omit<Course, 'languageId'|'targetLanguageId'|'updatedBy'|'deletedAt'|'deletedBy'> & {
+  language: {
+    id: string,
+    name: string,
+  },
+  targetLanguage: {
+    id: string,
+    name: string,
+  },
   lessonCount: number
   createdAt: string
   updatedAt: string

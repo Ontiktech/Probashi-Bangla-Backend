@@ -6,7 +6,7 @@ import { deleteMultipleFileLocal, multipleFileLocalFullPathResolver, rollbackMul
 import { BadRequestException } from '../../errors/BadRequestException.error';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { AppUserCourseService } from '../../services/admin/app-user-course.services';
-// import { formatAdminViewSingleAppUserWithCourses, formatAppUserWithCourses } from '../../formatter/app-user.formatter';
+import { formatAdminViewSingleAppUserWithCourses, formatAppUserWithCourses } from '../../formatter/app-user.formatter';
 import { AdminViewSingleAppUserWithAppUserCoursesWithCourse, AppUserWithAppUserCoursesWithCourse } from '../../types/app-user.type';
 
 const appUserService = new AppUserService();
@@ -88,8 +88,7 @@ export async function getSingleAppUser(req: AdminAuthenticatedRequest, res: Resp
     return res.status(200).json({
       data: {
         message: 'User fetched successfully!',
-        // user: formatAdminViewSingleAppUserWithCourses(user as AdminViewSingleAppUserWithAppUserCoursesWithCourse),
-        user: user
+        user: formatAdminViewSingleAppUserWithCourses(user as AdminViewSingleAppUserWithAppUserCoursesWithCourse),
       },
       statusCode: 200,
     });
@@ -284,8 +283,6 @@ export async function enrollAppUserToCourse(req: AdminAuthenticatedRequest, res:
         data.push({ appUserId: req.body.appUserId, courseId: courseIds[i], updatedBy: req.user!.id, deletedAt: null, deletedBy: null })
     }
 
-    console.log('data', data);
-
     const response = await appUserCourseService.bulkStoreAppUserCourse(data);
 
     if(response){
@@ -330,8 +327,7 @@ export async function appUserEnrolled(req: AdminAuthenticatedRequest, res: Respo
       return res.json({
         data: {
           message: 'User with enrolled courses list.',
-          // appUser: formatAppUserWithCourses(appUserWithCourses),
-          appUser: appUserWithCourses
+          appUser: formatAppUserWithCourses(appUserWithCourses),
         },
         statusCode: 200,
       });
