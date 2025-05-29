@@ -4,7 +4,7 @@ import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { Language, StoreLanguage, UpdateLanguageData } from '../../../types/language.type';
 export class LanguageRepository {
   constructor() {}
-  async findLanguageById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<Language> {
+  async findLanguageById(id: string, select: string[]|null = null): Promise<Language> {
     const options: any = {
       where: {
         id: id,
@@ -16,21 +16,6 @@ export class LanguageRepository {
 
     if(select && select.length > 0)
       options.attributes = select
-
-    if(withRelations){
-      options.include = [
-        {
-          as: 'days',
-          model: DayModel,
-          required: false,
-          where: {
-            deletedAt: {
-              [Op.eq]: null
-            }
-          }
-        },
-      ];
-    }
 
     return (await LanguageModel.findOne(options)) as unknown as Language;
   }
@@ -64,7 +49,7 @@ export class LanguageRepository {
       where: {
         deletedAt: {
           [Op.eq]: null
-        }
+        },
       },
       order: [['createdAt', 'DESC']],
     })) as unknown as Language[];
@@ -121,5 +106,23 @@ export class LanguageRepository {
     if(transaction) options.transaction = transaction;
 
     return (await LanguageModel.destroy(options)) as unknown as Language;
+  }
+
+  async languageExistsByName(name: string, exceptId?: string): Promise<number> {
+    let options: any = {
+      where: {
+        name: {
+          [Op.iLike]: name
+        },
+        deletedAt:{
+          [Op.eq]: null
+        }
+      },
+    }
+
+    if(exceptId)
+    options.where = {...options.where, id: { [Op.ne]: exceptId }}
+
+    return (await LanguageModel.count(options)) as unknown as number;
   }
 }

@@ -14,7 +14,7 @@ class LanguageModel extends Model<
   InferCreationAttributes<LanguageModel>
 > {
   declare id: string
-  declare language: string
+  declare name: string
   declare updatedBy: string
   declare deletedAt: CreationOptional<string | null>
   declare deletedBy: CreationOptional<string | null>
@@ -26,7 +26,7 @@ LanguageModel.init(
       type: DataTypes.STRING,
       primaryKey: true,
     },
-    language: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -44,7 +44,7 @@ LanguageModel.init(
     },
   },
   {
-    tableName: 'days',
+    tableName: 'languages',
     sequelize,
     timestamps: true,
   },

@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { imageValidationRule } from './common.schema';
-import { DIFFICULTIES, LANGUAGES } from '../constants/enums';
+import { DIFFICULTIES } from '../constants/enums';
+import { LanguageService } from '../services/admin/language.services';
+
+const languageService = new LanguageService()
 
 export const createCourseSchema = z.object({
   title: z
@@ -19,14 +22,12 @@ export const createCourseSchema = z.object({
     .number({ required_error: 'Total days is required.' })
     .min(1, { message: 'Total days has to be at least 1.' })
     .max(1000000, { message: 'Total days cannot exceed 1000000.' }),
-  language: z
+  languageId: z
     .string({ required_error: 'Language is required.' })
-    .trim()
-    .max(255, { message: 'Language cannot exceed 255 characters.' }),
-  targetLanguage: z
+    .trim(),
+  targetLanguageId: z
     .string({ required_error: 'Target language is required.' })
-    .trim()
-    .max(255, { message: 'Target language cannot exceed 255 characters.' }),
+    .trim(),
   difficulty: z
     .enum(DIFFICULTIES, { required_error: 'Difficulty is required.' }),
   estimatedHours: z
@@ -35,6 +36,40 @@ export const createCourseSchema = z.object({
     .min(1, { message: 'Estimated hours has to be at least 1.' })
     .max(1000000, { message: 'Estimated hours cannot exceed 1000000.' }),
   imagePath: z.array(imageValidationRule, {required_error: "Image is be required." }),
+})
+.superRefine(async (data, ctx) => {
+  const { languageId, targetLanguageId } = data;
+
+  const langExists = await languageService.findLanguageById(languageId)
+  if (!langExists) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['languageId'],
+      message: 'Language not found.',
+    });
+  }
+
+  const targetLangExists = await languageService.findLanguageById(targetLanguageId)
+  if (!targetLangExists) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['targetLanguageId'],
+      message: 'Target language not found.',
+    });
+  }
+
+  if(languageId === targetLanguageId){
+    ctx.addIssue({
+      code: 'custom',
+      path: ['targetLanguageId'],
+      message: 'Language and target language cannot be the same.',
+    });
+    ctx.addIssue({
+      code: 'custom',
+      path: ['targetLanguageId'],
+      message: 'Language and target language cannot be the same.',
+    });
+  }
 });
 
 export const updateCourseSchema = z.object({
@@ -58,10 +93,16 @@ export const updateCourseSchema = z.object({
     .max(1000000, { message: 'Total days cannot exceed 1000000.' })
     .optional()
     .nullable(),
-  language: z
-    .enum(LANGUAGES, { required_error: 'Language is required.' }),
-  targetLanguage: z
-    .enum(LANGUAGES, { required_error: 'Target language is required.' }),
+  languageId: z
+    .string({ required_error: 'Language is required.' })
+    .trim()
+    .optional()
+    .nullable(),
+  targetLanguageId: z
+    .string({ required_error: 'Target language is required.' })
+    .trim()
+    .optional()
+    .nullable(),
   difficulty: z
     .enum(DIFFICULTIES, { required_error: 'Difficulty is required.' }),
   estimatedHours: z
@@ -72,4 +113,42 @@ export const updateCourseSchema = z.object({
   imagePath: z.array(imageValidationRule, {required_error: "Image is be required." })
     .optional()
     .nullable(),
+})
+.superRefine(async (data, ctx) => {
+  const { languageId, targetLanguageId } = data;
+
+  if(languageId){
+    const langExists = await languageService.findLanguageById(languageId)
+    if (!langExists) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['languageId'],
+        message: 'Language not found.',
+      });
+    }
+  }
+
+  if(targetLanguageId){
+    const targetLangExists = await languageService.findLanguageById(targetLanguageId)
+    if (!targetLangExists) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['targetLanguageId'],
+        message: 'Target language not found.',
+      });
+    }
+  }
+
+  if(languageId === targetLanguageId){
+    ctx.addIssue({
+      code: 'custom',
+      path: ['targetLanguageId'],
+      message: 'Language and target language cannot be the same.',
+    });
+    ctx.addIssue({
+      code: 'custom',
+      path: ['targetLanguageId'],
+      message: 'Language and target language cannot be the same.',
+    });
+  }
 });

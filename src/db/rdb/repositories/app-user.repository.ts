@@ -1,5 +1,5 @@
 import { Op, Transaction } from 'sequelize';
-import { AppUserCourseModel, AppUserModel, CourseModel } from '../models';
+import { AppUserCourseModel, AppUserModel, CourseModel, LanguageModel } from '../models';
 import {
   AppUser,
   UpdateAppUserData,
@@ -47,7 +47,19 @@ export class AppUserRepository {
                   [Op.eq]: null
                 }
               },
-              attributes: ['id','title']
+              attributes: ['id','title'],
+              include: [
+                {
+                  as: 'language',
+                  model: LanguageModel,
+                  where: {
+                    deletedAt: {
+                      [Op.eq]: null
+                    }
+                  },
+                  attributes: ['id','name']
+                },
+              ]
             },
           ]
         },

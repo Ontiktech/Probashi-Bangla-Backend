@@ -10,8 +10,8 @@ export class LanguageService {
     this.languageRepo = new LanguageRepository();
   }
 
-  async findLanguageById(id: string, select: string[]|null = null, withRelations: boolean = false) {
-    return await this.languageRepo.findLanguageById(id, select, withRelations);
+  async findLanguageById(id: string, select: string[]|null = null) {
+    return await this.languageRepo.findLanguageById(id, select);
   }
 
   async languageExistsById(id: string) {
@@ -36,5 +36,9 @@ export class LanguageService {
 
   async deleteLanguage(id: string, deletedBy: string, transaction?: Transaction) {
     return await this.languageRepo.deleteLanguage(id, deletedBy, transaction);
+  }
+
+  async languageExistsByName(name: string, exceptId?: string) {
+    return await this.languageRepo.languageExistsByName(name, exceptId);
   }
 }

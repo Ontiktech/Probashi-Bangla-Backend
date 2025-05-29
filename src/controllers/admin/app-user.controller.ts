@@ -6,7 +6,7 @@ import { deleteMultipleFileLocal, multipleFileLocalFullPathResolver, rollbackMul
 import { BadRequestException } from '../../errors/BadRequestException.error';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { AppUserCourseService } from '../../services/admin/app-user-course.services';
-import { formatAdminViewSingleAppUserWithCourses, formatAppUserWithCourses } from '../../formatter/app-user.formatter';
+// import { formatAdminViewSingleAppUserWithCourses, formatAppUserWithCourses } from '../../formatter/app-user.formatter';
 import { AdminViewSingleAppUserWithAppUserCoursesWithCourse, AppUserWithAppUserCoursesWithCourse } from '../../types/app-user.type';
 
 const appUserService = new AppUserService();
@@ -88,7 +88,8 @@ export async function getSingleAppUser(req: AdminAuthenticatedRequest, res: Resp
     return res.status(200).json({
       data: {
         message: 'User fetched successfully!',
-        user: formatAdminViewSingleAppUserWithCourses(user as AdminViewSingleAppUserWithAppUserCoursesWithCourse),
+        // user: formatAdminViewSingleAppUserWithCourses(user as AdminViewSingleAppUserWithAppUserCoursesWithCourse),
+        user: user
       },
       statusCode: 200,
     });
@@ -325,13 +326,12 @@ export async function appUserEnrolled(req: AdminAuthenticatedRequest, res: Respo
     if(!appUserWithCourses)
       throw new NotFoundException('App user not found.')
 
-    const formattedAppUserWithCourses = formatAppUserWithCourses(appUserWithCourses)
-
     if(appUserWithCourses){
       return res.json({
         data: {
           message: 'User with enrolled courses list.',
-          appUser: formattedAppUserWithCourses,
+          // appUser: formatAppUserWithCourses(appUserWithCourses),
+          appUser: appUserWithCourses
         },
         statusCode: 200,
       });

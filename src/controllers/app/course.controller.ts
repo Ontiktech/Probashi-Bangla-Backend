@@ -3,7 +3,7 @@ import { CustomException } from '../../errors/CustomException.error';
 import { AppAuthenticatedRequest } from '../../types/authenticate.type';
 import { FilterLanguage } from '../../constants/enums';
 import { AppUserCourseService } from '../../services/admin/app-user-course.services';
-import { formatViewEnrolledCourseDetails, formatViewEnrolledCourses } from '../../formatter/app-user-course.formatter';
+import { formatViewEnrolledCourseDetails } from '../../formatter/app-user-course.formatter';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { AppUserEnrolledCourseDetails } from '../../types/app-user-course.type';
 
@@ -24,7 +24,8 @@ export async function viewEnrolledCourses(req: AppAuthenticatedRequest, res: Res
       data: {
         message: 'App user\'s enrolled course list.',
         next: next,
-        courses: formatViewEnrolledCourses(data),
+        // courses: formatViewEnrolledCourses(data),
+        courses: data
       },
       statusCode: 200,
     });

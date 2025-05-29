@@ -1,5 +1,5 @@
 import { Op, Transaction } from 'sequelize';
-import { CourseModel, DayModel } from '../models';
+import { CourseModel, DayModel, LanguageModel } from '../models';
 import { Course, UpdateCourseData, StoreCourse } from '../../../types/course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 export class CourseRepository {
@@ -29,6 +29,26 @@ export class CourseRepository {
             }
           }
         },
+        {
+          as: 'language',
+          model: LanguageModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'name']
+        },
+        {
+          as: 'target_language',
+          model: LanguageModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'name']
+        },
       ];
     }
 
@@ -45,6 +65,28 @@ export class CourseRepository {
           } 
         },
       },
+      include: [
+        {
+          as: 'language',
+          model: LanguageModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'name']
+        },
+        {
+          as: 'target_language',
+          model: LanguageModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'name']
+        },
+      ],
     })) as unknown as Course[];
   }
 
@@ -66,6 +108,28 @@ export class CourseRepository {
           [Op.eq]: null
         }
       },
+      include: [
+        {
+          as: 'language',
+          model: LanguageModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'name']
+        },
+        {
+          as: 'target_language',
+          model: LanguageModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'name']
+        },
+      ],
       order: [['createdAt', 'DESC']],
     })) as unknown as Course[];
   }

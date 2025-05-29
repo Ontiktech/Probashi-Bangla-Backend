@@ -11,6 +11,27 @@ import { TimeSpentModel } from './time-spent.model';
 import { LoginHistoryModel } from './login-history.model';
 import { LanguageModel } from './language.model';
 
+
+// LANGUAGE ASSOCIATIONS
+LanguageModel.hasMany(CourseModel, {
+  as: 'course',
+  foreignKey: 'languageId',
+});
+CourseModel.belongsTo(LanguageModel, {
+  as: 'language',
+  foreignKey: 'languageId',
+});
+
+LanguageModel.hasMany(CourseModel, {
+  as: 'target_course',
+  foreignKey: 'targetLanguageId',
+});
+CourseModel.belongsTo(LanguageModel, {
+  as: 'target_language',
+  foreignKey: 'targetLanguageId',
+});
+
+
 // ADMIN USER ASSOCIATIONS
 AdminUserModel.hasMany(AppUserModel, {
   as: 'deleted_app_user',

@@ -5,7 +5,7 @@ export type Language = InferAttributes<LanguageModel>;
 
 export type StoreLanguage = Partial<InferCreationAttributes<LanguageModel>> & {
   id: string
-  language: string
+  name: string
   updatedBy: string
   createdAt?: string | null
   updatedAt?: string | null

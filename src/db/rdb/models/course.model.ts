@@ -1,4 +1,4 @@
-import { Difficulty, Languages } from '../../../constants/enums';
+import { Difficulty } from '../../../constants/enums';
 import { UserClient } from '../../clients/postgres.client';
 import {
   Model,
@@ -18,8 +18,8 @@ class CourseModel extends Model<
   declare title: string
   declare description: CreationOptional<string | null>
   declare totalDays: number
-  declare language: string
-  declare targetLanguage: string
+  declare languageId: string
+  declare targetLanguageId: string
   declare difficulty: CreationOptional<string | null>
   declare imagePath: string
   declare estimatedHours: CreationOptional<number | null>
@@ -46,11 +46,11 @@ CourseModel.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    language:{
+    languageId:{
       type: DataTypes.STRING,
       allowNull: false,
     },
-    targetLanguage: { 
+    targetLanguageId: { 
       type: DataTypes.STRING,
       allowNull: false,
     },

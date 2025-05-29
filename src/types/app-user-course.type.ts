@@ -41,6 +41,10 @@ export type AppUserCoursesWithCourseForAdminViewSingleAppUser = {
   course: {
     id: string
     title: string
+    language: {
+      id: string
+      name: string
+    }
   }
 }
 

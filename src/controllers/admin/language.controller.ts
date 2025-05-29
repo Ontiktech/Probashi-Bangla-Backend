@@ -2,8 +2,6 @@ import { Response } from 'express';
 import { CustomException } from '../../errors/CustomException.error';
 import { AdminAuthenticatedRequest } from '../../types/authenticate.type';
 import { NotFoundException } from '../../errors/NotFoundException.error';
-import { BadRequestException } from '../../errors/BadRequestException.error';
-import { ForbiddenException } from '../../errors/ForbiddenException.error';
 import { LanguageService } from '../../services/admin/language.services';
 
 const languageService = new LanguageService();
@@ -42,7 +40,7 @@ export async function getAllLanguages(req: AdminAuthenticatedRequest, res: Respo
 export async function getSingleLanguage(req: AdminAuthenticatedRequest, res: Response) {
   try {
     const languageId = req.params.id
-    const language = await languageService.findLanguageById(languageId, null, true);
+    const language = await languageService.findLanguageById(languageId, null);
 
     if(!language)
       throw new NotFoundException('Language not found.')
@@ -114,7 +112,7 @@ export async function createLanguage(req: AdminAuthenticatedRequest, res: Respon
 export async function updateLanguage(req: AdminAuthenticatedRequest, res: Response) {
   try {
     const languageId = req.params.id
-    const language = await languageService.findLanguageById(languageId, ['id', 'imagePath', 'deletedAt'])
+    const language = await languageService.findLanguageById(languageId, ['id', 'deletedAt'])
     if(!language)
       throw new NotFoundException('Language not found.')
     if(language.deletedAt)

@@ -86,6 +86,7 @@ Probashi bangla things to do:
 4. Make languages table & make a CRUD for it. Then use it in Course create/update and other places
 5. Streak(DONE)
 6. Statistics(DONE)
+7. prevent deletion if record already has child/children
 
 
 1. Make languages table & make a CRUD for it. Then use it in Course create/update and other places

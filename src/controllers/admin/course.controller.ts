@@ -85,14 +85,16 @@ export async function createCourse(req: AdminAuthenticatedRequest, res: Response
     const data = { ...req.body, imagePath: filesWithFullPaths?.imagePath[0], updatedBy: req.user!.id }
     const response = await courseService.storeCourse(data);
 
-    if(response)
+    if(response){
+      const courseCourse = await courseService.findCourseById(response.id, null, true);
       return res.status(201).json({
         data: {
           message: 'Course created successfully!',
-          course: response,
+          course: courseCourse,
         },
         statusCode: 201,
       });
+    }
 
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
@@ -142,11 +144,11 @@ export async function updateCourse(req: AdminAuthenticatedRequest, res: Response
     const response = await courseService.updateCourse(data, courseId);
 
     if(response){
-      const course = await courseService.findCourseById(courseId);
+      const updatedCourse = await courseService.findCourseById(courseId, null, true);
       return res.json({
         data: {
           message: 'Course updated successfully!',
-          course: course,
+          course: updatedCourse,
         },
         statusCode: 200,
       });
