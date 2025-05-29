@@ -8,7 +8,7 @@ const flashCardUploader = multipleFileLocalUploader(
     { name: 'audioUrl', maxCount: 1 },
   ],
   'flash_cards',
-  5242880, // 5 MB
+  6291456, // 6 MB
 )
 
 export const flashCardFileUploaderMiddleware = (req: Request, res: Response, next: NextFunction) => {

@@ -47,7 +47,7 @@ export const audioValidationRule = z.object({
   destination: z.string(),
   filename: z.string(),
   path: z.string(),
-  size: z.number().max(5242880, { message: 'File size must be less than 5MB' }),
+  size: z.number().max(1048576, { message: 'File size must be less than 1MB' }),
 });
 
 export const imageValidationS3Rule = z.object({
