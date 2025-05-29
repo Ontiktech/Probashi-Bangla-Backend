@@ -11,7 +11,9 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://ec2-16-171-142-79.eu-north-1.compute.amazonaws.com',
   'https://probashi-bangla-frontend.vercel.app',
-  'https://probashi-bangla-frontend.vercel.app/'
+  'https://probashi-bangla-frontend.vercel.app/',
+  'https://probashi-kollan-app.vercel.app/',
+  'https://probashi-kollan-app.vercel.app',
 ];
 
 export const corsOptions = {
@@ -23,4 +25,5 @@ export const corsOptions = {
     }
   },
   optionsSuccessStatus: 200,
+  credentials: true,
 };

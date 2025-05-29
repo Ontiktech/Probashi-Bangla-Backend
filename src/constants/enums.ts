@@ -95,3 +95,15 @@ export const PROFICIENCY_LEVELS = [
   ProficiencyLevel.INTERMEDIATE,
   ProficiencyLevel.ADVANCED,
 ] as const;
+
+export enum Familiarity {
+  KNOWIT = 'KNOWIT',
+  FAMILIAR = 'FAMILIAR',
+  DONTKNOW = 'DONTKNOW',
+}
+
+export const FAMILIARITY = [
+  Familiarity.KNOWIT,
+  Familiarity.FAMILIAR,
+  Familiarity.DONTKNOW,
+] as const

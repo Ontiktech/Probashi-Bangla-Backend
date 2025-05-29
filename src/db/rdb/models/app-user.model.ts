@@ -46,6 +46,7 @@ AppUserModel.init(
     },
     email: {
       type: DataTypes.STRING,
+      defaultValue: null,
     },
     streak: {
       type: DataTypes.INTEGER,

@@ -54,7 +54,7 @@ export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response
 
 export async function storeFlashCardViewed(req: AppAuthenticatedRequest, res: Response) {
   try {
-    const { flashCardId } = req.body
+    const { flashCardId, familiarity } = req.body
     const flashCard = await flashCardService.flashCardExistsById(flashCardId)
     if(!flashCard)
       throw new NotFoundException('Flash card not found.')
@@ -71,7 +71,8 @@ export async function storeFlashCardViewed(req: AppAuthenticatedRequest, res: Re
 
     const storeData = {
       appUserId: req.user!.id,
-      flashCardId: flashCardId
+      flashCardId: flashCardId,
+      familiarity: familiarity
     }
     const storeflashCard = await flashCardViewedService.storeFlashCardViewed(storeData)
     if(!storeflashCard)

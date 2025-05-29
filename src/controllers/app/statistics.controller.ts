@@ -13,8 +13,6 @@ export async function viewAppUserStatistics(req: AppAuthenticatedRequest, res: R
     const wordsLearnedGroupedBydayCount = groupByDayCount(wordsLearned, 'createdAt')
     const loginHistoriesGroupedBydayCount = groupByDayCount(loginHistories, 'createdAt')
 
-    console.log('loginHistories', loginHistories);
-
     return res.json({
       data: {
         message: 'App user\'s statistics list.',
