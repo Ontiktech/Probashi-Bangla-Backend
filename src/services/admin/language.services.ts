@@ -18,8 +18,8 @@ export class LanguageService {
     return await this.languageRepo.languageExistsById(id);
   }
 
-  async getAllLanguages() {
-    return await this.languageRepo.getAllLanguages();
+  async getAllLanguages(select: string[]|null = null) {
+    return await this.languageRepo.getAllLanguages(select);
   }
 
   async getAllLanguagesWithOptions(select: string[]|null = null) {

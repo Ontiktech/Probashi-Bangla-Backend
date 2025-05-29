@@ -1,5 +1,5 @@
 import { Op, Transaction } from 'sequelize';
-import { LanguageModel, DayModel } from '../models';
+import { LanguageModel } from '../models';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { Language, StoreLanguage, UpdateLanguageData } from '../../../types/language.type';
 export class LanguageRepository {
@@ -44,15 +44,20 @@ export class LanguageRepository {
     });
   }
 
-  async getAllLanguages(): Promise<Language[]> {
-    return (await LanguageModel.findAll({
+  async getAllLanguages(select: string[]|null = null): Promise<Language[]> {
+    const options: any = {
       where: {
         deletedAt: {
           [Op.eq]: null
         },
       },
       order: [['createdAt', 'DESC']],
-    })) as unknown as Language[];
+    }
+
+    if(select && select.length > 0)
+      options.attributes = select
+
+    return (await LanguageModel.findAll(options)) as unknown as Language[];
   }
   
   async getAllLanguagesWithOptions(select: string[]|null = null): Promise<Language[]> {

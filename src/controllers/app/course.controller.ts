@@ -6,8 +6,41 @@ import { AppUserCourseService } from '../../services/admin/app-user-course.servi
 import { formatViewEnrolledCourseDetails, formatViewEnrolledCourses } from '../../formatter/app-user-course.formatter';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { AppUserEnrolledCourseDetails } from '../../types/app-user-course.type';
+import { LanguageService } from '../../services/admin/language.services';
 
 const appUserCourseService = new AppUserCourseService();
+const languageService = new LanguageService();
+
+export async function viewAllanguages(req: AppAuthenticatedRequest, res: Response) {
+  try {
+    const data = await languageService.getAllLanguages(['id', 'name']);
+  
+    return res.json({
+      data: {
+        message: 'Languages list.',
+        langauges: data
+      },
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log('viewAllanguages', error);
+    if (error instanceof CustomException) {
+      return res.status(error.statusCode).json({
+        error: {
+          message: error.message,
+        },
+        code: error.statusCode,
+      });
+    }
+
+    return res.status(500).json({
+      error: {
+        message: 'Something went wrong! Please try again.',
+      },
+      statusCode: 500,
+    });
+  }
+}
 
 export async function viewEnrolledCourses(req: AppAuthenticatedRequest, res: Response) {
   try {
