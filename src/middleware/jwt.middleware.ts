@@ -48,7 +48,7 @@ export class JwtMiddleware {
 
       throw new UnauthorizedException('Token Expired');
     } catch (e: any) {
-      // console.log('verifyToken', e);
+      console.log('verifyToken', e);
       if (e instanceof CustomException){
         return res.status(e.statusCode).json({
           error:{
@@ -111,7 +111,7 @@ export class JwtMiddleware {
 
       throw new UnauthorizedException('Auth token expired! Please login again.')
     } catch (e: any) {
-      // console.log('verifyAppUserToken', e);
+      console.log('verifyAppUserTokenWithoutOTPVerification', e);
       if (e instanceof CustomException) {
         return res.status(e.statusCode).json({
           error: {
@@ -129,8 +129,6 @@ export class JwtMiddleware {
       });
     }
   }
-
-
 
   async verifyAppUserToken(
     req: AppAuthenticatedRequest,
@@ -181,7 +179,7 @@ export class JwtMiddleware {
 
       throw new UnauthorizedException('Auth token expired! Please login again.')
     } catch (e: any) {
-      // console.log('verifyAppUserToken', e);
+      console.log('verifyAppUserToken', e);
       if (e instanceof CustomException) {
         return res.status(e.statusCode).json({
           error: {
