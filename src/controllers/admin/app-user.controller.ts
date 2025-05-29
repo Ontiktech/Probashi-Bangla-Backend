@@ -14,7 +14,19 @@ const appUserCourseService = new AppUserCourseService();
 
 export async function getAllAppUsers(req: AdminAuthenticatedRequest, res: Response) {
   try {
-    const users = await appUserService.getAllAppUsers();
+    const page = req.query.page ? Number(req.query.page) : null
+    const limit = req.query.limit ? Number(req.query.limit) : null
+    const sortOrder = req.query.sortOrder ? req.query.sortOrder.toString() : 'ASC'
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : 'createdAt'
+
+    if(sortOrder && sortOrder !== 'ASC' && sortOrder !== 'DESC')
+      throw new BadRequestException('Sort order has to be ASC or DESC')
+
+    let users = null
+    if(page && limit)
+      users = await appUserService.getPaginatedAppUsers(page, limit, sortOrder, sortBy);
+    else
+      users = await appUserService.getAllAppUsers();
 
     return res.status(200).json({
       data: {
@@ -43,10 +55,10 @@ export async function getAllAppUsers(req: AdminAuthenticatedRequest, res: Respon
   }
 }
 
-export async function getPaginatedAppUsers(req: AdminAuthenticatedRequest, res: Response) {
+export async function getPaginatedAppUsersForCourseList(req: AdminAuthenticatedRequest, res: Response) {
   try {
     const { limit, offset, orderBy } = req.params
-    const users = await appUserService.getPaginatedAppUsers(limit, offset, orderBy);
+    const users = await appUserService.getPaginatedAppUsersForCourseList(limit, offset, orderBy);
 
     return res.status(200).json({
       data: {

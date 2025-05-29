@@ -83,7 +83,7 @@ Probashi bangla things to do:
 1. Add deletedAt, deletedBy, updatedBy to admin user(??)
 2. Pagination
 3. next count is wrong in enrolled-courses. See what went wrong(DONE)
-4. Make languages table & make a CRUD for it. Then use it in Course create/update and other places
+4. Make languages table & make a CRUD for it. Then use it in Course create/update and other places(DONE)
 5. Streak(DONE)
 6. Statistics(DONE)
 7. prevent deletion if record already has child/children

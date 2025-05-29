@@ -4,6 +4,8 @@ import { Lesson, UpdateLessonData, StoreLesson, LessonWithFlashCards } from '../
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { FlashCardModel } from '../models/flash-card.model';
 import { NotFoundException } from '../../../errors/NotFoundException.error';
+import { PaginationResult } from '../../../types/common.type';
+import { paginatedResults } from '../../../utils/common.utils';
 export class LessonRepository {
   constructor() {}
   async findLessonById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<Lesson> {
@@ -59,6 +61,19 @@ export class LessonRepository {
         }
       },
     });
+  }
+
+  async getPaginatedLessons(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<LessonModel>> {
+    const options: any = {
+      where: {
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+      order: [[sortBy, sortOrder]]
+    }
+
+    return await paginatedResults(LessonModel, options, page, limit) as PaginationResult<LessonModel>; // use your actual pagination logic
   }
 
   async getAllLessons(): Promise<Lesson[]> {

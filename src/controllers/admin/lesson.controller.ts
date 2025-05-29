@@ -13,7 +13,19 @@ const flashCardsService = new FlashCardService();
 
 export async function getAllLessons(req: AdminAuthenticatedRequest, res: Response) {
   try {
-    const lessons = await lessonService.getAllLessons();
+    const page = req.query.page ? Number(req.query.page) : null
+    const limit = req.query.limit ? Number(req.query.limit) : null
+    const sortOrder = req.query.sortOrder ? req.query.sortOrder.toString() : 'ASC'
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : 'createdAt'
+
+    if(sortOrder && sortOrder !== 'ASC' && sortOrder !== 'DESC')
+      throw new BadRequestException('Sort order has to be ASC or DESC')
+
+    let lessons = null
+    if(page && limit)
+      lessons = await lessonService.getPaginatedLessons(page, limit, sortOrder, sortBy);
+    else
+      lessons = await lessonService.getAllLessons();
 
     return res.status(200).json({
       data: {

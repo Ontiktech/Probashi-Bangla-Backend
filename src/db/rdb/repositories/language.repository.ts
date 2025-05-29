@@ -2,6 +2,8 @@ import { Op, Transaction } from 'sequelize';
 import { LanguageModel } from '../models';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { Language, StoreLanguage, UpdateLanguageData } from '../../../types/language.type';
+import { paginatedResults } from '../../../utils/common.utils';
+import { PaginationResult } from '../../../types/common.type';
 export class LanguageRepository {
   constructor() {}
   async findLanguageById(id: string, select: string[]|null = null): Promise<Language> {
@@ -42,6 +44,19 @@ export class LanguageRepository {
         }
       },
     });
+  }
+
+  async getPaginatedLanguages(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<LanguageModel>> {
+    const options: any = {
+      where: {
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+      order: [[sortBy, sortOrder]]
+    }
+
+    return await paginatedResults(LanguageModel, options, page, limit) as PaginationResult<LanguageModel>; // use your actual pagination logic
   }
 
   async getAllLanguages(select: string[]|null = null): Promise<Language[]> {

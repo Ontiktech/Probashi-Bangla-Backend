@@ -18,8 +18,12 @@ export class CourseService {
     return await this.courseRepo.courseExistsById(id);
   }
 
+  async getPaginatedCourses(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string) {
+    return await this.courseRepo.getPaginatedCourses(page, limit, sortOrder, sortBy)
+  }
+
   async getAllCourses() {
-    return await this.courseRepo.getAllCourses();
+      return await this.courseRepo.getAllCourses()
   }
 
   async getAllCoursesWithOptions(select: string[]|null = null) {

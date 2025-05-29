@@ -18,6 +18,10 @@ export class DayService {
     return await this.dayRepo.dayExistsById(id);
   }
 
+  async getPaginatedDays(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string) {
+    return await this.dayRepo.getPaginatedDays(page, limit, sortOrder, sortBy)
+  }
+
   async getAllDays() {
     return await this.dayRepo.getAllDays();
   }

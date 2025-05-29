@@ -42,10 +42,10 @@ export class AppUserService {
     return await this.appUserRepo.getAllAppUsersWithOptions(select);
   }
 
-  async getPaginatedAppUsers(limit: number|string, offset: number|string, orderBy: string) {
+  async getPaginatedAppUsersForCourseList(limit: number|string, offset: number|string, orderBy: string) {
     limit = Number(limit)
     offset = Number(offset)
-    return await this.appUserRepo.getPaginatedAppUsers(limit, offset, orderBy);
+    return await this.appUserRepo.getPaginatedAppUsersForCourseList(limit, offset, orderBy);
   }
 
   async storeAppUser(data: StoreAppUserData, transaction?: Transaction) {

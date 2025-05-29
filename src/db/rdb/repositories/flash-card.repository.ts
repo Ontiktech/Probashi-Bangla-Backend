@@ -3,6 +3,8 @@ import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { FlashCardModel } from '../models/flash-card.model';
 import { FlashCard, StoreFlashCard, UpdateFlashCardData } from '../../../types/flash-card.type';
 import { OptionalObjectAttributes } from '@aws-sdk/client-s3';
+import { paginatedResults } from '../../../utils/common.utils';
+import { PaginationResult } from '../../../types/common.type';
 export class FlashCardRepository {
   constructor() {}
   async findFlashCardById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<FlashCard> {
@@ -58,6 +60,19 @@ export class FlashCardRepository {
         }
       },
     });
+  }
+
+  async getPaginatedFlashCards(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<FlashCardModel>> {
+    const options: any = {
+      where: {
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+      order: [[sortBy, sortOrder]]
+    }
+
+    return await paginatedResults(FlashCardModel, options, page, limit) as PaginationResult<FlashCardModel>; // use your actual pagination logic
   }
 
   async getAllFlashCards(): Promise<FlashCard[]> {

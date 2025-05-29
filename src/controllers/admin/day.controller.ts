@@ -14,7 +14,19 @@ const lessonService = new LessonService();
 
 export async function getAllDays(req: AdminAuthenticatedRequest, res: Response) {
   try {
-    const days = await dayService.getAllDays();
+    const page = req.query.page ? Number(req.query.page) : null
+    const limit = req.query.limit ? Number(req.query.limit) : null
+    const sortOrder = req.query.sortOrder ? req.query.sortOrder.toString() : 'ASC'
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : 'createdAt'
+
+    if(sortOrder && sortOrder !== 'ASC' && sortOrder !== 'DESC')
+      throw new BadRequestException('Sort order has to be ASC or DESC')
+
+    let days = null
+    if(page && limit)
+      days = await dayService.getPaginatedDays(page, limit, sortOrder, sortBy);
+    else
+      days = await dayService.getAllDays();
 
     return res.status(200).json({
       data: {

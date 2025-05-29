@@ -3,12 +3,25 @@ import { CustomException } from '../../errors/CustomException.error';
 import { AdminAuthenticatedRequest } from '../../types/authenticate.type';
 import { NotFoundException } from '../../errors/NotFoundException.error';
 import { LanguageService } from '../../services/admin/language.services';
+import { BadRequestException } from '../../errors/BadRequestException.error';
 
 const languageService = new LanguageService();
 
 export async function getAllLanguages(req: AdminAuthenticatedRequest, res: Response) {
   try {
-    const languages = await languageService.getAllLanguages();
+    const page = req.query.page ? Number(req.query.page) : null
+    const limit = req.query.limit ? Number(req.query.limit) : null
+    const sortOrder = req.query.sortOrder ? req.query.sortOrder.toString() : 'ASC'
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : 'createdAt'
+
+    if(sortOrder && sortOrder !== 'ASC' && sortOrder !== 'DESC')
+      throw new BadRequestException('Sort order has to be ASC or DESC')
+
+    let languages = null
+    if(page && limit)
+      languages = await languageService.getPaginatedLanguages(page, limit, sortOrder, sortBy);
+    else
+      languages = await languageService.getAllLanguages();
 
     return res.status(200).json({
       data: {

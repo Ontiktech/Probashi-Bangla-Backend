@@ -1,7 +1,9 @@
-import { Op, Transaction } from 'sequelize';
+import { Model, Op, Transaction } from 'sequelize';
 import { CourseModel, DayModel, LanguageModel } from '../models';
 import { Course, UpdateCourseData, StoreCourse } from '../../../types/course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
+import { PaginationResult } from '../../../types/common.type';
+import { paginatedResults } from '../../../utils/common.utils';
 export class CourseRepository {
   constructor() {}
   async findCourseById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<Course> {
@@ -99,6 +101,41 @@ export class CourseRepository {
         }
       },
     });
+  }
+
+  async getPaginatedCourses(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<CourseModel>> {
+    const options: any = {
+      where: {
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+      include: [
+        {
+          as: 'language',
+          model: LanguageModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'name']
+        },
+        {
+          as: 'target_language',
+          model: LanguageModel,
+          where: {
+            deletedAt: {
+              [Op.eq]: null,
+            },
+          },
+          attributes: ['id', 'name']
+        },
+      ],
+      order: [[sortBy, sortOrder]]
+    }
+
+    return await paginatedResults(CourseModel, options, page, limit) as PaginationResult<CourseModel>; // use your actual pagination logic
   }
 
   async getAllCourses(): Promise<Course[]> {

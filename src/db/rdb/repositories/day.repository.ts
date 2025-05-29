@@ -2,6 +2,8 @@ import { Op, Transaction } from 'sequelize';
 import { DayModel, LessonModel } from '../models';
 import { Day, UpdateDayData, StoreDay } from '../../../types/day.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
+import { paginatedResults } from '../../../utils/common.utils';
+import { PaginationResult } from '../../../types/common.type';
 export class DayRepository {
   constructor() {}
   async findDayById(id: string, select: string[]|null = null, withRelations: boolean = false): Promise<Day> {
@@ -57,6 +59,19 @@ export class DayRepository {
         }
       },
     });
+  }
+
+  async getPaginatedDays(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<DayModel>> {
+    const options: any = {
+      where: {
+        deletedAt: {
+          [Op.eq]: null
+        }
+      },
+      order: [[sortBy, sortOrder]]
+    }
+
+    return await paginatedResults(DayModel, options, page, limit) as PaginationResult<DayModel>; // use your actual pagination logic
   }
 
   async getAllDays(): Promise<Day[]> {

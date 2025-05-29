@@ -18,6 +18,10 @@ export class FlashCardService {
     return await this.flashCardRepo.flashCardExistsById(id);
   }
 
+  async getPaginatedFlashCards(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string) {
+    return await this.flashCardRepo.getPaginatedFlashCards(page, limit, sortOrder, sortBy)
+  }
+
   async getAllFlashCards() {
     return await this.flashCardRepo.getAllFlashCards();
   }

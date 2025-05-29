@@ -7,6 +7,8 @@ import {
   AdminViewSingleAppUserWithAppUserCoursesWithCourse,
 } from '../../../types/app-user.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
+import { paginatedResults } from '../../../utils/common.utils';
+import { PaginationResult } from '../../../types/common.type';
 export class AppUserRepository {
   constructor() {}
   async createUser(user: StoreAppUser, transaction?: Transaction): Promise<AppUser> {
@@ -194,6 +196,19 @@ export class AppUserRepository {
   //   )) as unknown as AppUser;
   // }
 
+    async getPaginatedAppUsers(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<AppUserModel>> {
+      const options: any = {
+        where: {
+          deletedAt: {
+            [Op.eq]: null
+          }
+        },
+        order: [[sortBy, sortOrder]]
+      }
+  
+      return await paginatedResults(AppUserModel, options, page, limit) as PaginationResult<AppUserModel>; // use your actual pagination logic
+    }
+
   async getAllAppUsers(): Promise<AppUser[]> {
     return (await AppUserModel.findAll({
       where: {
@@ -258,7 +273,7 @@ export class AppUserRepository {
     return (await AppUserModel.findAll(options));
   }
 
-  async getPaginatedAppUsers(limit: number, offset: number, orderBy: string): Promise<AppUser[]> {
+  async getPaginatedAppUsersForCourseList(limit: number, offset: number, orderBy: string): Promise<AppUser[]> {
     const options: any = {
       limit: limit,
       offset: offset,
