@@ -104,6 +104,14 @@ export class CourseRepository {
   }
 
   async getPaginatedCourses(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<CourseModel>> {
+    let order
+    if(sortBy === 'language')
+      order = [['language', 'name', sortOrder]]
+    else if(sortBy === 'targetLanguage')
+      order = [['target_language', 'name', sortOrder]]
+    else
+      order = [[sortBy, sortOrder]]
+
     const options: any = {
       where: {
         deletedAt: {
@@ -132,7 +140,7 @@ export class CourseRepository {
           attributes: ['id', 'name']
         },
       ],
-      order: [[sortBy, sortOrder]]
+      order: order
     }
 
     return await paginatedResults(CourseModel, options, page, limit) as PaginationResult<CourseModel>; // use your actual pagination logic
