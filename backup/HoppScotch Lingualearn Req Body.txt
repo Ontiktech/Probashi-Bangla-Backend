@@ -89,6 +89,8 @@ Probashi bangla things to do:
 7. prevent deletion if record already has child/children
 8. Day and Lesson unlock logic(??)
 9. How well did you know this(Familiarity) ? (DONE)
+10. Search for pagination(??)
+11. Course search by language and targetLanguage(??)
 
 Probashi bangla ask:
 1. What if there are no lessons in a course ? Will the user be able to open those from app end ?
