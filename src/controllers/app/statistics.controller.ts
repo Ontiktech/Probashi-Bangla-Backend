@@ -25,7 +25,7 @@ export async function viewAppUserStatistics(req: AppAuthenticatedRequest, res: R
       statusCode: 200,
     });
   } catch (error) {
-    console.log('viewFlashCards', error);
+    // console.log('viewFlashCards', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

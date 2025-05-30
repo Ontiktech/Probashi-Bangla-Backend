@@ -22,7 +22,7 @@ export async function viewAllanguages(req: AppAuthenticatedRequest, res: Respons
       statusCode: 200,
     });
   } catch (error) {
-    console.log('viewAllanguages', error);
+    // console.log('viewAllanguages', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -61,7 +61,7 @@ export async function viewEnrolledCourses(req: AppAuthenticatedRequest, res: Res
       statusCode: 200,
     });
   } catch (error) {
-    console.log('viewEnrolledCourses', error);
+    // console.log('viewEnrolledCourses', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -129,7 +129,7 @@ export async function viewEnrolledCourseDetails(req: AppAuthenticatedRequest, re
       statusCode: 200,
     });
   } catch (error) {
-    console.log('viewEnrolledCourses', error);
+    // console.log('viewEnrolledCourses', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

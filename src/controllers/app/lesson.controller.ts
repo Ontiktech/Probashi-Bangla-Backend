@@ -33,7 +33,7 @@ export async function viewFlashCards(req: AppAuthenticatedRequest, res: Response
       statusCode: 200,
     });
   } catch (error) {
-    console.log('viewFlashCards', error);
+    // console.log('viewFlashCards', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -86,7 +86,7 @@ export async function storeFlashCardViewed(req: AppAuthenticatedRequest, res: Re
       statusCode: 200,
     });
   } catch (error) {
-    console.log('storeFlashCardViewed', error);
+    // console.log('storeFlashCardViewed', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

@@ -36,7 +36,7 @@ export async function getAllAppUsers(req: AdminAuthenticatedRequest, res: Respon
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getAllAppUsers', error)
+    // console.log('getAllAppUsers', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -68,7 +68,7 @@ export async function getPaginatedAppUsersForCourseList(req: AdminAuthenticatedR
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getAllAppUsers', error)
+    // console.log('getAllAppUsers', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -105,7 +105,7 @@ export async function getSingleAppUser(req: AdminAuthenticatedRequest, res: Resp
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getSingleAllAppUser', error)
+    // console.log('getSingleAllAppUser', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -153,7 +153,7 @@ export async function createAppUser(req: AdminAuthenticatedRequest, res: Respons
 
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('createAppUser', error)
+    // console.log('createAppUser', error)
     rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
@@ -218,7 +218,7 @@ export async function updateAppUser(req: AdminAuthenticatedRequest, res: Respons
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('updateAppUser', error);
+    // console.log('updateAppUser', error);
     rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
@@ -263,7 +263,7 @@ export async function deleteAppUser(req: AdminAuthenticatedRequest, res: Respons
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('updateAppUser', error);
+    // console.log('updateAppUser', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -308,7 +308,7 @@ export async function enrollAppUserToCourse(req: AdminAuthenticatedRequest, res:
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('enrollAppUserToCourse', error);
+    // console.log('enrollAppUserToCourse', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -346,7 +346,7 @@ export async function appUserEnrolled(req: AdminAuthenticatedRequest, res: Respo
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('enrollAppUserToCourse', error);
+    // console.log('enrollAppUserToCourse', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

@@ -31,7 +31,7 @@ export async function getAllLanguages(req: AdminAuthenticatedRequest, res: Respo
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getAllLanguages', error)
+    // console.log('getAllLanguages', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -68,7 +68,7 @@ export async function getSingleLanguage(req: AdminAuthenticatedRequest, res: Res
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getSingleAllLanguage', error)
+    // console.log('getSingleAllLanguage', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -103,7 +103,7 @@ export async function createLanguage(req: AdminAuthenticatedRequest, res: Respon
 
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('createLanguage', error)
+    // console.log('createLanguage', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -147,7 +147,7 @@ export async function updateLanguage(req: AdminAuthenticatedRequest, res: Respon
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('updateLanguage', error);
+    // console.log('updateLanguage', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -188,7 +188,7 @@ export async function deleteLanguage(req: AdminAuthenticatedRequest, res: Respon
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('deleteLanguage', error);
+    // console.log('deleteLanguage', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

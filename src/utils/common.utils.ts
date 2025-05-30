@@ -82,8 +82,6 @@ export const paginatedResults = async <T extends Model>(
   query.offset = offset;
   query.limit = pageSize;
 
-  console.log('query', query);
-
   // Query records for the current page with pagination
   const records = await model.findAll(query);
 

@@ -35,7 +35,7 @@ export async function getAllLessons(req: AdminAuthenticatedRequest, res: Respons
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getAllLessons', error)
+    // console.log('getAllLessons', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -72,7 +72,7 @@ export async function getSingleLesson(req: AdminAuthenticatedRequest, res: Respo
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getSingleAllLesson', error)
+    // console.log('getSingleAllLesson', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -108,7 +108,7 @@ export async function createLesson(req: AdminAuthenticatedRequest, res: Response
 
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('createLesson', error)
+    // console.log('createLesson', error)
     rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
@@ -163,7 +163,7 @@ export async function updateLesson(req: AdminAuthenticatedRequest, res: Response
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('updateLesson', error);
+    // console.log('updateLesson', error);
     rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
@@ -212,7 +212,7 @@ export async function deleteLesson(req: AdminAuthenticatedRequest, res: Response
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('deleteLesson', error);
+    // console.log('deleteLesson', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

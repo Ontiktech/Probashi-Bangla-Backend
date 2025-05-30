@@ -5,10 +5,8 @@ import { NotFoundException } from '../../errors/NotFoundException.error';
 import { AdminUserService } from '../../services/admin/admin-user.services';
 import { hashPassword } from '../../utils/password.utils';
 import { BadRequestException } from '../../errors/BadRequestException.error';
-import { AppUserCourseService } from '../../services/admin/app-user-course.services';
 
 const adminUserService = new AdminUserService();
-const appUserCourseService = new AppUserCourseService();
 
 export async function getAllAdminUsers(req: AdminAuthenticatedRequest, res: Response) {
   try {
@@ -22,7 +20,7 @@ export async function getAllAdminUsers(req: AdminAuthenticatedRequest, res: Resp
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getAllAdminUsers', error)
+    // console.log('getAllAdminUsers', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -60,7 +58,7 @@ export async function getSingleAdminUser(req: AdminAuthenticatedRequest, res: Re
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getSingleAllAdminUser', error)
+    // console.log('getSingleAllAdminUser', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -148,7 +146,7 @@ export async function updateAdmin(req: AdminAuthenticatedRequest, res: Response)
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('updateAdmin', error);
+    // console.log('updateAdmin', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

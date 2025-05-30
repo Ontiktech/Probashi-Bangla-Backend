@@ -40,7 +40,7 @@ export class TestService {
     //   images,
     // );
 
-    console.log(username, email, password, phone, images);
+    // console.log(username, email, password, phone, images);
 
     // const rdsUser = await this.userRepo.createUser(newUser);
     const rdsUser = await this.userRepo.findUserByEmail(email);

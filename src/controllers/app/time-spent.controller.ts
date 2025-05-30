@@ -35,7 +35,7 @@ export async function saveTimeSpentData(req: AppAuthenticatedRequest, res: Respo
       statusCode: 200,
     });
   } catch (error) {
-    console.log('saveTimeSpentData', error);
+    // console.log('saveTimeSpentData', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

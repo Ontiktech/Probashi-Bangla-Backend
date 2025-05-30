@@ -23,7 +23,7 @@ export async function getProfile(req: AppAuthenticatedRequest, res: Response) {
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getProfile', error);
+    // console.log('getProfile', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -76,7 +76,7 @@ export async function editProfile(req: AppAuthenticatedRequest, res: Response) {
       statusCode: 200,
     });
   } catch (error) {
-    console.log('editProfile', error);
+    // console.log('editProfile', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -121,7 +121,7 @@ export async function editAvatar(req: AppAuthenticatedRequest, res: Response) {
       statusCode: 200,
     });
   } catch (error) {
-    console.log('editAvatar', error);
+    // console.log('editAvatar', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

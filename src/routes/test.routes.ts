@@ -196,7 +196,7 @@ testRouter.get('/db/drop-cols', async (req: Request, res: Response) => {
       message: 'Columns dropped.',
     });
   } catch (error) {
-    console.log(error);
+    console.log('drop-cols', error);
     res.status(500).send({
       message: `${error}`,
     });

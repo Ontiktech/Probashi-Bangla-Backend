@@ -12,7 +12,7 @@ const appUserUploader = multipleFileLocalUploader(
 
 export const appUserFileUploaderMiddleware = (req: Request, res: Response, next: NextFunction) => {
   appUserUploader(req, res, function (error) {
-    console.log('appUserUploader', error);
+    // console.log('appUserUploader', error);
     const statusCode = error && error.statusCode ? error.statusCode : 400
     const message = error && error.message ? error.message : 'Something went wrong.'
     if (error instanceof multer.MulterError) {

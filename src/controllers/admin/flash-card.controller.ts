@@ -32,7 +32,7 @@ export async function getAllFlashCards(req: AdminAuthenticatedRequest, res: Resp
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getAllFlashCards', error)
+    // console.log('getAllFlashCards', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -69,7 +69,7 @@ export async function getSingleFlashCard(req: AdminAuthenticatedRequest, res: Re
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getSingleAllFlashCard', error)
+    // console.log('getSingleAllFlashCard', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -105,7 +105,7 @@ export async function createFlashCard(req: AdminAuthenticatedRequest, res: Respo
 
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('createFlashCard', error)
+    // console.log('createFlashCard', error)
     rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
@@ -168,7 +168,7 @@ export async function updateFlashCard(req: AdminAuthenticatedRequest, res: Respo
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('updateFlashCard', error);
+    // console.log('updateFlashCard', error);
     rollbackMultipleFileLocalUpload(req)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
@@ -216,7 +216,7 @@ export async function deleteFlashCard(req: AdminAuthenticatedRequest, res: Respo
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('deleteFlashCard', error);
+    // console.log('deleteFlashCard', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

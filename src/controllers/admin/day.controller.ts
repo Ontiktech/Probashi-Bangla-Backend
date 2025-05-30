@@ -36,7 +36,7 @@ export async function getAllDays(req: AdminAuthenticatedRequest, res: Response) 
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getAllDays', error)
+    // console.log('getAllDays', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -73,7 +73,7 @@ export async function getSingleDay(req: AdminAuthenticatedRequest, res: Response
       statusCode: 200,
     });
   } catch (error) {
-    console.log('getSingleAllDay', error)
+    // console.log('getSingleAllDay', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -114,7 +114,7 @@ export async function createDay(req: AdminAuthenticatedRequest, res: Response) {
 
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('createDay', error)
+    // console.log('createDay', error)
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -161,7 +161,7 @@ export async function updateDay(req: AdminAuthenticatedRequest, res: Response) {
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('updateDay', error);
+    // console.log('updateDay', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -206,7 +206,7 @@ export async function deleteDay(req: AdminAuthenticatedRequest, res: Response) {
     }
     throw new CustomException('Something went wrong! Please try again.', 500)
   } catch (error) {
-    console.log('deleteDay', error);
+    // console.log('deleteDay', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

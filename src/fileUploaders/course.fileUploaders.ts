@@ -12,7 +12,7 @@ const courseUploader = multipleFileLocalUploader(
 
 export const courseFileUploaderMiddleware = (req: Request, res: Response, next: NextFunction) => {
   courseUploader(req, res, function (error) {
-    console.log('courseUploader', error);
+    // console.log('courseUploader', error);
     const statusCode = error && error.statusCode ? error.statusCode : 400
     const message = error && error.message ? error.message : 'Something went wrong.'
     if (error instanceof multer.MulterError) {

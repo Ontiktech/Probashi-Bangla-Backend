@@ -29,7 +29,7 @@ export async function login(req: Request, res: Response) {
       statusCode: 200,
     });
   } catch (error) {
-    console.log('admin login', error);
+    // console.log('admin login', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

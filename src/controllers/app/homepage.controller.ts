@@ -19,7 +19,7 @@ export async function viewAppUserHomepage(req: AppAuthenticatedRequest, res: Res
       statusCode: 200,
     });
   } catch (error) {
-    console.log('viewEnrolledCourses', error);
+    // console.log('viewEnrolledCourses', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {

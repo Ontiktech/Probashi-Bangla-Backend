@@ -13,7 +13,7 @@ const flashCardUploader = multipleFileLocalUploader(
 
 export const flashCardFileUploaderMiddleware = (req: Request, res: Response, next: NextFunction) => {
   flashCardUploader(req, res, function (error) {
-    console.log('flashCardUploader', error);
+    // console.log('flashCardUploader', error);
     const statusCode = error && error.statusCode ? error.statusCode : 400
     const message = error && error.message ? error.message : 'Something went wrong.'
     if (error instanceof multer.MulterError) {

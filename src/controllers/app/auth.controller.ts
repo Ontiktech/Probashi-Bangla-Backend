@@ -46,7 +46,7 @@ export async function login(req: Request, res: Response) {
       statusCode: 200,
     });
   } catch (error) {
-    console.log('app user login', error);
+    // console.log('app user login', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -103,7 +103,7 @@ export async function verifyOTP(req: AppAuthenticatedRequest, res: Response) {
       statusCode: 200,
     });
   } catch (error) {
-    console.log('verifyOTP', error);
+    // console.log('verifyOTP', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
@@ -140,7 +140,7 @@ export async function resendOTP(req: AppAuthenticatedRequest, res: Response) {
       statusCode: 200,
     });
   } catch (error) {
-    console.log('resendOTP', error);
+    // console.log('resendOTP', error);
     if (error instanceof CustomException) {
       return res.status(error.statusCode).json({
         error: {
