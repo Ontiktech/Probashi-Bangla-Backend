@@ -373,7 +373,7 @@ export class AppUserCourseRepository {
           [Op.eq]: null,
         },
       },
-      attributes: ['id', 'appUserId', 'courseId'],
+      attributes: ['id', 'appUserId', 'courseId', 'createdAt'],
       include: [
         {
           as: 'course',

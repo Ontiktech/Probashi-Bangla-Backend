@@ -74,7 +74,7 @@ export type DaysForEnrollCourseDetails = Omit<DayWithTimestamps, 'updatedBy'|'de
   lessons: LessonsForEnrollCourseDetails[]
 }
 
-export type AppUserEnrolledCourseDetails = Omit<AppUserCourse, 'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
+export type AppUserEnrolledCourseDetails = Omit<AppUserCourse, 'updatedBy'|'deletedAt'|'deletedBy'|'updatedAt'> & {
   course: Omit<CourseWithTimestamps, 'languageId'|'targetLanguageId'|'updatedBy'|'deletedAt'|'deletedBy'|'createdAt'|'updatedAt'> & {
     language: {
       id: string
