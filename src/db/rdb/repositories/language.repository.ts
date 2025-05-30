@@ -46,7 +46,7 @@ export class LanguageRepository {
     });
   }
 
-  async getPaginatedLanguages(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<LanguageModel>> {
+  async getPaginatedLanguages(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string, searchText?: string|null): Promise<PaginationResult<LanguageModel>> {
     const options: any = {
       where: {
         deletedAt: {
@@ -55,6 +55,9 @@ export class LanguageRepository {
       },
       order: [[sortBy, sortOrder]]
     }
+
+    if(searchText)
+      options.where = { ...options.where, name: { [Op.iLike]: `%${searchText}%` }}
 
     return await paginatedResults(LanguageModel, options, page, limit) as PaginationResult<LanguageModel>; // use your actual pagination logic
   }

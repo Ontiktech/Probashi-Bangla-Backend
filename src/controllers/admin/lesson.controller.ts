@@ -17,13 +17,14 @@ export async function getAllLessons(req: AdminAuthenticatedRequest, res: Respons
     const limit = req.query.limit ? Number(req.query.limit) : null
     const sortOrder = req.query.sortOrder ? req.query.sortOrder.toString() : 'ASC'
     const sortBy = req.query.sortBy ? req.query.sortBy.toString() : 'createdAt'
+    const searchText = req.query.searchText && req.query.searchText !== '' ? req.query.searchText.toString() : null
 
     if(sortOrder && sortOrder !== 'ASC' && sortOrder !== 'DESC')
       throw new BadRequestException('Sort order has to be ASC or DESC')
 
     let lessons = null
     if(page && limit)
-      lessons = await lessonService.getPaginatedLessons(page, limit, sortOrder, sortBy);
+      lessons = await lessonService.getPaginatedLessons(page, limit, sortOrder, sortBy, searchText);
     else
       lessons = await lessonService.getAllLessons();
 

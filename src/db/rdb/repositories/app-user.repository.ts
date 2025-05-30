@@ -196,7 +196,7 @@ export class AppUserRepository {
   //   )) as unknown as AppUser;
   // }
 
-    async getPaginatedAppUsers(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<AppUserModel>> {
+    async getPaginatedAppUsers(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string, searchText?: string|null): Promise<PaginationResult<AppUserModel>> {
       const options: any = {
         where: {
           deletedAt: {
@@ -205,7 +205,27 @@ export class AppUserRepository {
         },
         order: [[sortBy, sortOrder]]
       }
-  
+
+      if(searchText){
+        options.where = {
+          ...options.where, 
+          [Op.or]: {
+            phoneNumber: {
+              [Op.iLike]: `%${searchText}%` 
+            },
+            firstName: {
+              [Op.iLike]: `%${searchText}%` 
+            },
+            lastName: {
+              [Op.iLike]: `%${searchText}%` 
+            },
+            email: {
+              [Op.iLike]: `%${searchText}%` 
+            },
+          }
+        }
+      }
+
       return await paginatedResults(AppUserModel, options, page, limit) as PaginationResult<AppUserModel>; // use your actual pagination logic
     }
 

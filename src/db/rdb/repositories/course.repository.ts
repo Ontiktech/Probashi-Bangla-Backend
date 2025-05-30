@@ -103,7 +103,7 @@ export class CourseRepository {
     });
   }
 
-  async getPaginatedCourses(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<CourseModel>> {
+  async getPaginatedCourses(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string, searchText?: string|null): Promise<PaginationResult<CourseModel>> {
     let order
     if(sortBy === 'language')
       order = [['language', 'name', sortOrder]]
@@ -142,6 +142,9 @@ export class CourseRepository {
       ],
       order: order
     }
+
+    if(searchText)
+      options.where = {...options.where, title: { [Op.iLike]: `%${searchText}%` }}
 
     return await paginatedResults(CourseModel, options, page, limit) as PaginationResult<CourseModel>; // use your actual pagination logic
   }

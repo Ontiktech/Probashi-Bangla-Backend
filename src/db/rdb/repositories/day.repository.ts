@@ -61,7 +61,7 @@ export class DayRepository {
     });
   }
 
-  async getPaginatedDays(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<DayModel>> {
+  async getPaginatedDays(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string, searchText?: string|null): Promise<PaginationResult<DayModel>> {
     const options: any = {
       where: {
         deletedAt: {
@@ -70,6 +70,9 @@ export class DayRepository {
       },
       order: [[sortBy, sortOrder]]
     }
+
+    if(searchText)
+      options.where = {...options.where, title: { [Op.iLike]: `%${searchText}%` }}
 
     return await paginatedResults(DayModel, options, page, limit) as PaginationResult<DayModel>; // use your actual pagination logic
   }

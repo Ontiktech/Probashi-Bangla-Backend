@@ -14,13 +14,14 @@ export async function getAllFlashCards(req: AdminAuthenticatedRequest, res: Resp
     const limit = req.query.limit ? Number(req.query.limit) : null
     const sortOrder = req.query.sortOrder ? req.query.sortOrder.toString() : 'ASC'
     const sortBy = req.query.sortBy ? req.query.sortBy.toString() : 'createdAt'
+    const searchText = req.query.searchText && req.query.searchText !== '' ? req.query.searchText.toString() : null
 
     if(sortOrder && sortOrder !== 'ASC' && sortOrder !== 'DESC')
       throw new BadRequestException('Sort order has to be ASC or DESC')
 
     let flashCards = null
     if(page && limit)
-      flashCards = await flashCardService.getPaginatedFlashCards(page, limit, sortOrder, sortBy);
+      flashCards = await flashCardService.getPaginatedFlashCards(page, limit, sortOrder, sortBy, searchText);
     else
       flashCards = await flashCardService.getAllFlashCards();
 

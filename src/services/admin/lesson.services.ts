@@ -18,8 +18,8 @@ export class LessonService {
     return await this.lessonRepo.lessonExistsById(id);
   }
 
-  async getPaginatedLessons(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string) {
-    return await this.lessonRepo.getPaginatedLessons(page, limit, sortOrder, sortBy)
+  async getPaginatedLessons(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string, searchText?: string|null) {
+    return await this.lessonRepo.getPaginatedLessons(page, limit, sortOrder, sortBy, searchText)
   }
 
   async getAllLessons() {

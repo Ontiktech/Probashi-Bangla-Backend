@@ -62,7 +62,7 @@ export class FlashCardRepository {
     });
   }
 
-  async getPaginatedFlashCards(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<FlashCardModel>> {
+  async getPaginatedFlashCards(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string, searchText?: string|null): Promise<PaginationResult<FlashCardModel>> {
     const options: any = {
       where: {
         deletedAt: {
@@ -70,6 +70,26 @@ export class FlashCardRepository {
         }
       },
       order: [[sortBy, sortOrder]]
+    }
+
+    if(searchText){
+      options.where = {
+        ...options.where, 
+        [Op.or]: {
+          frontText: {
+            [Op.iLike]: `%${searchText}%` 
+          },
+          frontSubtext: {
+            [Op.iLike]: `%${searchText}%` 
+          },
+          backText: {
+            [Op.iLike]: `%${searchText}%` 
+          },
+          backSubtext: {
+            [Op.iLike]: `%${searchText}%` 
+          },
+        }
+      }
     }
 
     return await paginatedResults(FlashCardModel, options, page, limit) as PaginationResult<FlashCardModel>; // use your actual pagination logic

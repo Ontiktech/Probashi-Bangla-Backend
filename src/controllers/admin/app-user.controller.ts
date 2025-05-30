@@ -18,13 +18,14 @@ export async function getAllAppUsers(req: AdminAuthenticatedRequest, res: Respon
     const limit = req.query.limit ? Number(req.query.limit) : null
     const sortOrder = req.query.sortOrder ? req.query.sortOrder.toString() : 'ASC'
     const sortBy = req.query.sortBy ? req.query.sortBy.toString() : 'createdAt'
+    const searchText = req.query.searchText && req.query.searchText !== '' ? req.query.searchText.toString() : null
 
     if(sortOrder && sortOrder !== 'ASC' && sortOrder !== 'DESC')
       throw new BadRequestException('Sort order has to be ASC or DESC')
 
     let users = null
     if(page && limit)
-      users = await appUserService.getPaginatedAppUsers(page, limit, sortOrder, sortBy);
+      users = await appUserService.getPaginatedAppUsers(page, limit, sortOrder, sortBy, searchText);
     else
       users = await appUserService.getAllAppUsers();
 

@@ -63,7 +63,7 @@ export class LessonRepository {
     });
   }
 
-  async getPaginatedLessons(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string): Promise<PaginationResult<LessonModel>> {
+  async getPaginatedLessons(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string, searchText?: string|null): Promise<PaginationResult<LessonModel>> {
     const options: any = {
       where: {
         deletedAt: {
@@ -72,6 +72,9 @@ export class LessonRepository {
       },
       order: [[sortBy, sortOrder]]
     }
+
+    if(searchText)
+      options.where = {...options.where, title: { [Op.iLike]: `%${searchText}%` }}
 
     return await paginatedResults(LessonModel, options, page, limit) as PaginationResult<LessonModel>; // use your actual pagination logic
   }

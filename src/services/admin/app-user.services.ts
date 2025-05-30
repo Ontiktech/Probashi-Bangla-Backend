@@ -34,8 +34,8 @@ export class AppUserService {
     return await this.appUserRepo.userExistsByPhone(phoneNumber, exceptId);
   }
 
-  async getPaginatedAppUsers(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string) {
-    return await this.appUserRepo.getPaginatedAppUsers(page, limit, sortOrder, sortBy)
+  async getPaginatedAppUsers(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string, searchText?: string|null) {
+    return await this.appUserRepo.getPaginatedAppUsers(page, limit, sortOrder, sortBy, searchText)
   }
 
   async getAllAppUsers() {

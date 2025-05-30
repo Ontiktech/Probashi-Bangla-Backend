@@ -18,13 +18,14 @@ export async function getAllDays(req: AdminAuthenticatedRequest, res: Response) 
     const limit = req.query.limit ? Number(req.query.limit) : null
     const sortOrder = req.query.sortOrder ? req.query.sortOrder.toString() : 'ASC'
     const sortBy = req.query.sortBy ? req.query.sortBy.toString() : 'createdAt'
+    const searchText = req.query.searchText && req.query.searchText !== '' ? req.query.searchText.toString() : null
 
     if(sortOrder && sortOrder !== 'ASC' && sortOrder !== 'DESC')
       throw new BadRequestException('Sort order has to be ASC or DESC')
 
     let days = null
     if(page && limit)
-      days = await dayService.getPaginatedDays(page, limit, sortOrder, sortBy);
+      days = await dayService.getPaginatedDays(page, limit, sortOrder, sortBy, searchText);
     else
       days = await dayService.getAllDays();
 

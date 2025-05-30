@@ -13,13 +13,14 @@ export async function getAllLanguages(req: AdminAuthenticatedRequest, res: Respo
     const limit = req.query.limit ? Number(req.query.limit) : null
     const sortOrder = req.query.sortOrder ? req.query.sortOrder.toString() : 'ASC'
     const sortBy = req.query.sortBy ? req.query.sortBy.toString() : 'createdAt'
+    const searchText = req.query.searchText && req.query.searchText !== '' ? req.query.searchText.toString() : null
 
     if(sortOrder && sortOrder !== 'ASC' && sortOrder !== 'DESC')
       throw new BadRequestException('Sort order has to be ASC or DESC')
 
     let languages = null
     if(page && limit)
-      languages = await languageService.getPaginatedLanguages(page, limit, sortOrder, sortBy);
+      languages = await languageService.getPaginatedLanguages(page, limit, sortOrder, sortBy, searchText);
     else
       languages = await languageService.getAllLanguages();
 

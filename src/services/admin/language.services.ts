@@ -18,8 +18,8 @@ export class LanguageService {
     return await this.languageRepo.languageExistsById(id);
   }
 
-  async getPaginatedLanguages(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string) {
-    return await this.languageRepo.getPaginatedLanguages(page, limit, sortOrder, sortBy)
+  async getPaginatedLanguages(page: number = 1, limit: number = 10, sortOrder: string, sortBy: string, searchText?: string|null) {
+    return await this.languageRepo.getPaginatedLanguages(page, limit, sortOrder, sortBy, searchText)
   }
 
   async getAllLanguages(select: string[]|null = null) {
