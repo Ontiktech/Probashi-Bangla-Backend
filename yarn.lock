@@ -4807,6 +4807,11 @@ hasown@^2.0.0, hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
+helmet@^7.1.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-7.2.0.tgz#8b2dcc425b4a46c88f6953481b40453cbe66b167"
+  integrity sha512-ZRiwvN089JfMXokizgqEPXsl2Guk094yExfoDXR0cBYWxtBbaSww/w+vT4WEJsBW2iTUi1GgZ6swmoug3Oy4Xw==
+
 html-entities@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-2.5.2.tgz#201a3cf95d3a15be7099521620d19dfb4f65359f"
