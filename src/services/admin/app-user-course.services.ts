@@ -58,7 +58,7 @@ export class AppUserCourseService {
     return await this.appUserCourseRepo.findAppUserWithCoursesById(id, select);
   }
 
-  async viewEnrolledCourses(appUserId: string, limit: number, offset: number, languageId?: string|null, searchText?: string) {
+  async viewEnrolledCourses(appUserId: string, limit: number, offset: number, languageId?: string|null, searchText?: string|null) {
     return await this.appUserCourseRepo.viewEnrolledCourses(appUserId, limit, offset, languageId, searchText);
   }
 

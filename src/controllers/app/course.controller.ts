@@ -44,8 +44,8 @@ export async function viewAllanguages(req: AppAuthenticatedRequest, res: Respons
 
 export async function viewEnrolledCourses(req: AppAuthenticatedRequest, res: Response) {
   try {
-    const languageId = (req.query.languageId || req.query.languageId === FilterLanguage.EMPTY) ? req.query.languageId.toString() : null
-    const searchText = req.query.searchText ? req.query.searchText.toString() : undefined
+    const languageId = (req.query.languageId && req.query.languageId !== '') ? req.query.languageId.toString() : null
+    const searchText = (req.query.searchText && req.query.searchText !== '') ? req.query.searchText.toString() : null
     const page = req.query.page ? Number(req.query.page) : 1
     const number = req.query.number ? Number(req.query.number) : 10
     const limit = number

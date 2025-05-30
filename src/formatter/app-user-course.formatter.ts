@@ -38,6 +38,14 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
   let totalDays = 0
   let daysCompleted = 0
 
+  const currentDate = new Date()
+  const dayStartDatetime = new Date(new Date(data.createdAt).setHours(0,0,0,0))
+  const dayStartDatetimeArray: Date[] = []
+  for(let i = 1; i <= data.course.totalDays; i++){
+    dayStartDatetimeArray.push(new Date(dayStartDatetime))
+    dayStartDatetime.setDate(dayStartDatetime.getDate()+1);
+  }
+
   const formattedData = {
     id: data.id,
     appUserId: data.appUserId,
@@ -65,6 +73,7 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
           title: day.title,
           description: day.description,
           completed: false,
+          unlocked: currentDate > dayStartDatetimeArray[day.dayNumber-1],
           lessons: day.lessons.map((lesson) => {
             const totalFlashCardCount = lesson.flash_cards.length
             let flashCardsCompleted = 0

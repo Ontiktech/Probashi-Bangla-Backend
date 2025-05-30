@@ -231,7 +231,7 @@ export class AppUserCourseRepository {
     return (await AppUserModel.findOne(options)) as unknown as AppUser;
   }
 
-  async viewEnrolledCourses(appUserId: string, limit: number, offset: number, languageId?: string|null, searchText?: string): Promise<{next: number, data: AppUserCourseWithCourseAndTimestamps[]}> {
+  async viewEnrolledCourses(appUserId: string, limit: number, offset: number, languageId?: string|null, searchText?: string|null): Promise<{next: number, data: AppUserCourseWithCourseAndTimestamps[]}> {
     const options: any = {
       where: {
         appUserId: appUserId,
