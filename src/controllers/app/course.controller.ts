@@ -1,7 +1,6 @@
 import { Response } from 'express';
 import { CustomException } from '../../errors/CustomException.error';
 import { AppAuthenticatedRequest } from '../../types/authenticate.type';
-import { FilterLanguage } from '../../constants/enums';
 import { AppUserCourseService } from '../../services/admin/app-user-course.services';
 import { formatViewEnrolledCourseDetails, formatViewEnrolledCourses } from '../../formatter/app-user-course.formatter';
 import { NotFoundException } from '../../errors/NotFoundException.error';

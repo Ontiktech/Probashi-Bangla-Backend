@@ -8,7 +8,7 @@ const AppCourseRouter = express.Router();
 const jwtMiddleware = new JwtMiddleware();
 
 // Define Routes
-AppCourseRouter.get('/view-all-languages', jwtMiddleware.verifyAppUserToken, validateRequestBody(viewEnrolledCoursesFilterSchema), viewAllanguages);
+AppCourseRouter.get('/view-all-languages', jwtMiddleware.verifyAppUserToken, viewAllanguages);
 AppCourseRouter.get('/view-enrolled-courses', jwtMiddleware.verifyAppUserToken, validateRequestBody(viewEnrolledCoursesFilterSchema), viewEnrolledCourses);
 AppCourseRouter.get('/view-enrolled-course-details/:courseId', jwtMiddleware.verifyAppUserToken, viewEnrolledCourseDetails);
 

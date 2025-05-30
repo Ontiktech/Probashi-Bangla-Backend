@@ -1,15 +1,15 @@
 import { z } from 'zod';
-import { FILTER_LANGUAGE } from '../constants/enums';
 
 export const viewEnrolledCoursesFilterSchema = z.object({
-  language: z.
-    enum(FILTER_LANGUAGE, { required_error: 'Filter by field is required.' })
+  languageId: z
+    .string({ required_error: 'Language is required.' })
+    .trim()
     .optional()
     .nullable(),
   searchText : z
-    .string({ required_error: 'Search test is required.' })
+    .string({ required_error: 'Search text is required.' })
     .trim()
-    .max(255, { message: 'searchText cannot exceed 255 characters.' })
+    .max(255, { message: 'Search text cannot exceed 255 characters.' })
     .optional()
     .nullable(),
   page : z

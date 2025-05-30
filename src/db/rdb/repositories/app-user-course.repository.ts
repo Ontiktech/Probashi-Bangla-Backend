@@ -3,7 +3,6 @@ import { AppUserCourseModel, AppUserModel, CourseModel, DayModel, FlashCardViewe
 import { AppUserCourse, UpdateAppUserCourseData, StoreAppUserCourse, AppUserCourseWithCourseAndTimestamps, AppUserEnrolledCourseDetails } from '../../../types/app-user-course.type';
 import { datetimeYMDHis } from '../../../utils/datetime.utils';
 import { AppUser } from '../../../types/app-user.type';
-import { FilterLanguage } from '../../../constants/enums';
 import { FlashCardModel } from '../models/flash-card.model';
 export class AppUserCourseRepository {
   constructor() {}
