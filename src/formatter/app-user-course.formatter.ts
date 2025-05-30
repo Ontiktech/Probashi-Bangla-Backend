@@ -73,7 +73,7 @@ export function formatViewEnrolledCourseDetails(data: AppUserEnrolledCourseDetai
           title: day.title,
           description: day.description,
           completed: false,
-          unlocked: currentDate > dayStartDatetimeArray[day.dayNumber-1],
+          unlocked: currentDate >= dayStartDatetimeArray[day.dayNumber-1],
           lessons: day.lessons.map((lesson) => {
             const totalFlashCardCount = lesson.flash_cards.length
             let flashCardsCompleted = 0

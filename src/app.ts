@@ -22,6 +22,7 @@ import { AppLessonRouter } from './routes/app/lesson.routes';
 import { AppUserStatisticsRouter } from './routes/app/statistics.routes';
 import { AppUserHomePage } from './routes/app/homepage.routes';
 import { LanguageRouter } from './routes/admin/language.routes';
+import { getEnvVar } from './utils/common.utils';
 
 // const numCPUs = os.cpus().length
 
@@ -44,7 +45,11 @@ const server = () => {
     app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 
     // serve static files
-    app.use('/', express.static(path.join(__dirname, '/public')));
+    const staticFileMode = getEnvVar('APP_STATIC_FILE_MODE')
+    if(staticFileMode === 'production')
+      app.use('/', express.static(path.join(__dirname, '/../src/public')));
+    else
+      app.use('/', express.static(path.join(__dirname, '/public')));
 
     //rate limiter
     app.use(globalLimiterOptions);
